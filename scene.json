@@ -64,5 +64,11 @@
   "featureToggles": {
     "voiceChat": "enabled",
     "portableExperiences": "enabled"
+  },
+  "worldConfiguration": {
+    "name": "thecodingcave.dcl.eth",
+    "placesConfig": {
+      "optOut": true
+    }
   }
 }
