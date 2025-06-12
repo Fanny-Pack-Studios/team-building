@@ -4,6 +4,7 @@
   "description": "SDK7 Template scene",
   "scripts": {
     "start": "sdk-commands start",
+    "start-new-explorer": "sdk-commands start --explorer-alpha --hub --skip-auth-screen --landscape-terrain-enabled",
     "deploy": "sdk-commands deploy",
     "build": "sdk-commands build",
     "upgrade-sdk": "npm install --save-dev @dcl/sdk@latest",
