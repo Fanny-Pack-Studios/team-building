@@ -89,7 +89,7 @@ function createPollEntity(pollQuestion: string): void {
     }
   )
 }
-function createQuestionUi(pollQuestion: string): void {
+function createQuestionUi(pollQuestion: string, options: string[] = ['Yeah', 'Nope']): void {
   const prompt = ui.createComponent(ui.CustomPrompt, { style: ui.PromptStyles.DARKSLANTED })
   const promptHeader = prompt.addText({
     value: pollQuestion,
@@ -97,26 +97,28 @@ function createQuestionUi(pollQuestion: string): void {
     yPosition: 170
   })
 
-  const promptButtonE = prompt.addButton({
-    style: ui.ButtonStyles.E,
-    text: 'Yeah',
-    buttonSize: 200,
-    xPosition: 125,
-    onMouseDown: () => {
-      console.log('Yeah pressed')
-    }
+  // Dynamically generate one button per answer option
+  const buttonSpacing = 250 // distance between buttons on X axis
+  const startX = -((options.length - 1) / 2) * buttonSpacing // center buttons
+
+  options.forEach((option, index) => {
+    const style = index % 2 === 0 ? ui.ButtonStyles.E : ui.ButtonStyles.F
+    const promptButton = prompt.addButton({
+      style,
+      text: option,
+      buttonSize: 'auto',
+      xPosition: startX + index * buttonSpacing,
+      onMouseDown: () => {
+        console.log(`${option} pressed`)
+      }
+    })
+
+    // keep reference to avoid linter complaints of unused vars if needed
+    console.log('button created', promptButton)
   })
 
-  const promptButtonF = prompt.addButton({
-    style: ui.ButtonStyles.F,
-    text: 'Nope',
-    buttonSize: 'auto',
-    xPosition: -125,
-    onMouseDown: () => {
-      console.log('Nope pressed')
-    }
-  })
   prompt.show()
 
-  console.log('hotfix linter issue', promptButtonF, promptButtonE, promptHeader)
+  // prevent linter warnings for unused variables
+  console.log('hotfix linter issue', promptHeader)
 }
