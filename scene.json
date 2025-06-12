@@ -42,7 +42,6 @@
       "3,4",
       "4,4"
     ],
-
     "base": "0,0"
   },
   "spawnPoints": [
@@ -50,9 +49,18 @@
       "name": "spawn1",
       "default": true,
       "position": {
-        "x": [0, 3],
-        "y": [0, 0],
-        "z": [0, 3]
+        "x": [
+          0,
+          3
+        ],
+        "y": [
+          0,
+          0
+        ],
+        "z": [
+          0,
+          3
+        ]
       },
       "cameraTarget": {
         "x": 8,
@@ -70,5 +78,9 @@
     "placesConfig": {
       "optOut": true
     }
+  },
+  "source": {
+    "origin": "creator-hub",
+    "projectId": "f12d9cd6-b095-4fd1-896d-b329d277a3c3"
   }
 }

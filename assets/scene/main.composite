@@ -90,17 +90,12 @@
         "serializationType": "transform"
       },
       "data": {
-        "515": {
+        "514": {
           "json": {
             "position": {
-              "x": 40,
-              "y": 0,
-              "z": 40
-            },
-            "scale": {
-              "x": 1,
-              "y": 1,
-              "z": 1
+              "x": 40.25,
+              "y": 5.5,
+              "z": 53.75
             },
             "rotation": {
               "x": 0,
@@ -108,7 +103,85 @@
               "z": 0,
               "w": 1
             },
+            "scale": {
+              "x": 21,
+              "y": 6,
+              "z": 1
+            },
             "parent": 0
+          }
+        },
+        "515": {
+          "json": {
+            "position": {
+              "x": 40,
+              "y": 0,
+              "z": 40
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "scale": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
+            "parent": 0
+          }
+        },
+        "516": {
+          "json": {
+            "position": {
+              "x": 53.5,
+              "y": 2,
+              "z": 54
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "scale": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
+            "parent": 0
+          }
+        }
+      }
+    },
+    {
+      "name": "core-schema::Network-Entity",
+      "jsonSchema": {
+        "type": "object",
+        "properties": {
+          "networkId": {
+            "type": "integer",
+            "serializationType": "int64"
+          },
+          "entityId": {
+            "type": "integer",
+            "serializationType": "entity"
+          }
+        },
+        "serializationType": "map"
+      },
+      "data": {
+        "514": {
+          "json": {
+            "networkId": 0,
+            "entityId": 8003
+          }
+        },
+        "516": {
+          "json": {
+            "networkId": 0,
+            "entityId": 8004
           }
         }
       }
@@ -132,7 +205,17 @@
             "states": []
           }
         },
+        "514": {
+          "json": {
+            "states": []
+          }
+        },
         "515": {
+          "json": {
+            "states": []
+          }
+        },
+        "516": {
           "json": {
             "states": []
           }
@@ -154,6 +237,85 @@
             "visibleMeshesCollisionMask": 1,
             "invisibleMeshesCollisionMask": 2
           }
+        },
+        "516": {
+          "json": {
+            "src": "assets/asset-packs/admin_tools/admin_toolkit.glb",
+            "visibleMeshesCollisionMask": 1,
+            "invisibleMeshesCollisionMask": 0
+          }
+        }
+      }
+    },
+    {
+      "name": "core::Material",
+      "jsonSchema": {
+        "type": "object",
+        "properties": {},
+        "serializationType": "protocol-buffer",
+        "protocolBuffer": "PBMaterial"
+      },
+      "data": {
+        "514": {
+          "json": {
+            "material": {
+              "$case": "pbr",
+              "pbr": {
+                "texture": {
+                  "tex": {
+                    "$case": "videoTexture",
+                    "videoTexture": {
+                      "videoPlayerEntity": 0
+                    }
+                  }
+                },
+                "metallic": 0,
+                "roughness": 1,
+                "specularIntensity": 0
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "core::MeshCollider",
+      "jsonSchema": {
+        "type": "object",
+        "properties": {},
+        "serializationType": "protocol-buffer",
+        "protocolBuffer": "PBMeshCollider"
+      },
+      "data": {
+        "514": {
+          "json": {
+            "collisionMask": 1,
+            "mesh": {
+              "$case": "plane",
+              "plane": {}
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "core::MeshRenderer",
+      "jsonSchema": {
+        "type": "object",
+        "properties": {},
+        "serializationType": "protocol-buffer",
+        "protocolBuffer": "PBMeshRenderer"
+      },
+      "data": {
+        "514": {
+          "json": {
+            "mesh": {
+              "$case": "plane",
+              "plane": {
+                "uvs": []
+              }
+            }
+          }
         }
       }
     },
@@ -170,9 +332,86 @@
         "serializationType": "map"
       },
       "data": {
+        "514": {
+          "json": {
+            "value": "Video Screen"
+          }
+        },
         "515": {
           "json": {
             "value": "LevelLayout.glb"
+          }
+        },
+        "516": {
+          "json": {
+            "value": "Admin Tools"
+          }
+        }
+      }
+    },
+    {
+      "name": "core-schema::Sync-Components",
+      "jsonSchema": {
+        "type": "object",
+        "properties": {
+          "componentIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "serializationType": "int64"
+            },
+            "serializationType": "array"
+          }
+        },
+        "serializationType": "map"
+      },
+      "data": {
+        "514": {
+          "json": {
+            "componentIds": [
+              1043,
+              1042
+            ]
+          }
+        },
+        "516": {
+          "json": {
+            "componentIds": [
+              99929642
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "core::VideoPlayer",
+      "jsonSchema": {
+        "type": "object",
+        "properties": {},
+        "serializationType": "protocol-buffer",
+        "protocolBuffer": "PBVideoPlayer"
+      },
+      "data": {
+        "514": {
+          "json": {
+            "src": "https://player.vimeo.com/external/552481870.m3u8?s=c312c8533f97e808fccc92b0510b085c8122a875",
+            "playing": true
+          }
+        }
+      }
+    },
+    {
+      "name": "core::VisibilityComponent",
+      "jsonSchema": {
+        "type": "object",
+        "properties": {},
+        "serializationType": "protocol-buffer",
+        "protocolBuffer": "PBVisibilityComponent"
+      },
+      "data": {
+        "516": {
+          "json": {
+            "visible": false
           }
         }
       }
@@ -190,9 +429,9 @@
         "serializationType": "map"
       },
       "data": {
-        "0": {
+        "516": {
           "json": {
-            "gizmo": 3
+            "gizmo": 0
           }
         }
       }
@@ -483,9 +722,12 @@
             "thumbnail": "images/scene-thumbnail.png",
             "categories": [],
             "author": "SDK",
-            "email": "",
             "tags": [],
             "layout": {
+              "base": {
+                "x": 0,
+                "y": 0
+              },
               "parcels": [
                 {
                   "x": 0,
@@ -587,14 +829,8 @@
                   "x": 4,
                   "y": 4
                 }
-              ],
-              "base": {
-                "x": 0,
-                "y": 0
-              }
+              ]
             },
-            "silenceVoiceChat": false,
-            "disablePortableExperiences": false,
             "spawnPoints": [
               {
                 "name": "spawn1",
@@ -679,7 +915,9 @@
                 "entity": 0,
                 "open": true,
                 "children": [
-                  515
+                  515,
+                  514,
+                  516
                 ]
               },
               {
@@ -692,6 +930,14 @@
               },
               {
                 "entity": 515,
+                "children": []
+              },
+              {
+                "entity": 514,
+                "children": []
+              },
+              {
+                "entity": 516,
                 "children": []
               }
             ]
@@ -944,6 +1190,309 @@
       }
     },
     {
+      "name": "asset-packs::VideoScreen",
+      "jsonSchema": {
+        "type": "object",
+        "properties": {
+          "thumbnail": {
+            "type": "string",
+            "serializationType": "utf8-string"
+          },
+          "defaultMediaSource": {
+            "type": "integer",
+            "enum": [
+              0,
+              1
+            ],
+            "default": 0,
+            "serializationType": "enum-int",
+            "enumObject": {
+              "0": "VideoURL",
+              "1": "LiveStream",
+              "VideoURL": 0,
+              "LiveStream": 1
+            }
+          },
+          "defaultURL": {
+            "type": "string",
+            "serializationType": "utf8-string"
+          }
+        },
+        "serializationType": "map"
+      },
+      "data": {
+        "514": {
+          "json": {
+            "thumbnail": "https://boedo.casla",
+            "defaultMediaSource": 0,
+            "defaultURL": "https://player.vimeo.com/external/552481870.m3u8?s=c312c8533f97e808fccc92b0510b085c8122a875"
+          }
+        }
+      }
+    },
+    {
+      "name": "asset-packs::AdminTools",
+      "jsonSchema": {
+        "type": "object",
+        "properties": {
+          "adminPermissions": {
+            "type": "string",
+            "enum": [
+              "PUBLIC",
+              "PRIVATE"
+            ],
+            "default": "PUBLIC",
+            "serializationType": "enum-string",
+            "enumObject": {
+              "PUBLIC": "PUBLIC",
+              "PRIVATE": "PRIVATE"
+            }
+          },
+          "authorizedAdminUsers": {
+            "type": "object",
+            "properties": {
+              "me": {
+                "type": "boolean",
+                "serializationType": "boolean"
+              },
+              "sceneOwners": {
+                "type": "boolean",
+                "serializationType": "boolean"
+              },
+              "allowList": {
+                "type": "boolean",
+                "serializationType": "boolean"
+              },
+              "adminAllowList": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "serializationType": "utf8-string"
+                },
+                "serializationType": "array"
+              }
+            },
+            "serializationType": "map"
+          },
+          "moderationControl": {
+            "type": "object",
+            "properties": {
+              "isEnabled": {
+                "type": "boolean",
+                "serializationType": "boolean"
+              },
+              "kickCoordinates": {
+                "type": "object",
+                "properties": {
+                  "x": {
+                    "type": "number",
+                    "serializationType": "float32"
+                  },
+                  "y": {
+                    "type": "number",
+                    "serializationType": "float32"
+                  },
+                  "z": {
+                    "type": "number",
+                    "serializationType": "float32"
+                  }
+                },
+                "serializationType": "map"
+              },
+              "allowNonOwnersManageAdminAllowList": {
+                "type": "boolean",
+                "serializationType": "boolean"
+              }
+            },
+            "serializationType": "map"
+          },
+          "textAnnouncementControl": {
+            "type": "object",
+            "properties": {
+              "isEnabled": {
+                "type": "boolean",
+                "serializationType": "boolean"
+              },
+              "playSoundOnEachAnnouncement": {
+                "type": "boolean",
+                "serializationType": "boolean"
+              },
+              "showAuthorOnEachAnnouncement": {
+                "type": "boolean",
+                "serializationType": "boolean"
+              }
+            },
+            "serializationType": "map"
+          },
+          "videoControl": {
+            "type": "object",
+            "properties": {
+              "isEnabled": {
+                "type": "boolean",
+                "serializationType": "boolean"
+              },
+              "disableVideoPlayersSound": {
+                "type": "boolean",
+                "serializationType": "boolean"
+              },
+              "showAuthorOnVideoPlayers": {
+                "type": "boolean",
+                "serializationType": "boolean"
+              },
+              "linkAllVideoPlayers": {
+                "type": "boolean",
+                "serializationType": "boolean"
+              },
+              "videoPlayers": {
+                "type": "array",
+                "serializationType": "optional",
+                "optionalJsonSchema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "entity": {
+                        "type": "integer",
+                        "serializationType": "int32"
+                      },
+                      "customName": {
+                        "type": "string",
+                        "serializationType": "utf8-string"
+                      }
+                    },
+                    "serializationType": "map"
+                  },
+                  "serializationType": "array"
+                }
+              }
+            },
+            "serializationType": "map"
+          },
+          "smartItemsControl": {
+            "type": "object",
+            "properties": {
+              "isEnabled": {
+                "type": "boolean",
+                "serializationType": "boolean"
+              },
+              "linkAllSmartItems": {
+                "type": "boolean",
+                "serializationType": "boolean"
+              },
+              "smartItems": {
+                "type": "array",
+                "serializationType": "optional",
+                "optionalJsonSchema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "entity": {
+                        "type": "integer",
+                        "serializationType": "int32"
+                      },
+                      "customName": {
+                        "type": "string",
+                        "serializationType": "utf8-string"
+                      },
+                      "defaultAction": {
+                        "type": "string",
+                        "serializationType": "utf8-string"
+                      }
+                    },
+                    "serializationType": "map"
+                  },
+                  "serializationType": "array"
+                }
+              }
+            },
+            "serializationType": "map"
+          },
+          "rewardsControl": {
+            "type": "object",
+            "properties": {
+              "isEnabled": {
+                "type": "boolean",
+                "serializationType": "boolean"
+              },
+              "rewardItems": {
+                "type": "array",
+                "serializationType": "optional",
+                "optionalJsonSchema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "entity": {
+                        "type": "integer",
+                        "serializationType": "int32"
+                      },
+                      "customName": {
+                        "type": "string",
+                        "serializationType": "utf8-string"
+                      }
+                    },
+                    "serializationType": "map"
+                  },
+                  "serializationType": "array"
+                }
+              }
+            },
+            "serializationType": "map"
+          }
+        },
+        "serializationType": "map"
+      },
+      "data": {
+        "516": {
+          "json": {
+            "adminPermissions": "PUBLIC",
+            "authorizedAdminUsers": {
+              "me": true,
+              "sceneOwners": true,
+              "allowList": true,
+              "adminAllowList": []
+            },
+            "moderationControl": {
+              "isEnabled": true,
+              "kickCoordinates": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "allowNonOwnersManageAdminAllowList": false
+            },
+            "textAnnouncementControl": {
+              "isEnabled": true,
+              "playSoundOnEachAnnouncement": true,
+              "showAuthorOnEachAnnouncement": true
+            },
+            "videoControl": {
+              "isEnabled": true,
+              "disableVideoPlayersSound": false,
+              "showAuthorOnVideoPlayers": true,
+              "linkAllVideoPlayers": false,
+              "videoPlayers": [
+                {
+                  "entity": 514,
+                  "customName": ""
+                }
+              ]
+            },
+            "smartItemsControl": {
+              "isEnabled": true,
+              "linkAllSmartItems": false,
+              "smartItems": []
+            },
+            "rewardsControl": {
+              "isEnabled": true,
+              "rewardItems": []
+            }
+          }
+        }
+      }
+    },
+    {
       "name": "inspector::TransformConfig",
       "jsonSchema": {
         "type": "object",
@@ -960,8 +1509,198 @@
         "serializationType": "map"
       },
       "data": {
+        "514": {
+          "json": {}
+        },
         "515": {
           "json": {}
+        },
+        "516": {
+          "json": {}
+        }
+      }
+    },
+    {
+      "name": "inspector::Config",
+      "jsonSchema": {
+        "type": "object",
+        "properties": {
+          "isBasicViewEnabled": {
+            "type": "boolean",
+            "serializationType": "boolean"
+          },
+          "componentName": {
+            "type": "string",
+            "serializationType": "utf8-string"
+          },
+          "fields": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "serializationType": "utf8-string"
+                },
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "core::Animator",
+                    "core::AudioSource",
+                    "core::AudioStream",
+                    "core::AvatarAttach",
+                    "core::GltfContainer",
+                    "core-schema::Network-Entity",
+                    "core::Material",
+                    "core::MeshCollider",
+                    "core::MeshRenderer",
+                    "core::NftShape",
+                    "core::PointerEvents",
+                    "core-schema::Sync-Components",
+                    "core::TextShape",
+                    "core::Transform",
+                    "core::Tween",
+                    "core::TweenSequence",
+                    "core::VideoPlayer",
+                    "core::VisibilityComponent",
+                    "inspector::Selection",
+                    "inspector::SceneMetadata",
+                    "inspector::Nodes",
+                    "asset-packs::ActionTypes",
+                    "ActionTypes",
+                    "asset-packs::Actions",
+                    "Actions",
+                    "asset-packs::Counter",
+                    "Counter",
+                    "asset-packs::CounterBar",
+                    "CounterBar",
+                    "asset-packs::Triggers",
+                    "Triggers",
+                    "asset-packs::States",
+                    "States",
+                    "inspector::TransformConfig",
+                    "inspector::Hide",
+                    "inspector::Lock",
+                    "inspector::Config",
+                    "inspector::Ground",
+                    "inspector::Tile",
+                    "inspector::CustomAsset",
+                    "asset-packs::AdminTools",
+                    "AdminTools",
+                    "asset-packs::Rewards",
+                    "Rewards",
+                    "asset-packs::VideoScreen",
+                    "VideoScreen"
+                  ],
+                  "default": "asset-packs::Actions",
+                  "serializationType": "enum-string",
+                  "enumObject": {
+                    "ANIMATOR": "core::Animator",
+                    "AUDIO_SOURCE": "core::AudioSource",
+                    "AUDIO_STREAM": "core::AudioStream",
+                    "AVATAR_ATTACH": "core::AvatarAttach",
+                    "GLTF_CONTAINER": "core::GltfContainer",
+                    "NETWORK_ENTITY": "core-schema::Network-Entity",
+                    "MATERIAL": "core::Material",
+                    "MESH_COLLIDER": "core::MeshCollider",
+                    "MESH_RENDERER": "core::MeshRenderer",
+                    "NFT_SHAPE": "core::NftShape",
+                    "POINTER_EVENTS": "core::PointerEvents",
+                    "SYNC_COMPONENTS": "core-schema::Sync-Components",
+                    "TEXT_SHAPE": "core::TextShape",
+                    "TRANSFORM": "core::Transform",
+                    "TWEEN": "core::Tween",
+                    "TWEEN_SEQUENCE": "core::TweenSequence",
+                    "VIDEO_PLAYER": "core::VideoPlayer",
+                    "VISIBILITY_COMPONENT": "core::VisibilityComponent",
+                    "Selection": "inspector::Selection",
+                    "Scene": "inspector::SceneMetadata",
+                    "Nodes": "inspector::Nodes",
+                    "ActionTypes": "asset-packs::ActionTypes",
+                    "asset-packs::ActionTypes": "ActionTypes",
+                    "Actions": "asset-packs::Actions",
+                    "asset-packs::Actions": "Actions",
+                    "Counter": "asset-packs::Counter",
+                    "asset-packs::Counter": "Counter",
+                    "CounterBar": "asset-packs::CounterBar",
+                    "asset-packs::CounterBar": "CounterBar",
+                    "Triggers": "asset-packs::Triggers",
+                    "asset-packs::Triggers": "Triggers",
+                    "States": "asset-packs::States",
+                    "asset-packs::States": "States",
+                    "TransformConfig": "inspector::TransformConfig",
+                    "Hide": "inspector::Hide",
+                    "Lock": "inspector::Lock",
+                    "Config": "inspector::Config",
+                    "Ground": "inspector::Ground",
+                    "Tile": "inspector::Tile",
+                    "CustomAsset": "inspector::CustomAsset",
+                    "AdminTools": "asset-packs::AdminTools",
+                    "asset-packs::AdminTools": "AdminTools",
+                    "Rewards": "asset-packs::Rewards",
+                    "asset-packs::Rewards": "Rewards",
+                    "VideoScreen": "asset-packs::VideoScreen",
+                    "asset-packs::VideoScreen": "VideoScreen"
+                  }
+                },
+                "layout": {
+                  "type": "string",
+                  "serializationType": "optional",
+                  "optionalJsonSchema": {
+                    "type": "string",
+                    "serializationType": "utf8-string"
+                  }
+                },
+                "basicViewId": {
+                  "type": "string",
+                  "serializationType": "optional",
+                  "optionalJsonSchema": {
+                    "type": "string",
+                    "serializationType": "utf8-string"
+                  }
+                }
+              },
+              "serializationType": "map"
+            },
+            "serializationType": "array"
+          },
+          "assetId": {
+            "type": "string",
+            "serializationType": "optional",
+            "optionalJsonSchema": {
+              "type": "string",
+              "serializationType": "utf8-string"
+            }
+          }
+        },
+        "serializationType": "map"
+      },
+      "data": {
+        "514": {
+          "json": {
+            "isBasicViewEnabled": true,
+            "componentName": "Video Screen",
+            "fields": [
+              {
+                "name": "Config",
+                "type": "asset-packs::VideoScreen"
+              }
+            ],
+            "assetId": "dc5ec17b-aa1a-4bd0-bace-7d615d9bdc71"
+          }
+        },
+        "516": {
+          "json": {
+            "isBasicViewEnabled": true,
+            "componentName": "Admin Tools",
+            "fields": [
+              {
+                "name": "Controls",
+                "type": "asset-packs::AdminTools"
+              }
+            ],
+            "assetId": "0c419cb9-bc21-4c51-977f-41a505a097f0"
+          }
         }
       }
     },
