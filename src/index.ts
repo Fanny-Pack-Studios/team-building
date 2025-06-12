@@ -42,29 +42,84 @@ export function main(): void {
     function () {
       console.log('clicked entity')
       createPollUi()
-      // createQuestionUi('question?')
     }
   )
 }
 function createPollUi(): void {
   ReactEcsRenderer.setUiRenderer(ui.render)
   let prevent = 1
-  const prompt = ui.createComponent(ui.FillInPrompt, {
-    title: 'Create a yes or not poll just to test',
-    onAccept: (value: string) => {
-      console.log('accepted vaslue:', value, prevent)
-      if (prevent >= 2) {
-        prompt.hide()
-        createPollEntity(value)
-      }
-      prevent++
-      // createPollEntity(value)
+  let answers: string[] = []
+  let questionTitle: string = "Question title"
+  let pollUiHeight = 500;
+  let yPosition = pollUiHeight / 2.0;
+
+  const createPollPrompt = ui.createComponent(ui.CustomPrompt, {
+    style: ui.PromptStyles.DARKSLANTED,
+    width: 500,
+    height: pollUiHeight
+  })
+
+  createPollPrompt.addText({
+    value: 'Create a poll',
+    size: 30,
+    yPosition: yPosition,
+    xPosition: -70
+  })
+
+  yPosition -= 50;
+  let questionTitleLabel = createPollPrompt.addText({
+    value: 'Question Title',
+    size: 15,
+    yPosition: yPosition,
+    xPosition: -150
+  })
+
+  yPosition -= 50;
+  let questionTitlePrompt = createPollPrompt.addTextBox({
+    yPosition: yPosition,
+    placeholder: 'Question Title',
+    xPosition: 0,
+    onChange: (value: string) => {
+      questionTitle = value
     }
   })
 
-  prompt.show()
+  yPosition -= 15;
+  let answerPromptLabel = createPollPrompt.addText({
+    value: 'Options',
+    size: 15,
+    yPosition: yPosition,
+    xPosition: -150
+  })
+
+  for (let i = 0; i < 3; i++) {
+    yPosition -= 50;
+    let answerPromptInput = createPollPrompt.addTextBox({
+      yPosition: yPosition,
+      placeholder: 'Option ' + (i + 1),
+      xPosition: 0,
+      onChange: (value: string) => {
+        answers[i] = value
+      }
+    })
+  }
+
+  yPosition -= 100;
+  createPollPrompt.addButton({
+    style: ui.ButtonStyles.F,
+    text: 'Create',
+    yPosition: yPosition,
+    xPosition: 0,
+    onMouseDown: () => {
+      createPollEntity(questionTitle, answers)
+      createPollPrompt.hide()
+    }
+  })
+
+  createPollPrompt.show()
 }
-function createPollEntity(pollQuestion: string): void {
+
+function createPollEntity(pollQuestion: string, answers: string[]): void {
   const pollEntity = engine.addEntity()
   Transform.create(pollEntity, { position: Vector3.create(18.85, 0.88, 20.49), scale: Vector3.create(3, 3, 3) })
   TextShape.create(pollEntity, {
@@ -85,7 +140,7 @@ function createPollEntity(pollQuestion: string): void {
     },
     function () {
       console.log('clicked entity')
-      createQuestionUi(pollQuestion)
+      createQuestionUi(pollQuestion, answers)
     }
   )
 }
@@ -94,27 +149,21 @@ function createQuestionUi(pollQuestion: string, options: string[] = ['Yeah', 'No
   const promptHeader = prompt.addText({
     value: pollQuestion,
     size: 30,
-    yPosition: 170
+    yPosition: 170,
+    xPosition: -100
   })
 
-  // Dynamically generate one button per answer option
-  const buttonSpacing = 250 // distance between buttons on X axis
-  const startX = -((options.length - 1) / 2) * buttonSpacing // center buttons
+  const buttonSpacing = 50
+  const startY = -((options.length - 1) / 2) * buttonSpacing
 
   options.forEach((option, index) => {
-    const style = index % 2 === 0 ? ui.ButtonStyles.E : ui.ButtonStyles.F
     const promptButton = prompt.addButton({
-      style,
       text: option,
-      buttonSize: 'auto',
-      xPosition: startX + index * buttonSpacing,
+      yPosition: startY + index * buttonSpacing,
       onMouseDown: () => {
-        console.log(`${option} pressed`)
+        prompt.hide()
       }
     })
-
-    // keep reference to avoid linter complaints of unused vars if needed
-    console.log('button created', promptButton)
   })
 
   prompt.show()
