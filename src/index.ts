@@ -14,6 +14,7 @@ import { ReactEcsRenderer } from '@dcl/sdk/react-ecs'
 import * as ui from 'dcl-ui-toolkit'
 import { PromptButton } from 'dcl-ui-toolkit/dist/ui-entities/prompts/Prompt/components/Button'
 export function main(): void {
+  ReactEcsRenderer.setUiRenderer(ui.render)
   const myEntity = engine.addEntity()
   MeshRenderer.setBox(myEntity)
   MeshCollider.setBox(myEntity)
@@ -47,7 +48,6 @@ export function main(): void {
   )
 }
 function createPollUi(): void {
-  ReactEcsRenderer.setUiRenderer(ui.render)
   let prevent = 1
   let answers: string[] = []
   let questionTitle: string = "Question title"
