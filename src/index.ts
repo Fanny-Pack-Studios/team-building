@@ -12,6 +12,7 @@ import {
 import { Color4, Vector3 } from '@dcl/sdk/math'
 import { ReactEcsRenderer } from '@dcl/sdk/react-ecs'
 import * as ui from 'dcl-ui-toolkit'
+import { PromptButton } from 'dcl-ui-toolkit/dist/ui-entities/prompts/Prompt/components/Button'
 export function main(): void {
   const myEntity = engine.addEntity()
   MeshRenderer.setBox(myEntity)
@@ -52,12 +53,46 @@ function createPollUi(): void {
   let questionTitle: string = "Question title"
   let pollUiHeight = 500;
   let yPosition = pollUiHeight / 2.0;
+  let answerPrompts: { text: string, answerPromptInput: PromptButton,  deleteButton: { hide: () => void } }[] = []
+  let initialAnswerY = 0;
 
   const createPollPrompt = ui.createComponent(ui.CustomPrompt, {
     style: ui.PromptStyles.DARKSLANTED,
     width: 500,
     height: pollUiHeight
   })
+
+  const addAnswerPrompt = (answer: string, addDeleteButton: boolean) => {
+    let i = answerPrompts.length;
+    let buttonYPosition = initialAnswerY - i * 50;
+    let answerPromptInput = createPollPrompt.addTextBox({
+      yPosition: buttonYPosition,
+      placeholder: 'Option ' + (i + 1),
+      xPosition: 0,
+      onChange: (value: string) => {
+        answers[i] = value
+      }
+    })
+    let button = createPollPrompt.addButton({
+      style: ui.ButtonStyles.RED,
+      text: 'x',
+      yPosition: buttonYPosition - 20,
+      xPosition: 150,
+      onMouseDown: () => {}
+    })
+    button.onMouseDown = () => {
+      answerPrompts.pop()
+      answerPromptInput.hide()
+      button.hide()
+      if(answerPrompts.length > 1) {
+        answerPrompts[answerPrompts.length - 1].deleteButton.show()
+      }
+    }
+    answerPrompts.push({"text": answer, "answerPromptInput": answerPromptInput, "deleteButton": button })
+    if(answerPrompts.length > 1) {
+      answerPrompts[answerPrompts.length - 2].deleteButton.hide()
+    }
+  }
 
   createPollPrompt.addText({
     value: 'Create a poll',
@@ -92,26 +127,29 @@ function createPollUi(): void {
     xPosition: -150
   })
 
-  for (let i = 0; i < 3; i++) {
-    yPosition -= 50;
-    let answerPromptInput = createPollPrompt.addTextBox({
-      yPosition: yPosition,
-      placeholder: 'Option ' + (i + 1),
-      xPosition: 0,
-      onChange: (value: string) => {
-        answers[i] = value
-      }
-    })
+  initialAnswerY = yPosition - 50;
+  for (let i = 0; i < 2; i++) {
+    addAnswerPrompt('Option ' + (i + 1), false)
   }
 
-  yPosition -= 100;
+  yPosition -= 350;
+  createPollPrompt.addButton({
+    style: ui.ButtonStyles.DARK,
+    text: 'Add answer',
+    yPosition: yPosition,
+    xPosition: -100,
+    onMouseDown: () => {
+      addAnswerPrompt('', true)
+    }
+  })
+
   createPollPrompt.addButton({
     style: ui.ButtonStyles.F,
     text: 'Create',
     yPosition: yPosition,
-    xPosition: 0,
+    xPosition: 100,
     onMouseDown: () => {
-      createPollEntity(questionTitle, answers)
+      createPollEntity(questionTitle, answers.slice(0, answerPrompts.length))
       createPollPrompt.hide()
     }
   })
@@ -154,12 +192,12 @@ function createQuestionUi(pollQuestion: string, options: string[] = ['Yeah', 'No
   })
 
   const buttonSpacing = 50
-  const startY = -((options.length - 1) / 2) * buttonSpacing
+  const startY = ((options.length - 1) / 2) * buttonSpacing
 
   options.forEach((option, index) => {
     const promptButton = prompt.addButton({
       text: option,
-      yPosition: startY + index * buttonSpacing,
+      yPosition: startY - index * buttonSpacing,
       onMouseDown: () => {
         prompt.hide()
       }
