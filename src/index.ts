@@ -1,35 +1,53 @@
 import {
+  Entity,
+  EntityUtils,
   Font,
   InputAction,
   Material,
   MeshCollider,
   MeshRenderer,
+  PointerEventType,
+  PointerEvents,
+  Schemas,
   TextShape,
   Transform,
   engine,
+  inputSystem,
   pointerEventsSystem
 } from '@dcl/sdk/ecs'
 import { Color4, Vector3 } from '@dcl/sdk/math'
 import { ReactEcsRenderer } from '@dcl/sdk/react-ecs'
 import * as ui from 'dcl-ui-toolkit'
+import { syncEntity } from '@dcl/sdk/network'
 import { PromptButton } from 'dcl-ui-toolkit/dist/ui-entities/prompts/Prompt/components/Button'
+
+const PollState = engine.defineComponent('pollState', {
+  question: Schemas.String,
+  options: Schemas.Array(Schemas.String),
+})
+
 export function main(): void {
   ReactEcsRenderer.setUiRenderer(ui.render)
+
+  engine.addSystem(() => {
+    const result = inputSystem.getInputCommand(
+      InputAction.IA_PRIMARY,
+      PointerEventType.PET_DOWN
+    )
+    if (result) {
+      if (result.hit?.entityId) {
+        let pollState = PollState.getOrNull(result.hit.entityId)
+        if (pollState) {
+          createQuestionUi(pollState.question, pollState.options)
+        }
+      }
+    }
+  })
+
   const myEntity = engine.addEntity()
   MeshRenderer.setBox(myEntity)
   MeshCollider.setBox(myEntity)
   Transform.create(myEntity, { position: Vector3.create(8, 1, 8) })
-  // PointerEvents.create(myEntity, {
-  //   pointerEvents: [
-  //     {
-  //       eventType: PointerEventType.PET_DOWN,
-  //       eventInfo: {
-  //         button: InputAction.IA_PRIMARY,
-  //         showFeedback: false
-  //       }
-  //     }
-  //   ]
-  // })
 
   // engine.addSystem(() => {
   //   if (inputSystem.isTriggered(InputAction.IA_POINTER, PointerEventType.PET_DOWN, myEntity)) {
@@ -171,17 +189,33 @@ function createPollEntity(pollQuestion: string, answers: string[]): void {
   Material.setPbrMaterial(pollEntity, {
     albedoColor: Color4.Green()
   })
-  pointerEventsSystem.onPointerDown(
-    {
-      entity: pollEntity,
-      opts: { button: InputAction.IA_PRIMARY, hoverText: 'Im a Poll click to vote' }
-    },
-    function () {
-      console.log('clicked entity')
-      createQuestionUi(pollQuestion, answers)
-    }
-  )
+  PollState.create(pollEntity, { question: pollQuestion, options: answers })
+
+  // pointerEventsSystem.onPointerDown(
+  //   {
+  //     entity: pollEntity,
+  //     opts: { button: InputAction.IA_PRIMARY, hoverText: 'Im a Poll click to vote' }
+  //   },
+  //   function () {
+  //     console.log('clicked entity')
+  //     createQuestionUi(pollQuestion, answers)
+  //   }
+  // )
+
+  PointerEvents.create(pollEntity, {
+    pointerEvents: [
+      {
+        eventType: PointerEventType.PET_DOWN,
+        eventInfo: {
+          button: InputAction.IA_PRIMARY,
+        }
+      }
+    ]
+  })
+
+  syncEntity(pollEntity, [PointerEvents.componentId, Transform.componentId, TextShape.componentId, MeshCollider.componentId])
 }
+
 function createQuestionUi(pollQuestion: string, options: string[] = ['Yeah', 'Nope']): void {
   const prompt = ui.createComponent(ui.CustomPrompt, { style: ui.PromptStyles.DARKSLANTED })
   const promptHeader = prompt.addText({
@@ -206,6 +240,5 @@ function createQuestionUi(pollQuestion: string, options: string[] = ['Yeah', 'No
 
   prompt.show()
 
-  // prevent linter warnings for unused variables
-  console.log('hotfix linter issue', promptHeader)
+  console.log("Prompt: ", prompt)
 }
