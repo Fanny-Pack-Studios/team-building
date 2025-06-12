@@ -20,6 +20,7 @@ import { ReactEcsRenderer } from '@dcl/sdk/react-ecs'
 import * as ui from 'dcl-ui-toolkit'
 import { syncEntity } from '@dcl/sdk/network'
 import { PromptButton } from 'dcl-ui-toolkit/dist/ui-entities/prompts/Prompt/components/Button'
+import { PromptInput } from 'dcl-ui-toolkit/dist/ui-entities/prompts/Prompt/components/Input'
 
 const PollState = engine.defineComponent('pollState', {
   question: Schemas.String,
@@ -36,7 +37,7 @@ export function main(): void {
     )
     if (result) {
       if (result.hit?.entityId) {
-        let pollState = PollState.getOrNull(result.hit.entityId)
+        let pollState = PollState.getOrNull(EntityUtils.toEntityId(result.hit.entityId, 0))
         if (pollState) {
           createQuestionUi(pollState.question, pollState.options)
         }
@@ -71,7 +72,7 @@ function createPollUi(): void {
   let questionTitle: string = "Question title"
   let pollUiHeight = 500;
   let yPosition = pollUiHeight / 2.0;
-  let answerPrompts: { text: string, answerPromptInput: PromptButton,  deleteButton: { hide: () => void } }[] = []
+  let answerPrompts: { text: string, answerPromptInput: PromptInput,  deleteButton: PromptButton }[] = []
   let initialAnswerY = 0;
 
   const createPollPrompt = ui.createComponent(ui.CustomPrompt, {
