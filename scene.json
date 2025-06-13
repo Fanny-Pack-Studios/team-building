@@ -74,10 +74,7 @@
     "portableExperiences": "enabled"
   },
   "worldConfiguration": {
-    "name": "thecodingcave.dcl.eth",
-    "placesConfig": {
-      "optOut": true
-    }
+    "name": "thecodingcave.dcl.eth"
   },
   "source": {
     "origin": "creator-hub",
