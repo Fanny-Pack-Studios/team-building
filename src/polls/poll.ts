@@ -2,7 +2,7 @@ import { engine, inputSystem, InputAction, PointerEventType, EntityUtils, MeshRe
 import { createPollAdminUi } from "./pollAdminUi"
 import { PollState } from "./pollEntity"
 import { Vector3 } from "@dcl/sdk/math"
-import { createPollQuestionUi } from "./pollQuestionUi"
+import { triggerPollQuestion } from "./pollQuestionUi"
 
 // This is the entrance point to setup the polls
 
@@ -11,9 +11,10 @@ export function addPollsSystem() {
   engine.addSystem(() => {
     const result = inputSystem.getInputCommand(InputAction.IA_PRIMARY, PointerEventType.PET_DOWN)
     if (result?.hit?.entityId) {
-      let pollState = PollState.getOrNull(EntityUtils.toEntityId(result.hit.entityId, 0))
+      let entity = EntityUtils.toEntityId(result.hit.entityId, 0)
+      let pollState = PollState.getOrNull(entity)
       if (pollState) {
-        createPollQuestionUi(pollState.question, pollState.options)
+        triggerPollQuestion(entity)
       }
     }
   })
