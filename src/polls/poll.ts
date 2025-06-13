@@ -1,13 +1,15 @@
-import { engine, inputSystem, InputAction, PointerEventType, EntityUtils, MeshRenderer, MeshCollider, Transform, pointerEventsSystem } from "@dcl/sdk/ecs"
+import { engine, inputSystem, InputAction, PointerEventType, EntityUtils, MeshRenderer, MeshCollider, Transform, pointerEventsSystem, IEngine, TextShape, Entity } from "@dcl/sdk/ecs"
 import { createPollAdminUi } from "./pollAdminUi"
-import { PollState } from "./pollEntity"
+import { onChangePollState, PollState } from "./pollEntity"
 import { Vector3 } from "@dcl/sdk/math"
 import { triggerPollQuestion } from "./pollQuestionUi"
 
 // This is the entrance point to setup the polls
 
-// Handles interactions with the poll entities
+const registeredPollEntities = new Set<Entity>()
+
 export function addPollsSystem() {
+  // Process poll clicks
   engine.addSystem(() => {
     const result = inputSystem.getInputCommand(InputAction.IA_PRIMARY, PointerEventType.PET_DOWN)
     if (result?.hit?.entityId) {
@@ -18,6 +20,24 @@ export function addPollsSystem() {
       }
     }
   })
+
+  // Add a system that registers onChange handlers for new poll entities
+  engine.addSystem(registerPollHandlersSystem)
+}
+
+function registerPollHandlersSystem() {
+  const allPollEntities = engine.getEntitiesWith(PollState)
+  for (const [entity] of allPollEntities) {
+    if (registeredPollEntities.has(entity)) continue
+    
+    registeredPollEntities.add(entity)
+    
+    PollState.onChange(entity, (pollState) => onChangePollState(pollState, entity))
+    
+    // Also run the handler once immediately to set the initial text
+    const pollState = PollState.get(entity)
+    onChangePollState(pollState, entity)
+  }
 }
 
 // Spawns a poll creator, which on interacted opens the admin UI to create polls
