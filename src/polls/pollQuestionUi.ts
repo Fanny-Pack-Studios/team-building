@@ -1,12 +1,26 @@
 import * as ui from 'dcl-ui-toolkit'
 import { PollState } from './pollEntity'
-import { Entity } from '@dcl/sdk/ecs'
+import { Entity, engine, Transform } from '@dcl/sdk/ecs'
+import { getPlayer } from '@dcl/sdk/src/players'
 
 export function triggerPollQuestion(entity: Entity) {
-    let pollState = PollState.getOrNull(entity)
-    if(pollState){
+    const pollState = PollState.getOrNull(entity)
+    if (pollState) {
         createPollQuestionUi(pollState.question, pollState.options, (option: string) => {
-            PollState.getMutable(entity).answers.push(option)
+            const mutablePoll = PollState.getMutable(entity)
+
+            const userId = getPlayer()!.userId;
+            
+            const existingVoteIndex = mutablePoll.votes.findIndex(vote => vote.userId === userId)
+            
+            if (existingVoteIndex >= 0) {
+                mutablePoll.votes[existingVoteIndex].option = option
+            } else {
+                mutablePoll.votes.push({
+                    userId: userId,
+                    option: option
+                })
+            }
         })
     }
 }

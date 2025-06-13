@@ -4,10 +4,18 @@ import { syncEntity } from "@dcl/sdk/network"
 
 // In world interactable poll
 
+type Vote = {
+  userId: string
+  option: string
+}
+
 export const PollState = engine.defineComponent('pollState', {
   question: Schemas.String,
   options: Schemas.Array(Schemas.String),
-  answers: Schemas.Array(Schemas.String)
+  votes: Schemas.Array(Schemas.Map({
+    userId: Schemas.String,
+    option: Schemas.String
+  }))
 })
 
 export function createPollEntity(question: string, options: string[]): Entity {
@@ -25,12 +33,13 @@ export function createPollEntity(question: string, options: string[]): Entity {
       albedoColor: Color4.fromColor3(Color3.Blue(), 0.3)
     })
 
-    PollState.create(pollEntity, { question, options, answers: [] })
+    PollState.create(pollEntity, { question, options, votes: [] })
     PollState.onChange(pollEntity, (pollState) => {
-      // Update the text of the poll based on the amount of occurrences of each answer
-      const optionLines = pollState ? pollState.options.map(opt => {
-        const count = pollState.answers.filter(a => a === opt).length
-        const total = pollState.answers.length || 1 // avoid div by 0
+
+      const optionLines = pollState ? pollState.options.map((opt: string) => {
+
+        const count = pollState.votes.filter(vote => vote.option === opt).length
+        const total = pollState.votes.length || 1
         const percent = Math.round((count / total) * 100)
         return `${opt}: ${percent}% (${count})`
       }) : []
