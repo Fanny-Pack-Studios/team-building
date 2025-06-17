@@ -12,12 +12,12 @@ export function addPollsSystem() {
   // Process poll clicks
   engine.addSystem(() => {
     const result = inputSystem.getInputCommand(InputAction.IA_PRIMARY, PointerEventType.PET_DOWN)
-    if (result?.hit?.entityId) {
-      let entity = EntityUtils.toEntityId(result.hit.entityId, 0)
-      let pollState = PollState.getOrNull(entity)
-      if (pollState) {
-        triggerPollQuestion(entity)
-      }
+    if (result?.hit?.entityId !== undefined) {
+      Array.from(engine.getEntitiesWith(PollState)).forEach(([entity]) => {
+        if (entity === result?.hit?.entityId) {
+          triggerPollQuestion(entity)
+        }
+      })
     }
   })
 
