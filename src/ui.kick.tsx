@@ -1,6 +1,6 @@
-import { movePlayerTo } from '~system/RestrictedActions'
+ import { movePlayerTo } from '~system/RestrictedActions'
 import { type UIController } from './ui.controller'
-import ReactEcs, { UiEntity } from '@dcl/sdk/react-ecs'
+import ReactEcs, { UiEntity } from '@dcl/sdk/react-ecs' 
 import { Vector3 } from '@dcl/sdk/math'
 import * as ui from 'dcl-ui-toolkit'
 import { getPlayer } from '@dcl/sdk/src/players'
@@ -20,7 +20,8 @@ export class KickUI {
       }
     })
 
-    // this.testUI.show()
+    this.kickPlayers()
+    this.testUI.show()
   }
 
   openKickUI(): void {
@@ -30,7 +31,8 @@ export class KickUI {
   kickPlayers(): void {
     const player = getPlayer()
     for (const bannedId of this.banned_players_list) {
-      if (bannedId === player?.userId) {
+      if (bannedId === player?.userId.toLowerCase()) {
+        console.log('player kicked')
         void movePlayerTo({
           newRelativePosition: Vector3.create(0, 0, 0)
         })
@@ -39,7 +41,8 @@ export class KickUI {
   }
 
   addPlayerToBanList(playerId: string): void {
-    this.banned_players_list.push(playerId)
+    this.banned_players_list.push(playerId.toLowerCase())
+    console.log('banned list',this.banned_players_list)
     this.kickPlayers()
   }
 
