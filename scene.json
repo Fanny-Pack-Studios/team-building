@@ -76,6 +76,10 @@
   "worldConfiguration": {
     "name": "thecodingcave.dcl.eth"
   },
+	"requiredPermissions": [
+		"ALLOW_TO_TRIGGER_AVATAR_EMOTE",
+		"ALLOW_TO_MOVE_PLAYER_INSIDE_SCENE"
+	],
   "source": {
     "origin": "creator-hub",
     "projectId": "f12d9cd6-b095-4fd1-896d-b329d277a3c3"
