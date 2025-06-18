@@ -4,7 +4,7 @@ import ReactEcs, { Label, UiEntity } from '@dcl/sdk/react-ecs'
 import { Color4, Vector3 } from '@dcl/sdk/math'
 import * as ui from 'dcl-ui-toolkit'
 import { getPlayer } from '@dcl/sdk/src/players'
-import { engine, Schemas } from '@dcl/sdk/ecs'
+import { engine, InputAction, inputSystem, MeshCollider, PointerEventType, Schemas, Transform } from '@dcl/sdk/ecs'
 import { syncEntity } from '@dcl/sdk/network'
 import { SyncEntityEnumId } from './syncEntities'
 
@@ -17,6 +17,10 @@ export class KickUI {
   public uiController: UIController
   public testUI: ui.FillInPrompt
   public bannedEntity = engine.addEntity()
+  public collidersJailStructureN = engine.addEntity()
+  public collidersJailStructureW = engine.addEntity()
+  public collidersJailStructureE = engine.addEntity()
+  public collidersJailStructureS = engine.addEntity()
 
   constructor(uiController: UIController) {
     this.uiController = uiController
@@ -31,12 +35,62 @@ export class KickUI {
     engine.addSystem(() => {
       this.kickPlayers()
     })
+    engine.addSystem(() => {
+      const cmd = inputSystem.getInputCommand(InputAction.IA_ACTION_3, PointerEventType.PET_DOWN)
+      if (cmd != null) {
+        this.openKickUI()
+      }
+    })
+    this.createCollidersJail()
+  }
 
-    this.testUI.show()
+  createCollidersJail(): void {
+    // Size
+    const boxWidth = 2
+    const boxLength = 2
+    const wallHeight = 5
+    const wallThickness = 0.2
+
+    // Center
+    const center = Vector3.create(10.07, 1, 10.58) // Ajustá según tu escena
+
+    // North
+    Transform.create(this.collidersJailStructureN, {
+      position: Vector3.create(center.x, wallHeight / 2, center.z - boxLength / 2),
+      scale: Vector3.create(boxWidth, wallHeight, wallThickness)
+    })
+
+    // South
+    Transform.create(this.collidersJailStructureS, {
+      position: Vector3.create(center.x, wallHeight / 2, center.z + boxLength / 2),
+      scale: Vector3.create(boxWidth, wallHeight, wallThickness)
+    })
+
+    // East
+    Transform.create(this.collidersJailStructureE, {
+      position: Vector3.create(center.x + boxWidth / 2, wallHeight / 2, center.z),
+      scale: Vector3.create(wallThickness, wallHeight, boxLength)
+    })
+
+    // West
+    Transform.create(this.collidersJailStructureW, {
+      position: Vector3.create(center.x - boxWidth / 2, wallHeight / 2, center.z),
+      scale: Vector3.create(wallThickness, wallHeight, boxLength)
+    })
+
+    // Hide Jail - Uncomment to make it visible
+    // MeshRenderer.setBox(this.collidersJailStructureN)
+    // MeshRenderer.setBox(this.collidersJailStructureS)
+    // MeshRenderer.setBox(this.collidersJailStructureW)
+    // MeshRenderer.setBox(this.collidersJailStructureE)
+    MeshCollider.setBox(this.collidersJailStructureN)
+    MeshCollider.setBox(this.collidersJailStructureS)
+    MeshCollider.setBox(this.collidersJailStructureW)
+    MeshCollider.setBox(this.collidersJailStructureE)
   }
 
   openKickUI(): void {
-    this.isVisible = true
+    this.testUI.show()
   }
 
   kickPlayers(): void {
@@ -45,7 +99,7 @@ export class KickUI {
       if (bannedId === player?.userId.toLowerCase()) {
         console.log('player kicked')
         void movePlayerTo({
-          newRelativePosition: Vector3.create(0, 0, 0)
+          newRelativePosition: Vector3.create(10.07, 1, 10.58)
         })
         this.isVisible = true
       }
@@ -64,11 +118,12 @@ export class KickUI {
       <UiEntity
         uiTransform={{
           flexDirection: 'row',
-          width: '100%',
-          height: '100%',
+          width: this.uiController.canvasInfo.width,
+          height: this.uiController.canvasInfo.height,
+          alignItems: 'center',
           justifyContent: 'center',
-          positionType: 'absolute',
-          position: { top: '0%', right: '0%' },
+          positionType: 'relative',
+          position: { bottom: '0%', left: '0%' },
           display: this.isVisible ? 'flex' : 'none'
         }}
         uiBackground={{
@@ -77,8 +132,10 @@ export class KickUI {
       >
         <Label
           uiTransform={{
-            positionType: 'absolute',
-            position: { left: '40%', bottom: '8%' }
+            positionType: 'relative',
+            width: this.uiController.canvasInfo.height * 0.5,
+            height: this.uiController.canvasInfo.height * 0.5,
+            position: { bottom: '0%', left: '0%' },
           }}
           value={'YOU HAVE BEEN EXPULSED FROM THE SCENE'}
           fontSize={30}
