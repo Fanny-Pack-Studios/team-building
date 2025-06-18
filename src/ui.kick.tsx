@@ -6,6 +6,7 @@ import * as ui from 'dcl-ui-toolkit'
 import { getPlayer } from '@dcl/sdk/src/players'
 import { engine, Schemas } from '@dcl/sdk/ecs'
 import { syncEntity } from '@dcl/sdk/network'
+import { SyncEntityEnumId } from './syncEntities'
 
 export const BannedComponent = engine.defineComponent('BannedComponent', {
   list: Schemas.Array(Schemas.String)
@@ -26,7 +27,7 @@ export class KickUI {
       }
     })
     BannedComponent.create(this.bannedEntity)
-    syncEntity(this.bannedEntity, [BannedComponent.componentId])
+    syncEntity(this.bannedEntity, [BannedComponent.componentId], SyncEntityEnumId.KICK)
     engine.addSystem(() => {
       this.kickPlayers()
     })
