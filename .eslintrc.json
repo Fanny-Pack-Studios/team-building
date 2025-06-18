@@ -10,6 +10,6 @@
     "rules": {
       "@typescript-eslint/consistent-type-definitions": ["error", "type"]
     },
-    "ignorePatterns": ["node_modules"]
+    "ignorePatterns": ["node_modules", "assets/scene/entity-names.ts"]
   }
   

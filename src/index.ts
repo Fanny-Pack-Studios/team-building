@@ -1,4 +1,10 @@
-// We define the empty imports so the auto-complete feature works as expected.
-import {} from '@dcl/sdk/math'
+import { ReactEcsRenderer } from '@dcl/sdk/react-ecs'
+import * as ui from 'dcl-ui-toolkit'
+import { addPollCreator, addPollsSystem } from './polls/poll'
 
-export function main(): void {}
+export function main(): void {
+  ReactEcsRenderer.setUiRenderer(ui.render)
+
+  addPollsSystem()
+  addPollCreator()
+}
