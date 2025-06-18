@@ -1,4 +1,4 @@
-import { engine, UiCanvasInformation } from '@dcl/sdk/ecs'
+import { engine, type PBUiCanvasInformation, UiCanvasInformation } from '@dcl/sdk/ecs'
 import ReactEcs, { UiEntity, type UiTransformProps } from '@dcl/sdk/react-ecs'
 
 function Canvas(props: {
@@ -24,3 +24,14 @@ function Canvas(props: {
 }
 
 export default Canvas
+
+export function getScaleFactor(): number {
+  const uiScaleFactor =
+    (Math.min(getCanvas().width, getCanvas().height) / 1080) * 1.4;
+  return uiScaleFactor;
+}
+
+function getCanvas(): PBUiCanvasInformation {
+  const canvasInfo = UiCanvasInformation.get(engine.RootEntity);
+  return canvasInfo;
+}

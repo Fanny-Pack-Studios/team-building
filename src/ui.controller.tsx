@@ -17,8 +17,8 @@ export class UIController {
     if (this.canvasInfo === null) return null
     return <UiEntity>
         <Canvas>
-          {this.kickUI.isVisible && this.kickUI.createBlackScreen()}
-          {this.kickUI.testUI.render()}
+          {this.kickUI.kickUiVisibility && this.kickUI.createKickUi()}
+          {this.kickUI.blackScreenVisibility && this.kickUI.createBlackScreen()}
         </Canvas>
     </UiEntity>
   }
