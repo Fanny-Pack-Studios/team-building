@@ -93,6 +93,7 @@ export function showPollResultsUI(pollId: string): void {
     y -= 30
   }
 
+  // 👇 Mostrar detalle solo si no es anónimo
   if (!pollState.anonymous) {
     y -= 20
     prompt.addText({
@@ -112,6 +113,15 @@ export function showPollResultsUI(pollId: string): void {
       })
       y -= 20
     }
+  } else {
+    y -= 20
+    prompt.addText({
+      value: 'This poll is anonymous. Voter identities are hidden.',
+      size: 14,
+      xPosition: -100,
+      yPosition: y
+    })
   }
+
   prompt.show()
 }

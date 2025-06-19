@@ -1,4 +1,3 @@
-
 import {
   engine,
   Transform,
@@ -63,7 +62,7 @@ export function createPollEntity(
 
   // Set up the poll state with initial data
 
-  PollState.create(pollEntity, { pollId, question, options, votes: [] })
+  PollState.create(pollEntity, { pollId, question, options, anonymous: isAnonymous, votes: [] })
   createShowResultsEntity(pollEntity, pollId)
   pollRegistry.set(pollId, pollEntity)
 
@@ -86,7 +85,6 @@ export function createPollEntity(
   ])
 
   return { entity: pollEntity, pollId }
-
 }
 
 export function onChangePollState(pollState: any, entity: Entity): void {
@@ -96,7 +94,6 @@ export function onChangePollState(pollState: any, entity: Entity): void {
   if (currentUserId === undefined) return
 
   const userVote = pollState.votes.find((vote: Vote) => vote.userId === currentUserId)?.option
-
 
   const optionLines = pollState.options.map((opt: string) => {
     const count = pollState.votes.filter((vote: Vote) => vote.option === opt).length
