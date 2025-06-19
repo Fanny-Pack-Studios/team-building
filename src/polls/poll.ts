@@ -1,10 +1,18 @@
-import { engine, inputSystem, InputAction, PointerEventType, MeshRenderer, MeshCollider, Transform, pointerEventsSystem, type Entity } from "@dcl/sdk/ecs"
-import { createPollAdminUi } from "./pollAdminUi"
-import { onChangePollState, PollState } from "./pollEntity"
-import { Vector3 } from "@dcl/sdk/math"
-import { triggerPollQuestion } from "./pollQuestionUi"
-
-// This is the entrance point to setup the polls
+import {
+  engine,
+  inputSystem,
+  InputAction,
+  PointerEventType,
+  MeshRenderer,
+  MeshCollider,
+  Transform,
+  pointerEventsSystem,
+  type Entity
+} from '@dcl/sdk/ecs'
+import { createPollAdminUi } from './pollAdminUi'
+import { onChangePollState, PollState } from './pollEntity'
+import { Vector3 } from '@dcl/sdk/math'
+import { triggerPollQuestion } from './pollQuestionUi'
 
 const registeredPollEntities = new Set<Entity>()
 
@@ -29,11 +37,13 @@ function registerPollHandlersSystem(): void {
   const allPollEntities = engine.getEntitiesWith(PollState)
   for (const [entity] of allPollEntities) {
     if (registeredPollEntities.has(entity)) continue
-    
+
     registeredPollEntities.add(entity)
-    
-    PollState.onChange(entity, (pollState) => { onChangePollState(pollState, entity); })
-    
+
+    PollState.onChange(entity, (pollState) => {
+      onChangePollState(pollState, entity)
+    })
+
     // Also run the handler once immediately to set the initial text
     const pollState = PollState.get(entity)
     onChangePollState(pollState, entity)

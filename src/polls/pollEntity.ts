@@ -15,6 +15,8 @@ import {
 import { Vector3, Color4, Color3 } from '@dcl/sdk/math'
 import { syncEntity } from '@dcl/sdk/network'
 import { getPlayer } from '@dcl/sdk/src/players'
+import { generatePollId } from '../utils'
+import { createShowResultsEntity } from './resultLink'
 
 type Vote = {
   userId: string
@@ -22,6 +24,7 @@ type Vote = {
 }
 
 export const PollState = engine.defineComponent('pollState', {
+  pollId: Schemas.String,
   question: Schemas.String,
   options: Schemas.Array(Schemas.String),
   anonymous: Schemas.Boolean,
@@ -32,11 +35,16 @@ export const PollState = engine.defineComponent('pollState', {
     })
   )
 })
-export let pol: Entity | null = null
 
-export function createPollEntity(question: string, options: string[], isAnonymous: boolean): Entity {
+export const pollRegistry = new Map<string, Entity>()
+export function createPollEntity(
+  question: string,
+  options: string[],
+  isAnonymous: boolean
+): { entity: Entity; pollId: string } {
   const pollEntity = engine.addEntity()
-  pol = pollEntity
+  const pollId = generatePollId()
+
   Transform.create(pollEntity, {
     position: Vector3.create(18.85 * Math.random(), 0.5 * options.length, 20.49 * Math.random()),
     scale: Vector3.create(3, 3, 3)
@@ -54,8 +62,9 @@ export function createPollEntity(question: string, options: string[], isAnonymou
   })
 
   // Set up the poll state with initial data
-  PollState.create(pollEntity, { question, options, votes: [] })
-
+  PollState.create(pollEntity, { pollId, question, options, votes: [] })
+  createShowResultsEntity(pollEntity, pollId)
+  pollRegistry.set(pollId, pollEntity)
   PointerEvents.create(pollEntity, {
     pointerEvents: [
       {
@@ -74,7 +83,7 @@ export function createPollEntity(question: string, options: string[], isAnonymou
     MeshCollider.componentId
   ])
 
-  return pollEntity
+  return { entity: pollEntity, pollId }
 }
 
 export function onChangePollState(pollState: any, entity: Entity): void {
