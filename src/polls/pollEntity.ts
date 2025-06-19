@@ -1,10 +1,20 @@
-import { engine, Transform, TextShape, Font, MeshCollider, Material, PointerEvents, PointerEventType, InputAction, Schemas, type Entity, MeshRenderer } from "@dcl/sdk/ecs"
-import { Vector3, Color4, Color3 } from "@dcl/sdk/math"
-import { syncEntity } from "@dcl/sdk/network"
+import {
+  engine,
+  Transform,
+  TextShape,
+  Font,
+  MeshCollider,
+  Material,
+  PointerEvents,
+  PointerEventType,
+  InputAction,
+  Schemas,
+  type Entity,
+  MeshRenderer
+} from '@dcl/sdk/ecs'
+import { Vector3, Color4, Color3 } from '@dcl/sdk/math'
+import { syncEntity } from '@dcl/sdk/network'
 import { getPlayer } from '@dcl/sdk/src/players'
-
-// In world interactable poll
-
 
 type Vote = {
   userId: string
@@ -14,14 +24,19 @@ type Vote = {
 export const PollState = engine.defineComponent('pollState', {
   question: Schemas.String,
   options: Schemas.Array(Schemas.String),
-  votes: Schemas.Array(Schemas.Map({
-    userId: Schemas.String,
-    option: Schemas.String
-  }))
+  anonymous: Schemas.Boolean,
+  votes: Schemas.Array(
+    Schemas.Map({
+      userId: Schemas.String,
+      option: Schemas.String
+    })
+  )
 })
+export let pol: Entity | null = null
 
-export function createPollEntity(question: string, options: string[]): Entity {
+export function createPollEntity(question: string, options: string[], isAnonymous: boolean): Entity {
   const pollEntity = engine.addEntity()
+  pol = pollEntity
   Transform.create(pollEntity, {
     position: Vector3.create(18.85 * Math.random(), 0.5 * options.length, 20.49 * Math.random()),
     scale: Vector3.create(3, 3, 3)
@@ -46,13 +61,18 @@ export function createPollEntity(question: string, options: string[]): Entity {
       {
         eventType: PointerEventType.PET_DOWN,
         eventInfo: {
-          button: InputAction.IA_PRIMARY,
+          button: InputAction.IA_PRIMARY
         }
       }
     ]
   })
 
-  syncEntity(pollEntity, [PollState.componentId, PointerEvents.componentId, Transform.componentId, MeshCollider.componentId])
+  syncEntity(pollEntity, [
+    PollState.componentId,
+    PointerEvents.componentId,
+    Transform.componentId,
+    MeshCollider.componentId
+  ])
 
   return pollEntity
 }
@@ -60,10 +80,10 @@ export function createPollEntity(question: string, options: string[]): Entity {
 export function onChangePollState(pollState: any, entity: Entity): void {
   if (pollState === null) return
 
-  const currentUserId = getPlayer()?.userId;
-  if(currentUserId === undefined) return;
+  const currentUserId = getPlayer()?.userId
+  if (currentUserId === undefined) return
 
-  const userVote = pollState.votes.find((vote: Vote) => vote.userId === currentUserId)?.option;
+  const userVote = pollState.votes.find((vote: Vote) => vote.userId === currentUserId)?.option
 
   const optionLines = pollState.options.map((opt: string) => {
     const count = pollState.votes.filter((vote: Vote) => vote.option === opt).length
