@@ -90,7 +90,6 @@ export class KickUI {
 
   kickPlayers(): void {
     const player = getPlayer()
-    console.log('my user name',player?.name)
     for (const bannedId of BannedComponent.get(this.bannedEntity).list) {
       if (bannedId === player?.userId.toLowerCase() || bannedId === player?.name.toLowerCase()) {
         console.log('player kicked')
@@ -98,6 +97,7 @@ export class KickUI {
           newRelativePosition: Vector3.create(10.07, 1, 10.58)
         })
         this.blackScreenVisibility = true
+        break
       }
     }
   }
