@@ -6,11 +6,11 @@ import { type PromptInput } from 'dcl-ui-toolkit/dist/ui-entities/prompts/Prompt
 
 // UI to create polls
 
-type AnswerPrompts = Array<{ answerPromptInput: PromptInput, deleteButton: PromptButton }>
+type AnswerPrompts = Array<{ answerPromptInput: PromptInput; deleteButton: PromptButton }>
 
 export function createPollAdminUi(): ui.CustomPrompt {
   const answers: string[] = []
-  let questionTitle: string = ""
+  let questionTitle: string = ''
 
   const pollUiHeight = 550
   let yPosition = pollUiHeight / 2.0
@@ -39,7 +39,6 @@ export function createPollAdminUi(): ui.CustomPrompt {
       answerPrompts[answerPrompts.length - 1].deleteButton.hide()
     }
 
-
     if (createButton !== null) {
       // Only enable the create button if we have a title and at least 2 answers
       const hasTitle = questionTitle.trim().length > 0
@@ -65,8 +64,8 @@ export function createPollAdminUi(): ui.CustomPrompt {
     }
     answers.pop()
     const answerPrompt = answerPrompts.pop()
-    if(answerPrompt === undefined) return;
-    const { answerPromptInput, deleteButton } = answerPrompt;
+    if (answerPrompt === undefined) return
+    const { answerPromptInput, deleteButton } = answerPrompt
     answerPromptInput.hide()
     deleteButton.hide()
     onAnswerPromptsChanged()
@@ -182,8 +181,7 @@ export function createPollAdminUi(): ui.CustomPrompt {
     yPosition,
     xPosition: 100,
     onMouseDown: () => {
-
-      createPollEntity(questionTitle, validAnswers())
+      createPollEntity(questionTitle, validAnswers(), isAnonymous)
       createPollPrompt.hide()
     }
   })
