@@ -23,9 +23,9 @@ export function createShowResultsEntity(parentEntity: Entity, pollId: string): E
 
   Transform.create(resultEntity, {
     position: Vector3.create(0, 0.5, 0),
-    scale: Vector3.create(0.5, 0.1, 0.1)
+    scale: Vector3.create(0.5, 0.1, 0.1),
+    parent: parentEntity
   })
-  Transform.getMutable(resultEntity).parent = parentEntity
 
   TextShape.create(resultEntity, {
     text: 'Show Results',
