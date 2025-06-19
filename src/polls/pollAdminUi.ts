@@ -6,11 +6,12 @@ import { type PromptInput } from 'dcl-ui-toolkit/dist/ui-entities/prompts/Prompt
 
 // UI to create polls
 
-type AnswerPrompts = Array<{ answerPromptInput: PromptInput; deleteButton: PromptButton }>
+type AnswerPrompts = Array<{ answerPromptInput: PromptInput, deleteButton: PromptButton }>
 
 export function createPollAdminUi(): ui.CustomPrompt {
   const answers: string[] = []
-  let questionTitle: string = ''
+  let questionTitle: string = ""
+
   const pollUiHeight = 550
   let yPosition = pollUiHeight / 2.0
   const answerPrompts: AnswerPrompts = []
@@ -19,7 +20,6 @@ export function createPollAdminUi(): ui.CustomPrompt {
   let createButton: PromptButton | null = null
   let isAnonymous: boolean = false
   const validAnswers: () => string[] = () => answers.filter((answer) => answer.trim() !== '')
-
   const onAnswerPromptsChanged: () => void = () => {
     if (addAnswerButton !== null) {
       // disable button to create new answers if there are 5 already (with the current sizes more than 5 do not fit)
@@ -39,12 +39,12 @@ export function createPollAdminUi(): ui.CustomPrompt {
       answerPrompts[answerPrompts.length - 1].deleteButton.hide()
     }
 
+
     if (createButton !== null) {
       // Only enable the create button if we have a title and at least 2 answers
       const hasTitle = questionTitle.trim().length > 0
 
       const validAnswerCount = validAnswers().length
-
       if (hasTitle && validAnswerCount >= 2) {
         createButton.enable()
       } else {
@@ -65,8 +65,8 @@ export function createPollAdminUi(): ui.CustomPrompt {
     }
     answers.pop()
     const answerPrompt = answerPrompts.pop()
-    if (answerPrompt === undefined) return
-    const { answerPromptInput, deleteButton } = answerPrompt
+    if(answerPrompt === undefined) return;
+    const { answerPromptInput, deleteButton } = answerPrompt;
     answerPromptInput.hide()
     deleteButton.hide()
     onAnswerPromptsChanged()
@@ -95,6 +95,7 @@ export function createPollAdminUi(): ui.CustomPrompt {
     })
 
     answerPrompts.push({ answerPromptInput, deleteButton: button })
+
     onAnswerPromptsChanged()
   }
 
@@ -158,6 +159,7 @@ export function createPollAdminUi(): ui.CustomPrompt {
   })
 
   yPosition -= 150
+
   addAnswerButton = createPollPrompt.addButton({
     style: ui.ButtonStyles.DARK,
     text: 'Add answer',
@@ -180,11 +182,11 @@ export function createPollAdminUi(): ui.CustomPrompt {
     yPosition,
     xPosition: 100,
     onMouseDown: () => {
-      createPollEntity(questionTitle, validAnswers(), isAnonymous)
+
+      createPollEntity(questionTitle, validAnswers())
       createPollPrompt.hide()
     }
   })
-
   // Initially disable the Create button until we have valid inputs
   createButton?.grayOut()
 

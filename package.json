@@ -12,7 +12,8 @@
     "lint": "eslint . --ext .ts,.tsx",
     "lint:fix": "eslint . --ext .ts,.tsx --fix",
     "format": "prettier --config .prettierrc -c ./**/*.{ts,tsx,js,jsx}",
-    "format:fix": "prettier --config .prettierrc -w ./**/*.{ts,tsx,js,jsx}"
+    "format:fix": "prettier --config .prettierrc -w ./**/*.{ts,tsx,js,jsx}",
+    "prepare": "husky"
   },
   "devDependencies": {
     "@dcl/asset-packs": "^2.4.3",
@@ -25,6 +26,8 @@
     "eslint-config-standard-with-typescript": "^43.0.1",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-react": "^7.37.5",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.1.2",
     "prettier": "^3.5.3"
   },
   "engines": {
@@ -36,6 +39,12 @@
     "singleQuote": true,
     "printWidth": 120,
     "trailingComma": "none"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ]
   },
   "dependencies": {
     "dcl-ui-toolkit": "^0.10.0"

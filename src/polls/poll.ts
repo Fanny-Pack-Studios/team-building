@@ -7,12 +7,17 @@ import {
   MeshCollider,
   Transform,
   pointerEventsSystem,
-  type Entity
+  type Entity,
+  TextShape,
+  Billboard
+
 } from '@dcl/sdk/ecs'
 import { createPollAdminUi } from './pollAdminUi'
 import { onChangePollState, PollState } from './pollEntity'
 import { Vector3 } from '@dcl/sdk/math'
 import { triggerPollQuestion } from './pollQuestionUi'
+
+
 
 const registeredPollEntities = new Set<Entity>()
 
@@ -53,10 +58,17 @@ function registerPollHandlersSystem(): void {
 // Spawns a poll creator, which on interacted opens the admin UI to create polls
 export function addPollCreator(): void {
   const myEntity = engine.addEntity()
+  const text = engine.addEntity()
   MeshRenderer.setBox(myEntity)
   MeshCollider.setBox(myEntity)
-  Transform.create(myEntity, { position: Vector3.create(8, 1, 8) })
-
+  Transform.create(myEntity, { position: Vector3.create(8.92, 1, 3.77) })
+  TextShape.create(text, {
+    text: 'CREATE POLL',
+    fontSize: 2
+  })
+  Transform.create(text, { parent: myEntity })
+  Transform.getMutable(text).position.y = 1
+  Billboard.create(text, {})
   pointerEventsSystem.onPointerDown(
     {
       entity: myEntity,
