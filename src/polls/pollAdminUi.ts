@@ -13,7 +13,7 @@ export function createPollAdminUi(): ui.CustomPrompt {
   let questionTitle: string = ''
 
   const pollUiHeight = 550
-  let yPosition = pollUiHeight / 2.0
+  let yPosition = pollUiHeight / 2.0 
   const answerPrompts: AnswerPrompts = []
   let initialAnswerY = 0
   let addAnswerButton: PromptButton | null = null
