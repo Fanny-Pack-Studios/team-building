@@ -20,7 +20,7 @@ export class KickUI {
   public collidersJailStructureN = engine.addEntity()
   public collidersJailStructureW = engine.addEntity()
   public collidersJailStructureE = engine.addEntity()
-  public collidersJailStructureS = engine.addEntity()
+  public collidersJailStructureS = engine.addEntity() 
   nameOrWallet: string = ''
 
   constructor(uiController: UIController) {
@@ -90,7 +90,6 @@ export class KickUI {
 
   kickPlayers(): void {
     const player = getPlayer()
-    console.log('my user name',player?.name)
     for (const bannedId of BannedComponent.get(this.bannedEntity).list) {
       if (bannedId === player?.userId.toLowerCase() || bannedId === player?.name.toLowerCase()) {
         console.log('player kicked')

@@ -12,7 +12,7 @@ export class CreatePollUI {
   questionTitle: string = ''
   option1: string = ''
   option2: string = ''
-
+ 
   constructor(uiController: UIController) {
     this.uiController = uiController
 
