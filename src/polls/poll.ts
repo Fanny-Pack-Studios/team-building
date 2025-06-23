@@ -10,14 +10,11 @@ import {
   type Entity,
   TextShape,
   Billboard
-
 } from '@dcl/sdk/ecs'
 import { createPollAdminUi } from './pollAdminUi'
 import { onChangePollState, PollState } from './pollEntity'
 import { Vector3 } from '@dcl/sdk/math'
 import { triggerPollQuestion } from './pollQuestionUi'
-
-
 
 const registeredPollEntities = new Set<Entity>()
 
@@ -57,6 +54,7 @@ function registerPollHandlersSystem(): void {
 
 // Spawns a poll creator, which on interacted opens the admin UI to create polls
 export function addPollCreator(): void {
+  console.log('je')
   const myEntity = engine.addEntity()
   const text = engine.addEntity()
   MeshRenderer.setBox(myEntity)
