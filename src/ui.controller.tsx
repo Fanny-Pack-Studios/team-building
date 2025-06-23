@@ -3,8 +3,8 @@ import ReactEcs, { ReactEcsRenderer, UiEntity } from '@dcl/sdk/react-ecs'
 import { KickUI } from './ui.kick'
 import Canvas from './canvas/Canvas'
 import * as ui from 'dcl-ui-toolkit'
-import { PollAdminUI } from './zonePolls/pollUis/ui.pollAdminUi'
-import { CreatePollUI } from './zonePolls/pollUis/ui.createPollUi'
+import { PollAdminUI } from './polls/pollUis/ui.pollAdminUi'
+import { CreatePollUI } from './polls/pollUis/ui.createPollUi'
 export class UIController {
   public canvasInfo = UiCanvasInformation.getOrNull(engine.RootEntity)
   public kickUI = new KickUI(this)
