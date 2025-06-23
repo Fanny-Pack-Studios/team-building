@@ -16,7 +16,7 @@ export class KickUI {
   public blackScreenVisibility: boolean = false
   public kickUiVisibility: boolean = false
   public uiController: UIController
-  public bannedEntity = engine.addEntity() 
+  public bannedEntity = engine.addEntity()
   public collidersJailStructureN = engine.addEntity()
   public collidersJailStructureW = engine.addEntity()
   public collidersJailStructureE = engine.addEntity()
@@ -243,5 +243,13 @@ export class KickUI {
         </UiEntity>
       </UiEntity>
     )
+  }
+
+  toggleVisibility(): void {
+    if (!this.kickUiVisibility) {
+      this.kickUiVisibility = true
+    } else {
+      this.kickUiVisibility = false
+    }
   }
 }

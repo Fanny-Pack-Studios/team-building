@@ -199,4 +199,12 @@ export class StageUI {
       </UiEntity>
     )
   }
+
+    toggleVisibility(): void {
+    if (!this.stageUiVisibility) {
+      this.stageUiVisibility = true
+    } else {
+      this.stageUiVisibility = false
+    }
+  }
 }
