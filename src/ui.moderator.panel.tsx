@@ -38,7 +38,7 @@ export class ModeratorPanelUI {
               height: 42 * uiScaleFactor,
               justifyContent: 'flex-end',
               positionType: 'absolute',
-              position: { top: '30%', left: '3%' }
+              position: { top: '30%', left: '20%' }
             }}
             uiBackground={{
               textureMode: 'stretch',
@@ -55,7 +55,7 @@ export class ModeratorPanelUI {
               height: '4.8%',
               justifyContent: 'flex-end',
               positionType: 'absolute',
-              position: { top: '38%', left: '3%' },
+              position: { top: '38%', left: '20%' },
               display: this.panel2Visible ? 'flex' : 'none'
             }}
             uiBackground={{
@@ -85,7 +85,7 @@ export class ModeratorPanelUI {
               height: '4.8%',
               justifyContent: 'flex-end',
               positionType: 'absolute',
-              position: { top: '44%', left: '3%' },
+              position: { top: '44%', left: '20%' },
               display: this.panel2Visible ? 'flex' : 'none'
             }}
             uiBackground={{
