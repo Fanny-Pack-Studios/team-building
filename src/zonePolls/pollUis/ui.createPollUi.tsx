@@ -96,38 +96,25 @@ export class CreatePollUI {
           />
 
           {/* Question Title input */}
-          <UiEntity
+          <Input
+            value={this.questionTitle}
+            onChange={(value) => (this.questionTitle = value)}
+            fontSize={16 * getScaleFactor()}
+            placeholder="Type your question here..."
+            placeholderColor={Color4.White()}
             uiTransform={{
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              positionType: 'absolute',
               width: 350 * getScaleFactor(),
-              height: 80 * getScaleFactor(),
-              borderRadius: 50,
-              padding: 20
+              height: 40 * getScaleFactor(),
+              margin: '0 0 15px 0',
+              borderRadius: 15,
+              padding: 10
             }}
             uiBackground={{
               textureMode: 'stretch',
               texture: { src: 'images/backGroundImg.png' }
             }}
-          >
-            <Input
-              value={this.questionTitle}
-              onChange={(value) => (this.questionTitle = value)}
-              fontSize={16 * getScaleFactor()}
-              placeholder="Question Title"
-              placeholderColor={Color4.White()}
-              uiTransform={{
-                width: '100%',
-                height: '100%',
-                margin: '0 0 15px 0',
-                borderRadius: 15,
-                padding: 10
-              }}
-              color={Color4.White()}
-            />
-          </UiEntity>
+            color={Color4.White()}
+          />
 
           {/* Options label */}
           <Label
@@ -156,7 +143,7 @@ export class CreatePollUI {
               padding: 10
             }}
             uiBackground={{
-              textureMode: 'nine-slices',
+              textureMode: 'stretch',
               texture: { src: 'images/backGroundImg.png' }
             }}
             color={Color4.White()}
