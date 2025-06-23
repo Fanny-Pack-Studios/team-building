@@ -10,13 +10,14 @@ import {
   type Entity,
   TextShape,
   Billboard
+
 } from '@dcl/sdk/ecs'
 import { createPollAdminUi } from './pollAdminUi'
 import { onChangePollState, PollState } from './pollEntity'
 import { Vector3 } from '@dcl/sdk/math'
 import { triggerPollQuestion } from './pollQuestionUi'
 
-// This is the entrance point to setup the polls
+
 
 const registeredPollEntities = new Set<Entity>()
 
