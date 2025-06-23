@@ -2,6 +2,7 @@ import { Billboard, engine, GltfContainer, MeshCollider, Schemas, TextShape, Tra
 import { Color4, Vector3 } from '@dcl/sdk/math'
 import { syncEntity } from '@dcl/sdk/network'
 import { getPlayer } from '@dcl/sdk/src/players'
+import { SyncEntityEnumId } from './syncEntities'
 
 export const ModeratorComponent = engine.defineComponent('ModeratorComponent', {
   whiteList: Schemas.Array(Schemas.String)
@@ -15,7 +16,7 @@ export class ModeratorTool {
   private hostValidated: boolean = false
   constructor() {
     ModeratorComponent.create(this.moderatorEntity)
-    syncEntity(this.moderatorEntity, [ModeratorComponent.componentId], 2)
+    syncEntity(this.moderatorEntity, [ModeratorComponent.componentId], SyncEntityEnumId.MODERATOR)
     this.createColliderForStage()
     this.addPlayerToWhiteList('carrito') // Agus User for testing - Replace it with host user from server
     engine.addSystem(() => {
