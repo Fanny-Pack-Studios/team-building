@@ -60,7 +60,7 @@ export class ChooseActivityUI {
           uiBackground={{
             textureMode: 'stretch',
             texture: {
-              src: 'images/backGroundImg.png'
+              src: 'images/Rectangle 1.png'
             }
           }}
         >
@@ -126,7 +126,7 @@ export class ChooseActivityUI {
               }}
               uiBackground={{
                 textureMode: 'stretch',
-                texture: { src: 'images/live poll.png' },
+                texture: { src: 'images/live poll.png' }
               }}
             ></UiEntity>
             <UiEntity
