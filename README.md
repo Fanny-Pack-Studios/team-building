@@ -6,7 +6,7 @@ TeamHub is a Decentraland project designed to facilitate team-building activitie
 
 Make sure you have the [Decentraland Client](https://decentraland.org/download/)
 
-Paste this into a your browser:
+Paste this into a your browser (e.g. Mozilla, Internet Explorer, Chrome):
 ```
 decentraland://?position=0,0&realm=hagane.dcl.eth
 ```
