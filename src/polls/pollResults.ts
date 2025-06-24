@@ -1,3 +1,4 @@
+import { engine } from '@dcl/ecs'
 import { PollState, pollRegistry } from './pollEntity'
 import * as ui from 'dcl-ui-toolkit'
 
@@ -47,7 +48,9 @@ export function logPollResults(pollId: string): void {
 }
 
 export function showPollResultsUI(pollId: string): void {
-  const entity = pollRegistry.get(pollId)
+  const entity = Array.from(engine.getEntitiesWith(PollState)).find(
+    ([entity]) => PollState.get(entity).pollId === pollId
+  )?.[0]
 
   if (entity == null) {
     console.log(`⚠️ No entity found for pollId: ${pollId}`)
