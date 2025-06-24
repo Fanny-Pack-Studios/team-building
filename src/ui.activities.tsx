@@ -5,17 +5,17 @@ import { Color4 } from '@dcl/sdk/math'
 import { getScaleFactor } from './canvas/Canvas'
 import { type UIController } from './ui.controller'
 
-const COLOR_INACTIVE = '#3F3B48'
-const COLOR_HOVER = '#36323D'
-const COLOR_SELECTED = '#2B2830'
+const COLOR_INACTIVE = '#FFFFFFFF'
+const COLOR_HOVER = '#3F3B45'
+const COLOR_SELECTED = '#3F3B45'
 
 export class ChooseActivityUI {
-  public chooseActivityUiVisibility: boolean = true
+  public chooseActivityUiVisibility: boolean = false
   public uiController: UIController
-  public buttonColorHover1: string = '#36323D'
-  public buttonColorHover2: string = '#36323D'
-  public buttonColorHover3: string = '#36323D'
-  public buttonColorHover4: string = '#36323D'
+  public buttonColorHover1: string = '#FFFFFFFF' 
+  public buttonColorHover2: string = '#FFFFFFFF'
+  public buttonColorHover3: string = '#FFFFFFFF'
+  public buttonColorHover4: string = '#FFFFFFFF'
   public buttonSelected: number = 0
   constructor(uiController: UIController) {
     this.uiController = uiController
@@ -126,7 +126,17 @@ export class ChooseActivityUI {
               }}
               uiBackground={{
                 textureMode: 'stretch',
-                texture: { src: 'images/live poll.png' }
+                texture: { src: 'images/live poll.png' },
+                color: Color4.fromHexString(this.buttonColorHover1)
+              }}
+              onMouseEnter={() => {
+                this.togglebuttonColorHover(1)
+              }}
+              onMouseLeave={() => {
+                this.togglebuttonColorHover(1)
+              }}
+              onMouseDown={() => {
+                this.selectButton(1)
               }}
             ></UiEntity>
             <UiEntity
@@ -138,7 +148,17 @@ export class ChooseActivityUI {
               }}
               uiBackground={{
                 textureMode: 'stretch',
-                texture: { src: 'images/QA.png' }
+                texture: { src: 'images/QA.png' },
+                color: Color4.fromHexString(this.buttonColorHover2)
+              }}
+              onMouseEnter={() => {
+                this.togglebuttonColorHover(2)
+              }}
+              onMouseLeave={() => {
+                this.togglebuttonColorHover(2)
+              }}
+              onMouseDown={() => {
+                this.selectButton(2)
               }}
             ></UiEntity>
           </UiEntity>
@@ -163,7 +183,17 @@ export class ChooseActivityUI {
               }}
               uiBackground={{
                 textureMode: 'stretch',
-                texture: { src: 'images/quizz.png' }
+                texture: { src: 'images/quizz.png' },
+                color: Color4.fromHexString(this.buttonColorHover3)
+              }}
+              onMouseEnter={() => {
+                this.togglebuttonColorHover(3)
+              }}
+              onMouseLeave={() => {
+                this.togglebuttonColorHover(3)
+              }}
+              onMouseDown={() => {
+                this.selectButton(3)
               }}
             ></UiEntity>
             <UiEntity
@@ -175,7 +205,17 @@ export class ChooseActivityUI {
               }}
               uiBackground={{
                 textureMode: 'stretch',
-                texture: { src: 'images/survey.png' }
+                texture: { src: 'images/survey.png' },
+                color: Color4.fromHexString(this.buttonColorHover4)
+              }}
+              onMouseEnter={() => {
+                this.togglebuttonColorHover(4)
+              }}
+              onMouseLeave={() => {
+                this.togglebuttonColorHover(4)
+              }}
+              onMouseDown={() => {
+                this.selectButton(4)
               }}
             ></UiEntity>
           </UiEntity>
