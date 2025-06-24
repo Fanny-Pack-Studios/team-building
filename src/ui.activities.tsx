@@ -70,6 +70,24 @@ export class ChooseActivityUI {
               alignItems: 'center',
               justifyContent: 'center',
               positionType: 'absolute',
+              width: 11 * getScaleFactor(),
+              height: 11 * getScaleFactor(),
+              position: { top: '3%', right: '8%' }
+            }}
+            uiBackground={{
+              textureMode: 'stretch',
+              texture: { src: 'images/exit.png' }
+            }}
+            onMouseDown={() => {
+              this.chooseActivityUiVisibility = false
+            }}
+          ></UiEntity>
+          <UiEntity
+            uiTransform={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+              positionType: 'absolute',
               width: '90%',
               height: 70 * getScaleFactor(),
               position: { top: '0%' }
@@ -108,7 +126,7 @@ export class ChooseActivityUI {
               }}
               uiBackground={{
                 textureMode: 'stretch',
-                texture: { src: 'images/live poll.png' }
+                texture: { src: 'images/live poll.png' },
               }}
             ></UiEntity>
             <UiEntity
