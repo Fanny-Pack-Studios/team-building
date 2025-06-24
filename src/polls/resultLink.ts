@@ -13,7 +13,8 @@ import {
 } from '@dcl/sdk/ecs'
 import { Vector3, Color3, Color4 } from '@dcl/sdk/math'
 import { syncEntity } from '@dcl/sdk/network'
-import { logPollResults, showPollResultsUI } from './pollResults'
+import { logPollResults } from './pollResults'
+import { pushSyncedMessage } from '../messagebus/messagebus'
 
 export const PollResultLink = engine.defineComponent('resultLink', {
   pollId: Schemas.String
@@ -50,7 +51,7 @@ export function createShowResultsEntity(parentEntity: Entity, pollId: string): E
     },
     () => {
       logPollResults(pollId)
-      showPollResultsUI(pollId)
+      pushSyncedMessage('showPollResultsUI', { pollId })
     }
   )
 
