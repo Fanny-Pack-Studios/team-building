@@ -1,4 +1,4 @@
-import { engine, Schemas } from '@dcl/ecs'
+import { engine, type MapComponentDefinition, Schemas } from '@dcl/ecs'
 import { syncEntity } from '@dcl/sdk/network'
 import { SyncEntityEnumId } from '../syncEntities'
 import { showPollResultsUI } from '../polls/pollResults'
@@ -20,7 +20,7 @@ export const MessageBusComponent = engine.defineComponent('MessageBus', {
   )
 })
 
-type MessageBusComponentType = ReturnType<typeof MessageBusComponent.schema.create>
+type MessageBusComponentType = typeof MessageBusComponent extends MapComponentDefinition<infer Inner> ? Inner : never
 type Message = MessageBusComponentType['messages'][number]
 type MessageType = Message['content']['$case']
 type MessageContent = Message['content']['value']
