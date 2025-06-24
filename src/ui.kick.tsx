@@ -3,10 +3,26 @@ import { type UIController } from './ui.controller'
 import ReactEcs, { Button, Input, Label, UiEntity } from '@dcl/sdk/react-ecs'
 import { Color4, Vector3 } from '@dcl/sdk/math'
 import { getPlayer } from '@dcl/sdk/src/players'
-import { engine, InputAction, inputSystem, MeshCollider, PointerEventType, Schemas, Transform } from '@dcl/sdk/ecs'
+import {
+  AvatarModifierArea,
+  AvatarModifierType,
+  engine,
+  InputAction,
+  inputSystem,
+  MeshCollider,
+  MeshRenderer,
+  PointerEventType,
+  Schemas,
+  Transform
+} from '@dcl/sdk/ecs'
 import { syncEntity } from '@dcl/sdk/network'
 import { SyncEntityEnumId } from './syncEntities'
 import { getScaleFactor } from './canvas/Canvas'
+
+const JAIL_CENTER = Vector3.create(10.07, 10, 10.58) // Ajustá según tu escena
+
+// Change to true to make jail visible for debug purposes
+const IS_JAIL_VISIBLE: boolean = false
 
 export const BannedComponent = engine.defineComponent('BannedComponent', {
   list: Schemas.Array(Schemas.String)
@@ -22,6 +38,8 @@ export class KickUI {
   public collidersJailStructureE = engine.addEntity()
   public collidersJailStructureS = engine.addEntity()
   nameOrWallet: string = ''
+  public collidersJailStructureFloor = engine.addEntity()
+  public hideAvatarsArea = engine.addEntity()
 
   constructor(uiController: UIController) {
     this.uiController = uiController
@@ -37,6 +55,11 @@ export class KickUI {
       }
     })
     this.createCollidersJail()
+    AvatarModifierArea.create(this.hideAvatarsArea, {
+      area: Vector3.create(1, 1, 1),
+      modifiers: [AvatarModifierType.AMT_HIDE_AVATARS],
+      excludeIds: []
+    })
   }
 
   createCollidersJail(): void {
@@ -46,42 +69,56 @@ export class KickUI {
     const wallHeight = 5
     const wallThickness = 0.2
 
-    // Center
-    const center = Vector3.create(10.07, 1, 10.58) // Ajustá según tu escena
+    const center = JAIL_CENTER
 
     // North
     Transform.create(this.collidersJailStructureN, {
-      position: Vector3.create(center.x, wallHeight / 2, center.z - boxLength / 2),
+      position: Vector3.create(center.x, center.y + wallHeight / 2, center.z - boxLength / 2),
       scale: Vector3.create(boxWidth, wallHeight, wallThickness)
     })
 
     // South
     Transform.create(this.collidersJailStructureS, {
-      position: Vector3.create(center.x, wallHeight / 2, center.z + boxLength / 2),
+      position: Vector3.create(center.x, center.y + wallHeight / 2, center.z + boxLength / 2),
       scale: Vector3.create(boxWidth, wallHeight, wallThickness)
     })
 
     // East
     Transform.create(this.collidersJailStructureE, {
-      position: Vector3.create(center.x + boxWidth / 2, wallHeight / 2, center.z),
+      position: Vector3.create(center.x + boxWidth / 2, center.y + wallHeight / 2, center.z),
       scale: Vector3.create(wallThickness, wallHeight, boxLength)
     })
 
     // West
     Transform.create(this.collidersJailStructureW, {
-      position: Vector3.create(center.x - boxWidth / 2, wallHeight / 2, center.z),
+      position: Vector3.create(center.x - boxWidth / 2, center.y + wallHeight / 2, center.z),
       scale: Vector3.create(wallThickness, wallHeight, boxLength)
     })
 
-    // Hide Jail - Uncomment to make it visible
-    // MeshRenderer.setBox(this.collidersJailStructureN)
-    // MeshRenderer.setBox(this.collidersJailStructureS)
-    // MeshRenderer.setBox(this.collidersJailStructureW)
-    // MeshRenderer.setBox(this.collidersJailStructureE)
+    // Floor
+    const floorHeight = 0.01
+    Transform.create(this.collidersJailStructureFloor, {
+      position: Vector3.create(center.x, center.y - floorHeight / 2, center.z),
+      scale: Vector3.create(boxWidth, floorHeight, boxLength)
+    })
+
+    // Hide Players Area
+    Transform.create(this.hideAvatarsArea, {
+      position: Vector3.create(center.x, center.y, center.z)
+    })
+
+    if (IS_JAIL_VISIBLE) {
+      MeshRenderer.setBox(this.collidersJailStructureN)
+      MeshRenderer.setBox(this.collidersJailStructureS)
+      MeshRenderer.setBox(this.collidersJailStructureW)
+      MeshRenderer.setBox(this.collidersJailStructureE)
+      MeshRenderer.setBox(this.collidersJailStructureFloor)
+    }
     MeshCollider.setBox(this.collidersJailStructureN)
     MeshCollider.setBox(this.collidersJailStructureS)
     MeshCollider.setBox(this.collidersJailStructureW)
     MeshCollider.setBox(this.collidersJailStructureE)
+    MeshCollider.setBox(this.collidersJailStructureFloor)
   }
 
   openKickUI(): void {
@@ -94,7 +131,7 @@ export class KickUI {
       if (bannedId === player?.userId.toLowerCase() || bannedId === player?.name.toLowerCase()) {
         console.log('player kicked')
         void movePlayerTo({
-          newRelativePosition: Vector3.create(10.07, 1, 10.58)
+          newRelativePosition: JAIL_CENTER
         })
         this.blackScreenVisibility = true
         break

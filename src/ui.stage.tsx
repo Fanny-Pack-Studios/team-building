@@ -8,7 +8,6 @@ import {
   GltfContainer,
   InputAction,
   inputSystem,
-  MeshCollider,
   PointerEventType,
   Schemas,
   TextShape,
@@ -24,7 +23,7 @@ export const ModeratorComponent = engine.defineComponent('ModeratorComponent', {
 
 export class StageUI {
   public moderatorEntity = engine.addEntity()
-  public colliderStage = engine.addEntity()
+  public colliderStage = engine.getEntityOrNullByName('StageWall')
   public hostTarget = engine.addEntity()
   public hostTargetText = engine.addEntity()
   private hostValidated: boolean = false
@@ -35,7 +34,6 @@ export class StageUI {
     this.uiController = uiController
     ModeratorComponent.create(this.moderatorEntity)
     syncEntity(this.moderatorEntity, [ModeratorComponent.componentId], SyncEntityEnumId.MODERATOR)
-    this.createColliderForStage()
     this.addPlayerToWhiteList('') // Agus User for testing - Replace it with host user from server
     engine.addSystem(() => {
       if (!this.hostValidated) {
@@ -50,14 +48,6 @@ export class StageUI {
     })
   }
 
-  createColliderForStage(): void {
-    Transform.create(this.colliderStage, {
-      position: Vector3.create(40, 3, 44.64),
-      scale: Vector3.create(31, 7, 3)
-    })
-    MeshCollider.setBox(this.colliderStage)
-  }
-
   addPlayerToWhiteList(playerId: string): void {
     ModeratorComponent.getMutable(this.moderatorEntity).whiteList.push(playerId.toLowerCase())
     this.checkPlayerAcces()
@@ -70,7 +60,9 @@ export class StageUI {
       if (accesId === player?.userId.toLowerCase() || accesId === player?.name.toLowerCase()) {
         if (!this.hostValidated) {
           this.hostValidated = true
-          engine.removeEntity(this.colliderStage)
+          if (this.colliderStage !== null) {
+            engine.removeEntity(this.colliderStage)
+          }
           this.addTargetToHost()
           console.log('✔️ Host validado y collider removido para:', player.name)
         }
@@ -200,7 +192,7 @@ export class StageUI {
     )
   }
 
-    toggleVisibility(): void {
+  toggleVisibility(): void {
     if (!this.stageUiVisibility) {
       this.stageUiVisibility = true
     } else {

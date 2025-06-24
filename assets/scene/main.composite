@@ -90,44 +90,44 @@
         "serializationType": "transform"
       },
       "data": {
-        "514": {
+        "513": {
           "json": {
             "position": {
-              "x": 40.25,
-              "y": 5.5,
-              "z": 53.75
-            },
-            "scale": {
-              "x": 21,
-              "y": 6,
-              "z": 1
+              "x": 8,
+              "y": 0,
+              "z": 8.25
             },
             "rotation": {
               "x": 0,
               "y": 0,
               "z": 0,
               "w": 1
-            },
-            "parent": 0
-          }
-        },
-        "515": {
-          "json": {
-            "position": {
-              "x": 40,
-              "y": 0,
-              "z": 40
             },
             "scale": {
               "x": 1,
               "y": 1,
               "z": 1
             },
+            "parent": 0
+          }
+        },
+        "514": {
+          "json": {
+            "position": {
+              "x": 7.5,
+              "y": 7.25,
+              "z": 12.75
+            },
             "rotation": {
               "x": 0,
               "y": 0,
               "z": 0,
               "w": 1
+            },
+            "scale": {
+              "x": 13.800000190734863,
+              "y": 6,
+              "z": 1
             },
             "parent": 0
           }
@@ -135,9 +135,30 @@
         "516": {
           "json": {
             "position": {
-              "x": 53.5,
+              "x": -6.0484771728515625,
               "y": 2,
-              "z": 54
+              "z": 11.279850006103516
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "scale": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
+            "parent": 0
+          }
+        },
+        "521": {
+          "json": {
+            "position": {
+              "x": 8,
+              "y": 0,
+              "z": 8.5
             },
             "scale": {
               "x": 1,
@@ -149,6 +170,48 @@
               "y": 0,
               "z": 0,
               "w": 1
+            },
+            "parent": 0
+          }
+        },
+        "522": {
+          "json": {
+            "position": {
+              "x": 8,
+              "y": 0,
+              "z": 7.5
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "scale": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
+            "parent": 0
+          }
+        },
+        "523": {
+          "json": {
+            "position": {
+              "x": 8.25,
+              "y": -0.25,
+              "z": 11
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "scale": {
+              "x": 1,
+              "y": 25,
+              "z": 1
             },
             "parent": 0
           }
@@ -205,17 +268,32 @@
             "states": []
           }
         },
+        "513": {
+          "json": {
+            "states": []
+          }
+        },
         "514": {
           "json": {
             "states": []
           }
         },
-        "515": {
+        "516": {
           "json": {
             "states": []
           }
         },
-        "516": {
+        "521": {
+          "json": {
+            "states": []
+          }
+        },
+        "522": {
+          "json": {
+            "states": []
+          }
+        },
+        "523": {
           "json": {
             "states": []
           }
@@ -231,9 +309,9 @@
         "protocolBuffer": "PBGltfContainer"
       },
       "data": {
-        "515": {
+        "513": {
           "json": {
-            "src": "assets/models/LevelLayout.glb",
+            "src": "assets/models/estrado.glb",
             "visibleMeshesCollisionMask": 1,
             "invisibleMeshesCollisionMask": 2
           }
@@ -243,6 +321,20 @@
             "src": "assets/asset-packs/admin_tools/admin_toolkit.glb",
             "visibleMeshesCollisionMask": 1,
             "invisibleMeshesCollisionMask": 0
+          }
+        },
+        "521": {
+          "json": {
+            "src": "assets/models/podium_V2.glb",
+            "visibleMeshesCollisionMask": 1,
+            "invisibleMeshesCollisionMask": 2
+          }
+        },
+        "522": {
+          "json": {
+            "src": "assets/models/voting_zone.glb",
+            "visibleMeshesCollisionMask": 1,
+            "invisibleMeshesCollisionMask": 2
           }
         }
       }
@@ -265,7 +357,7 @@
                   "tex": {
                     "$case": "videoTexture",
                     "videoTexture": {
-                      "videoPlayerEntity": 0
+                      "videoPlayerEntity": 514
                     }
                   }
                 },
@@ -293,6 +385,18 @@
             "mesh": {
               "$case": "plane",
               "plane": {}
+            }
+          }
+        },
+        "523": {
+          "json": {
+            "collisionMask": 2,
+            "mesh": {
+              "$case": "cylinder",
+              "cylinder": {
+                "radiusTop": 7,
+                "radiusBottom": 0.5
+              }
             }
           }
         }
@@ -332,19 +436,34 @@
         "serializationType": "map"
       },
       "data": {
+        "513": {
+          "json": {
+            "value": "Podium"
+          }
+        },
         "514": {
           "json": {
             "value": "Video Screen"
           }
         },
-        "515": {
-          "json": {
-            "value": "LevelLayout.glb"
-          }
-        },
         "516": {
           "json": {
             "value": "Admin Tools"
+          }
+        },
+        "521": {
+          "json": {
+            "value": "podium_V2.glb"
+          }
+        },
+        "522": {
+          "json": {
+            "value": "voting_zone.glb"
+          }
+        },
+        "523": {
+          "json": {
+            "value": "StageWall"
           }
         }
       }
@@ -429,9 +548,9 @@
         "serializationType": "map"
       },
       "data": {
-        "0": {
+        "523": {
           "json": {
-            "gizmo": 3
+            "gizmo": 0
           }
         }
       }
@@ -722,118 +841,19 @@
             "thumbnail": "images/scene-thumbnail.png",
             "categories": [],
             "author": "SDK",
-            "email": "",
             "tags": [],
             "layout": {
+              "base": {
+                "x": 0,
+                "y": 0
+              },
               "parcels": [
                 {
                   "x": 0,
                   "y": 0
-                },
-                {
-                  "x": 1,
-                  "y": 0
-                },
-                {
-                  "x": 2,
-                  "y": 0
-                },
-                {
-                  "x": 3,
-                  "y": 0
-                },
-                {
-                  "x": 4,
-                  "y": 0
-                },
-                {
-                  "x": 0,
-                  "y": 1
-                },
-                {
-                  "x": 1,
-                  "y": 1
-                },
-                {
-                  "x": 2,
-                  "y": 1
-                },
-                {
-                  "x": 3,
-                  "y": 1
-                },
-                {
-                  "x": 4,
-                  "y": 1
-                },
-                {
-                  "x": 0,
-                  "y": 2
-                },
-                {
-                  "x": 1,
-                  "y": 2
-                },
-                {
-                  "x": 2,
-                  "y": 2
-                },
-                {
-                  "x": 3,
-                  "y": 2
-                },
-                {
-                  "x": 4,
-                  "y": 2
-                },
-                {
-                  "x": 0,
-                  "y": 3
-                },
-                {
-                  "x": 1,
-                  "y": 3
-                },
-                {
-                  "x": 2,
-                  "y": 3
-                },
-                {
-                  "x": 3,
-                  "y": 3
-                },
-                {
-                  "x": 4,
-                  "y": 3
-                },
-                {
-                  "x": 0,
-                  "y": 4
-                },
-                {
-                  "x": 1,
-                  "y": 4
-                },
-                {
-                  "x": 2,
-                  "y": 4
-                },
-                {
-                  "x": 3,
-                  "y": 4
-                },
-                {
-                  "x": 4,
-                  "y": 4
                 }
-              ],
-              "base": {
-                "x": 0,
-                "y": 0
-              }
+              ]
             },
-            "silenceVoiceChat": false,
-            "disablePortableExperiences": false,
             "spawnPoints": [
               {
                 "name": "spawn1",
@@ -918,9 +938,12 @@
                 "entity": 0,
                 "open": true,
                 "children": [
-                  515,
                   514,
-                  516
+                  516,
+                  513,
+                  521,
+                  522,
+                  523
                 ]
               },
               {
@@ -932,15 +955,27 @@
                 "children": []
               },
               {
-                "entity": 515,
-                "children": []
-              },
-              {
                 "entity": 514,
                 "children": []
               },
               {
                 "entity": 516,
+                "children": []
+              },
+              {
+                "entity": 513,
+                "children": []
+              },
+              {
+                "entity": 521,
+                "children": []
+              },
+              {
+                "entity": 522,
+                "children": []
+              },
+              {
+                "entity": 523,
                 "children": []
               }
             ]
@@ -1512,13 +1547,22 @@
         "serializationType": "map"
       },
       "data": {
+        "513": {
+          "json": {}
+        },
         "514": {
           "json": {}
         },
-        "515": {
+        "516": {
           "json": {}
         },
-        "516": {
+        "521": {
+          "json": {}
+        },
+        "522": {
+          "json": {}
+        },
+        "523": {
           "json": {}
         }
       }
