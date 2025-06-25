@@ -139,16 +139,16 @@
               "y": 0,
               "z": 9
             },
+            "scale": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
             "rotation": {
               "x": 0,
               "y": 0,
               "z": 0,
               "w": 1
-            },
-            "scale": {
-              "x": 1,
-              "y": 1,
-              "z": 1
             },
             "parent": 0
           }
@@ -170,6 +170,27 @@
               "y": 0,
               "z": 0,
               "w": 1
+            },
+            "parent": 0
+          }
+        },
+        "518": {
+          "json": {
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "scale": {
+              "x": 1,
+              "y": 1,
+              "z": 1
             },
             "parent": 0
           }
@@ -244,16 +265,16 @@
               "y": 0,
               "z": 0
             },
+            "scale": {
+              "x": 1.5,
+              "y": 1.5,
+              "z": 1.5
+            },
             "rotation": {
               "x": 0,
               "y": 1,
               "z": 0,
               "w": 6.123234262925839e-17
-            },
-            "scale": {
-              "x": 1.5,
-              "y": 1.5,
-              "z": 1.5
             },
             "parent": 526
           }
@@ -265,16 +286,16 @@
               "y": 0,
               "z": 0
             },
+            "scale": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
             "rotation": {
               "x": 0,
               "y": 0,
               "z": 0,
               "w": 1
-            },
-            "scale": {
-              "x": 1,
-              "y": 1,
-              "z": 1
             },
             "parent": 526
           }
@@ -286,16 +307,16 @@
               "y": 0,
               "z": 5
             },
+            "scale": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
             "rotation": {
               "x": 0,
               "y": 0,
               "z": 0,
               "w": 1
-            },
-            "scale": {
-              "x": 1,
-              "y": 1,
-              "z": 1
             },
             "parent": 0
           }
@@ -347,6 +368,11 @@
             "states": []
           }
         },
+        "1": {
+          "json": {
+            "states": []
+          }
+        },
         "2": {
           "json": {
             "states": []
@@ -368,6 +394,11 @@
           }
         },
         "516": {
+          "json": {
+            "states": []
+          }
+        },
+        "518": {
           "json": {
             "states": []
           }
@@ -581,6 +612,11 @@
             "value": "Admin Tools"
           }
         },
+        "518": {
+          "json": {
+            "value": "AuditoriumCamera"
+          }
+        },
         "521": {
           "json": {
             "value": "podium_V2.glb"
@@ -693,9 +729,9 @@
         "serializationType": "map"
       },
       "data": {
-        "526": {
+        "518": {
           "json": {
-            "gizmo": 0
+            "gizmo": 3
           }
         }
       }
@@ -1090,7 +1126,8 @@
                   522,
                   523,
                   526,
-                  515
+                  515,
+                  518
                 ]
               },
               {
@@ -1136,7 +1173,6 @@
               },
               {
                 "entity": 526,
-                "open": true,
                 "children": [
                   525,
                   524
@@ -1144,6 +1180,10 @@
               },
               {
                 "entity": 515,
+                "children": []
+              },
+              {
+                "entity": 518,
                 "children": []
               }
             ]
@@ -1390,7 +1430,7 @@
         "0": {
           "json": {
             "id": 0,
-            "value": 0
+            "value": 2
           }
         }
       }
@@ -1727,6 +1767,9 @@
         "516": {
           "json": {}
         },
+        "518": {
+          "json": {}
+        },
         "521": {
           "json": {}
         },
@@ -1744,6 +1787,26 @@
         },
         "526": {
           "json": {}
+        }
+      }
+    },
+    {
+      "name": "inspector::Lock",
+      "jsonSchema": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "boolean",
+            "serializationType": "boolean"
+          }
+        },
+        "serializationType": "map"
+      },
+      "data": {
+        "515": {
+          "json": {
+            "value": true
+          }
         }
       }
     },

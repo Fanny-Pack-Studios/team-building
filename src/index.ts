@@ -1,13 +1,13 @@
 import { UIController } from './ui.controller'
-import { addPollCreator } from './polls/poll'
 import { setupMessageBus } from './messagebus/messagebus'
-import { setupAttendeePanelAndResultsButton } from './activitiesPanels'
+import { setupAttendeePanelAndResultsButton } from './auditorium/activitiesPanels'
+import { setupPodium } from './auditorium/podium'
 
 export function main(): void {
   const uiController = new UIController()
   uiController.start()
 
-  addPollCreator()
+  setupPodium(uiController)
 
   setupMessageBus()
   setupAttendeePanelAndResultsButton()

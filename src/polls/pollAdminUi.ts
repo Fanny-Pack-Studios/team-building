@@ -3,7 +3,7 @@ import { type PromptButton } from 'dcl-ui-toolkit/dist/ui-entities/prompts/Promp
 import { Color4 } from '@dcl/sdk/math'
 import { createPollEntity } from './pollEntity'
 import { type PromptInput } from 'dcl-ui-toolkit/dist/ui-entities/prompts/Prompt/components/Input'
-import { popupAttendeePanelAndResultsButton } from '../activitiesPanels'
+import { popupAttendeePanelAndResultsButton } from '../auditorium/activitiesPanels'
 
 // UI to create polls
 

@@ -10,12 +10,26 @@ export class UIController {
   public kickUI = new KickUI(this)
   public stageUI = new StageUI(this)
   public panelUI = new ModeratorPanelUI(this)
+  public children: ReactEcs.JSX.Element[] = []
+
   constructor() {
     ReactEcsRenderer.setUiRenderer(this.render.bind(this))
   }
 
   start(): void {
     console.log('UI Controller activated')
+  }
+
+  clear(): void {
+    this.children = []
+  }
+
+  add(child: ReactEcs.JSX.Element): void {
+    this.children.push(child)
+  }
+
+  remove(child: ReactEcs.JSX.Element): void {
+    this.children = this.children.filter((c) => c !== child)
   }
 
   render(): ReactEcs.JSX.Element | null {
@@ -29,6 +43,8 @@ export class UIController {
           {this.stageUI.stageUiVisibility && this.stageUI.createStageUi()}
 
           {ui.render()}
+
+          {this.children.map((child) => child)}
         </Canvas>
       </UiEntity>
     )
