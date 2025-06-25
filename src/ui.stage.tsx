@@ -55,7 +55,6 @@ export class StageUI {
 
   checkPlayerAcces(): void {
     const player = getPlayer()
-    console.log('player', player?.name)
     for (const accesId of ModeratorComponent.get(this.moderatorEntity).whiteList) {
       if (accesId === player?.userId.toLowerCase() || accesId === player?.name.toLowerCase()) {
         if (!this.hostValidated) {

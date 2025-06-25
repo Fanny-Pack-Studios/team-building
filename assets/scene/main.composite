@@ -97,16 +97,16 @@
               "y": 0,
               "z": 8.25
             },
+            "scale": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
             "rotation": {
               "x": 0,
               "y": 0,
               "z": 0,
               "w": 1
-            },
-            "scale": {
-              "x": 1,
-              "y": 1,
-              "z": 1
             },
             "parent": 0
           }
@@ -118,6 +118,27 @@
               "y": 7.25,
               "z": 12.75
             },
+            "scale": {
+              "x": 13.800000190734863,
+              "y": 6,
+              "z": 1
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "parent": 0
+          }
+        },
+        "515": {
+          "json": {
+            "position": {
+              "x": 9.25,
+              "y": 0,
+              "z": 9
+            },
             "rotation": {
               "x": 0,
               "y": 0,
@@ -125,8 +146,8 @@
               "w": 1
             },
             "scale": {
-              "x": 13.800000190734863,
-              "y": 6,
+              "x": 1,
+              "y": 1,
               "z": 1
             },
             "parent": 0
@@ -139,16 +160,16 @@
               "y": 2,
               "z": 11.279850006103516
             },
+            "scale": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
             "rotation": {
               "x": 0,
               "y": 0,
               "z": 0,
               "w": 1
-            },
-            "scale": {
-              "x": 1,
-              "y": 1,
-              "z": 1
             },
             "parent": 0
           }
@@ -181,16 +202,16 @@
               "y": 0,
               "z": 7.5
             },
+            "scale": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
             "rotation": {
               "x": 0,
               "y": 0,
               "z": 0,
               "w": 1
-            },
-            "scale": {
-              "x": 1,
-              "y": 1,
-              "z": 1
             },
             "parent": 0
           }
@@ -202,6 +223,48 @@
               "y": -0.25,
               "z": 11
             },
+            "scale": {
+              "x": 1,
+              "y": 25,
+              "z": 1
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "parent": 0
+          }
+        },
+        "524": {
+          "json": {
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rotation": {
+              "x": 0,
+              "y": 1,
+              "z": 0,
+              "w": 6.123234262925839e-17
+            },
+            "scale": {
+              "x": 1.5,
+              "y": 1.5,
+              "z": 1.5
+            },
+            "parent": 526
+          }
+        },
+        "525": {
+          "json": {
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
             "rotation": {
               "x": 0,
               "y": 0,
@@ -210,7 +273,28 @@
             },
             "scale": {
               "x": 1,
-              "y": 25,
+              "y": 1,
+              "z": 1
+            },
+            "parent": 526
+          }
+        },
+        "526": {
+          "json": {
+            "position": {
+              "x": 8,
+              "y": 0,
+              "z": 5
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "scale": {
+              "x": 1,
+              "y": 1,
               "z": 1
             },
             "parent": 0
@@ -278,6 +362,11 @@
             "states": []
           }
         },
+        "515": {
+          "json": {
+            "states": []
+          }
+        },
         "516": {
           "json": {
             "states": []
@@ -294,6 +383,21 @@
           }
         },
         "523": {
+          "json": {
+            "states": []
+          }
+        },
+        "524": {
+          "json": {
+            "states": []
+          }
+        },
+        "525": {
+          "json": {
+            "states": []
+          }
+        },
+        "526": {
           "json": {
             "states": []
           }
@@ -316,6 +420,13 @@
             "invisibleMeshesCollisionMask": 2
           }
         },
+        "515": {
+          "json": {
+            "src": "assets/asset-packs/button_panel/ButtonPanel_01/ButtonPanel_01.glb",
+            "visibleMeshesCollisionMask": 1,
+            "invisibleMeshesCollisionMask": 2
+          }
+        },
         "516": {
           "json": {
             "src": "assets/asset-packs/admin_tools/admin_toolkit.glb",
@@ -333,6 +444,20 @@
         "522": {
           "json": {
             "src": "assets/models/voting_zone.glb",
+            "visibleMeshesCollisionMask": 1,
+            "invisibleMeshesCollisionMask": 2
+          }
+        },
+        "524": {
+          "json": {
+            "src": "assets/asset-packs/display_monitor/Display_Monitor.glb",
+            "visibleMeshesCollisionMask": 1,
+            "invisibleMeshesCollisionMask": 2
+          }
+        },
+        "525": {
+          "json": {
+            "src": "assets/asset-packs/ring_-_green_light/Ring_Green_Light.glb",
             "visibleMeshesCollisionMask": 1,
             "invisibleMeshesCollisionMask": 2
           }
@@ -446,6 +571,11 @@
             "value": "Video Screen"
           }
         },
+        "515": {
+          "json": {
+            "value": "ShowResultsButton"
+          }
+        },
         "516": {
           "json": {
             "value": "Admin Tools"
@@ -464,6 +594,21 @@
         "523": {
           "json": {
             "value": "StageWall"
+          }
+        },
+        "524": {
+          "json": {
+            "value": "Interactable"
+          }
+        },
+        "525": {
+          "json": {
+            "value": "Ring - Green Light"
+          }
+        },
+        "526": {
+          "json": {
+            "value": "AttendeePanel"
           }
         }
       }
@@ -548,7 +693,7 @@
         "serializationType": "map"
       },
       "data": {
-        "523": {
+        "526": {
           "json": {
             "gizmo": 0
           }
@@ -943,7 +1088,9 @@
                   513,
                   521,
                   522,
-                  523
+                  523,
+                  526,
+                  515
                 ]
               },
               {
@@ -976,6 +1123,27 @@
               },
               {
                 "entity": 523,
+                "children": []
+              },
+              {
+                "entity": 524,
+                "open": true,
+                "children": []
+              },
+              {
+                "entity": 525,
+                "children": []
+              },
+              {
+                "entity": 526,
+                "open": true,
+                "children": [
+                  525,
+                  524
+                ]
+              },
+              {
+                "entity": 515,
                 "children": []
               }
             ]
@@ -1553,6 +1721,9 @@
         "514": {
           "json": {}
         },
+        "515": {
+          "json": {}
+        },
         "516": {
           "json": {}
         },
@@ -1563,6 +1734,15 @@
           "json": {}
         },
         "523": {
+          "json": {}
+        },
+        "524": {
+          "json": {}
+        },
+        "525": {
+          "json": {}
+        },
+        "526": {
           "json": {}
         }
       }

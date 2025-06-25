@@ -5,7 +5,11 @@
  */
 export enum EntityNames {
   Admin_Tools = 'Admin Tools',
+  AttendeePanel = 'AttendeePanel',
+  Interactable = 'Interactable',
   Podium = 'Podium',
+  Ring___Green_Light = 'Ring - Green Light',
+  ShowResultsButton = 'ShowResultsButton',
   StageWall = 'StageWall',
   Video_Screen = 'Video Screen',
   podium_V2_glb = 'podium_V2.glb',
