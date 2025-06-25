@@ -20,7 +20,7 @@ export function popupAttendeePanelAndResultsButton(): void {
 
   // tweens that spawn and make visible both entities
   for (const entity of [attendeePanelEntity, showResultsButtonEntity]) {
-    if (entity !== null && entity !== undefined) {
+    if (entity !== null) {
       Tween.createOrReplace(entity, {
         mode: Tween.Mode.Scale({
           start: Vector3.Zero(),
@@ -52,16 +52,12 @@ function setAttendeePanelInteractable(): void {
     )
   }
 
-  if (
-    attendeePanelEntity !== null &&
-    attendeePanelEntity !== undefined &&
-    Array.from(engine.getEntitiesWith(PlayerIdentityData)).length < 2
-  ) {
+  if (attendeePanelEntity !== null && Array.from(engine.getEntitiesWith(PlayerIdentityData)).length < 2) {
     // if first player
     Transform.getMutable(attendeePanelEntity).scale = Vector3.Zero()
   }
 
-  if (attendeePanelEntity !== null && attendeePanelEntity !== undefined) {
+  if (attendeePanelEntity !== null) {
     syncEntity(attendeePanelEntity, [Transform.componentId], SyncEntityEnumId.INTERACTABLE)
   }
 }
@@ -79,16 +75,12 @@ function setupShowResultsButton(): void {
     )
   }
 
-  if (
-    showResultsButtonEntity !== null &&
-    showResultsButtonEntity !== undefined &&
-    Array.from(engine.getEntitiesWith(PlayerIdentityData)).length < 2
-  ) {
+  if (showResultsButtonEntity !== null && Array.from(engine.getEntitiesWith(PlayerIdentityData)).length < 2) {
     // if first player
     Transform.getMutable(showResultsButtonEntity).scale = Vector3.Zero()
   }
 
-  if (showResultsButtonEntity !== null && showResultsButtonEntity !== undefined) {
+  if (showResultsButtonEntity !== null) {
     syncEntity(showResultsButtonEntity, [Transform.componentId], SyncEntityEnumId.SHOW_RESULTS_BUTTON)
   }
 }
