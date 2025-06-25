@@ -5,11 +5,14 @@ import Canvas from './canvas/Canvas'
 import * as ui from 'dcl-ui-toolkit'
 import { StageUI } from './ui.stage'
 import { ModeratorPanelUI } from './ui.moderator.panel'
+import { TimerUI } from './polls/timer'
+
 export class UIController {
   public canvasInfo = UiCanvasInformation.getOrNull(engine.RootEntity)
   public kickUI = new KickUI(this)
   public stageUI = new StageUI(this)
   public panelUI = new ModeratorPanelUI(this)
+  public timerUI = new TimerUI(this)
   constructor() {
     ReactEcsRenderer.setUiRenderer(this.render.bind(this))
   }
@@ -27,6 +30,7 @@ export class UIController {
           {this.kickUI.kickUiVisibility && this.kickUI.createKickUi()}
           {this.kickUI.blackScreenVisibility && this.kickUI.createBlackScreen()}
           {this.stageUI.stageUiVisibility && this.stageUI.createStageUi()}
+          {this.timerUI.visibility && this.timerUI.createUI()}
 
           {ui.render()}
         </Canvas>

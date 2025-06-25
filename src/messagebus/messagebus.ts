@@ -40,6 +40,7 @@ export function setupMessageBus(): void {
     messages: []
   })
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   syncEntity(messageBusEntity, [MessageBusComponent.componentId], SyncEntityEnumId.MESSAGE_BUS)
 
   MessageBusComponent.onChange(messageBusEntity, (component) => {

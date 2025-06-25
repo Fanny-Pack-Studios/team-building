@@ -12,7 +12,8 @@ type AnswerPrompts = Array<{ answerPromptInput: PromptInput; deleteButton: Promp
 export function createPollAdminUi(): ui.CustomPrompt {
   const answers: string[] = []
   let questionTitle: string = ''
-
+  let timerEnabled: boolean = false
+  let timerValue: string = ''
   const pollUiHeight = 550
   let yPosition = pollUiHeight / 2.0
   const answerPrompts: AnswerPrompts = []
@@ -20,6 +21,7 @@ export function createPollAdminUi(): ui.CustomPrompt {
   let addAnswerButton: PromptButton | null = null
   let createButton: PromptButton | null = null
   let isAnonymous: boolean = false
+
   const validAnswers: () => string[] = () => answers.filter((answer) => answer.trim() !== '')
   const onAnswerPromptsChanged: () => void = () => {
     if (addAnswerButton !== null) {
@@ -157,6 +159,37 @@ export function createPollAdminUi(): ui.CustomPrompt {
       isAnonymous = false
     }
   })
+  yPosition -= 50
+
+  createPollPrompt.addText({
+    value: 'Set Timer (minutes)',
+    size: 15,
+    xPosition: -150,
+    yPosition
+  })
+
+  const timerInput = createPollPrompt.addTextBox({
+    yPosition: yPosition - 70,
+    xPosition: 0,
+    placeholder: '0',
+    onChange: (value: string) => {
+      timerValue = value
+    }
+  })
+  timerInput.hide()
+  createPollPrompt.addSwitch({
+    text: '',
+    xPosition: 100,
+    yPosition: yPosition - 12,
+    onCheck: () => {
+      timerEnabled = true
+      timerInput.show()
+    },
+    onUncheck: () => {
+      timerEnabled = false
+      timerInput.hide()
+    }
+  })
 
   yPosition -= 150
 
@@ -183,7 +216,7 @@ export function createPollAdminUi(): ui.CustomPrompt {
     xPosition: 100,
     onMouseDown: () => {
       popupAttendeePanelAndResultsButton()
-      createPollEntity(questionTitle, validAnswers(), isAnonymous)
+      createPollEntity(questionTitle, validAnswers(), isAnonymous, timerEnabled ? parseInt(timerValue) : null)
       createPollPrompt.hide()
     }
   })
