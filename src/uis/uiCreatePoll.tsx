@@ -5,7 +5,7 @@ import { type UIController } from '../controllers/ui.controller'
 import { Color4 } from '@dcl/sdk/math'
 
 export class CreatePollUI {
-  public createPollUiVisibility: boolean = true
+  public createPollUiVisibility: boolean = false
   public uiController: UIController
   public switchOn: boolean = false
   public switchOnTexture: string = 'images/createpollui/switchOn.png'
