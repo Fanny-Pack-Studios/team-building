@@ -7,6 +7,7 @@ import { ModeratorPanelUI } from '../uis/uiModeratorPanel'
 import { StageUI } from '../uis/uiStage'
 import Canvas from '../canvas/Canvas'
 import { ChooseActivityUI } from '../uis/uiActivities'
+import { CreatePollUI } from '../uis/uiCreatePoll'
 
 export class UIController {
   public canvasInfo = UiCanvasInformation.getOrNull(engine.RootEntity)
@@ -14,6 +15,7 @@ export class UIController {
   public stageUI = new StageUI(this)
   public panelUI = new ModeratorPanelUI(this)
   public activitiesUI = new ChooseActivityUI(this)
+  public createPollUI = new CreatePollUI(this)
   constructor() {
     ReactEcsRenderer.setUiRenderer(this.render.bind(this))
   }
@@ -32,6 +34,7 @@ export class UIController {
           {this.kickUI.blackScreenVisibility && this.kickUI.createBlackScreen()}
           {this.stageUI.stageUiVisibility && this.stageUI.createStageUi()}
           {this.activitiesUI.chooseActivityUiVisibility && this.activitiesUI.createChooseActivityUi()}  
+          {this.createPollUI.createPollUiVisibility && this.createPollUI.createUi()}  
           {ui.render()}
         </Canvas>
       </UiEntity>

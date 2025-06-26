@@ -5,7 +5,7 @@ import { type UIController } from '../controllers/ui.controller'
 export class ModeratorPanelUI {
   uiController: UIController
   public panelUiVisibility: boolean = true
-  private readonly icon: string = 'images/moderator_tool_icon.png'
+  private readonly icon: string = 'images/moderatormenu/moderator_tool_icon.png'
   public menuOpen: boolean = false
   public panel2Visible: boolean = false
   constructor(uiController: UIController) {

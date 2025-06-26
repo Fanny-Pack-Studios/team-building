@@ -9,7 +9,7 @@ const COLOR_HOVER = '#3F3B45'
 const COLOR_SELECTED = '#3F3B45'
 
 export class ChooseActivityUI {
-  public chooseActivityUiVisibility: boolean = true
+  public chooseActivityUiVisibility: boolean = false
   public uiController: UIController
   public buttonColorHover1: string = '#FFFFFFFF'
   public buttonColorHover2: string = '#FFFFFFFF'
