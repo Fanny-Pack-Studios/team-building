@@ -2,6 +2,9 @@ import { engine, Schemas, type Entity } from '@dcl/sdk/ecs'
 import { syncEntity } from '@dcl/sdk/network'
 import { generatePollId } from '../utils'
 import { createShowResultsEntity } from './resultLink'
+import { getPlayer } from '@dcl/sdk/src/players'
+import * as utils from '@dcl-sdk/utils'
+import { showClosePollButton } from '../pollManagmentUi'
 
 export const PollState = engine.defineComponent('pollState', {
   pollId: Schemas.String,
@@ -13,7 +16,9 @@ export const PollState = engine.defineComponent('pollState', {
       userId: Schemas.String,
       option: Schemas.String
     })
-  )
+  ),
+  creatorId: Schemas.String,
+  closed: Schemas.Boolean
 })
 
 export const pollRegistry = new Map<string, Entity>()
@@ -25,12 +30,57 @@ export function createPollEntity(
   const pollEntity = engine.addEntity()
   const pollId = generatePollId()
 
-  // Set up the poll state with initial data
-  PollState.create(pollEntity, { pollId, question, options, anonymous: isAnonymous, votes: [] })
+  const player = getPlayer()
+  const creatorId = player?.userId
+
+  PollState.create(pollEntity, {
+    pollId,
+    question,
+    options,
+    anonymous: isAnonymous,
+    votes: [],
+    creatorId,
+    closed: false
+  })
+  utils.timers.setTimeout(() => {
+    showPollManagementUi(pollId)
+  }, 500)
   createShowResultsEntity(pollEntity, pollId)
   pollRegistry.set(pollId, pollEntity)
 
   syncEntity(pollEntity, [PollState.componentId])
 
   return { entity: pollEntity, pollId }
+}
+
+export function closePoll(pollId: string): boolean {
+  const pollEntity = pollRegistry.get(pollId)
+  if (pollEntity == null) return false
+
+  const pollState = PollState.get(pollEntity)
+  const player = getPlayer()
+  const userId = player?.userId
+
+  if (userId == null || userId !== pollState.creatorId) {
+    console.log(`User ${userId} is not authorized to close poll ${pollId}`)
+    return false
+  }
+
+  const poll = PollState.getMutable(pollEntity)
+
+  poll.closed = true
+
+  return true
+}
+
+export function showPollManagementUi(pollId: string): void {
+  const pollEntity = pollRegistry.get(pollId)
+  if (pollEntity == null) return
+
+  const pollState = PollState.get(pollEntity)
+  const player = getPlayer()
+  const userId = player?.userId
+
+  if (userId == null || userId !== pollState.creatorId || pollState.closed) return
+  showClosePollButton(pollId)
 }
