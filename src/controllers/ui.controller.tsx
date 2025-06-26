@@ -10,17 +10,19 @@ import { ChooseActivityUI } from '../uis/uiActivities'
 import { CreatePollUI } from '../uis/uiCreatePoll'
 import { OptionsUI } from '../uis/uiOptions'
 import { ResultsUI } from '../uis/uiResults'
+import { type GameController } from './game.controller'
 
 export class UIController {
   public canvasInfo = UiCanvasInformation.getOrNull(engine.RootEntity)
   public kickUI = new KickUI(this)
-  public stageUI = new StageUI(this)
+  public stageUI = new StageUI(this, this.gameController.hostsController)
   public panelUI = new ModeratorPanelUI(this)
   public activitiesUI = new ChooseActivityUI(this)
   public createPollUI = new CreatePollUI(this)
   public createOptionUI = new OptionsUI(this)
   public resultsUI = new ResultsUI(this)
-  constructor() {
+  
+  constructor(private readonly gameController: GameController) {
     ReactEcsRenderer.setUiRenderer(this.render.bind(this))
   }
 
