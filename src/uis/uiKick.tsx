@@ -1,5 +1,5 @@
 import { movePlayerTo } from '~system/RestrictedActions'
-import { type UIController } from './ui.controller'
+
 import ReactEcs, { Button, Input, Label, UiEntity } from '@dcl/sdk/react-ecs'
 import { Color4, Vector3 } from '@dcl/sdk/math'
 import { getPlayer } from '@dcl/sdk/src/players'
@@ -16,8 +16,9 @@ import {
   Transform
 } from '@dcl/sdk/ecs'
 import { syncEntity } from '@dcl/sdk/network'
-import { SyncEntityEnumId } from './syncEntities'
-import { getScaleFactor } from './canvas/Canvas'
+import { SyncEntityEnumId } from '../syncEntities'
+import { type UIController } from '../controllers/ui.controller'
+import { getScaleFactor } from '../canvas/Canvas'
 
 const JAIL_CENTER = Vector3.create(10.07, 10, 10.58) // Ajustá según tu escena
 

@@ -1,6 +1,6 @@
 import { Color4 } from '@dcl/sdk/math'
-import { type UIController } from './ui.controller'
 import ReactEcs, { Label, UiEntity } from '@dcl/sdk/react-ecs'
+import { type UIController } from '../controllers/ui.controller'
 
 export class ModeratorPanelUI {
   uiController: UIController

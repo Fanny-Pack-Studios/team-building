@@ -1,10 +1,12 @@
 import { engine, UiCanvasInformation } from '@dcl/sdk/ecs'
 import ReactEcs, { ReactEcsRenderer, UiEntity } from '@dcl/sdk/react-ecs'
-import { KickUI } from './ui.kick'
-import Canvas from './canvas/Canvas'
+
 import * as ui from 'dcl-ui-toolkit'
-import { StageUI } from './ui.stage'
-import { ModeratorPanelUI } from './ui.moderator.panel'
+import { KickUI } from '../uis/uiKick'
+import { ModeratorPanelUI } from '../uis/uiModeratorPanel'
+import { StageUI } from '../uis/uiStage'
+import Canvas from '../canvas/Canvas'
+
 export class UIController {
   public canvasInfo = UiCanvasInformation.getOrNull(engine.RootEntity)
   public kickUI = new KickUI(this)

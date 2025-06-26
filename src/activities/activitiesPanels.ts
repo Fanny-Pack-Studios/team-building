@@ -8,11 +8,11 @@ import {
   Tween
 } from '@dcl/sdk/ecs'
 import { Vector3 } from '@dcl/sdk/math'
-import { PollState } from './polls/pollEntity'
-import { triggerPollQuestion } from './polls/pollQuestionUi'
-import { showPollResultsUI } from './polls/pollResults'
 import { syncEntity } from '@dcl/sdk/network'
-import { SyncEntityEnumId } from './syncEntities'
+import { PollState } from '../polls/pollEntity'
+import { triggerPollQuestion } from '../polls/pollQuestionUi'
+import { showPollResultsUI } from '../polls/pollResults'
+import { SyncEntityEnumId } from '../syncEntities'
 
 export function popupAttendeePanelAndResultsButton(): void {
   const attendeePanelEntity = engine.getEntityOrNullByName('AttendeePanel')
