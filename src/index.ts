@@ -6,7 +6,6 @@ import { setupAttendeePanelAndResultsButton } from './activitiesPanels'
 export function main(): void {
   const uiController = new UIController()
   uiController.start()
-  uiController.timerUI.setTimer(2)
 
   addPollCreator()
 

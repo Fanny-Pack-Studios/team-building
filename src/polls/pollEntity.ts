@@ -2,6 +2,7 @@ import { engine, Schemas, type Entity } from '@dcl/sdk/ecs'
 import { syncEntity } from '@dcl/sdk/network'
 import { generatePollId } from '../utils'
 import { createShowResultsEntity } from './resultLink'
+import { showTimerUI } from '../timer'
 
 export const PollState = engine.defineComponent('pollState', {
   pollId: Schemas.String,
@@ -31,6 +32,7 @@ export function createPollEntity(
   createShowResultsEntity(pollEntity, pollId)
   if (timerValue !== null) {
     console.log('makeUITimer Visible')
+    showTimerUI(timerValue)
   }
   pollRegistry.set(pollId, pollEntity)
 
