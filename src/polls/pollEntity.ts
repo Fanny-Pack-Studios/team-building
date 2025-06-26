@@ -4,6 +4,7 @@ import { generatePollId } from '../utils'
 import { createShowResultsEntity } from './resultLink'
 import { showTimerUI } from '../timer'
 
+
 export const PollState = engine.defineComponent('pollState', {
   pollId: Schemas.String,
   question: Schemas.String,

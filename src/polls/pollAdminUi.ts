@@ -217,6 +217,7 @@ export function createPollAdminUi(): ui.CustomPrompt {
     onMouseDown: () => {
       popupAttendeePanelAndResultsButton()
       createPollEntity(questionTitle, validAnswers(), isAnonymous, timerEnabled ? parseInt(timerValue) : null)
+
       createPollPrompt.hide()
     }
   })
