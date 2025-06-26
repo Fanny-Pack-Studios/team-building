@@ -1,14 +1,6 @@
-import { UIController } from './ui.controller'
-import { addPollCreator } from './polls/poll'
-import { setupMessageBus } from './messagebus/messagebus'
-import { setupAttendeePanelAndResultsButton } from './activitiesPanels'
+import { GameController } from './controllers/game.controller'
 
 export function main(): void {
-  const uiController = new UIController()
-  uiController.start()
-
-  addPollCreator()
-
-  setupMessageBus()
-  setupAttendeePanelAndResultsButton()
+  const gameController = new GameController()
+  gameController.start()
 }

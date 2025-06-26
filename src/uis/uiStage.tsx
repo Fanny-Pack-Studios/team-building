@@ -1,6 +1,5 @@
 import { Color4, Vector3 } from '@dcl/sdk/math'
-import { getScaleFactor } from './canvas/Canvas'
-import { type UIController } from './ui.controller'
+import { getScaleFactor } from '../canvas/Canvas'
 import ReactEcs, { Button, Input, Label, UiEntity } from '@dcl/sdk/react-ecs'
 import {
   Billboard,
@@ -15,7 +14,8 @@ import {
 } from '@dcl/sdk/ecs'
 import { syncEntity } from '@dcl/sdk/network'
 import { getPlayer } from '@dcl/sdk/src/players'
-import { SyncEntityEnumId } from './syncEntities'
+import { SyncEntityEnumId } from '../syncEntities'
+import { type UIController } from '../controllers/ui.controller'
 
 export const ModeratorComponent = engine.defineComponent('ModeratorComponent', {
   whiteList: Schemas.Array(Schemas.String)
