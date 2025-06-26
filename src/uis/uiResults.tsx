@@ -4,15 +4,15 @@ import { getScaleFactor } from '../canvas/Canvas'
 import { type UIController } from '../controllers/ui.controller'
 import { Color4 } from '@dcl/sdk/math'
 
-export class OptionsUI {
-  public optionsUiVisibility: boolean = false
+export class ResultsUI {
+  public resultsUiVisibility: boolean = false
   public uiController: UIController
   constructor(uiController: UIController) {
     this.uiController = uiController
   }
 
   openUI(): void {
-    this.optionsUiVisibility = true
+    this.resultsUiVisibility = true
   }
 
   createUi(): ReactEcs.JSX.Element | null {
@@ -26,7 +26,7 @@ export class OptionsUI {
           height: this.uiController.canvasInfo.height,
           justifyContent: 'center',
           alignItems: 'center',
-          display: this.optionsUiVisibility ? 'flex' : 'none',
+          display: this.resultsUiVisibility ? 'flex' : 'none',
           borderRadius: 50
         }}
       >
@@ -42,7 +42,7 @@ export class OptionsUI {
           uiBackground={{
             textureMode: 'stretch',
             texture: {
-              src: 'images/optionsui/background.png'
+              src: 'images/resultsui/background.png'
             }
           }}
         >
@@ -74,28 +74,28 @@ export class OptionsUI {
               texture: { src: 'images/activitiesui/exit.png' }
             }}
             onMouseDown={() => {
-              this.optionsUiVisibility = false
+              this.resultsUiVisibility = false
             }}
           ></UiEntity>
           <UiEntity
             uiTransform={{
-              flexDirection: 'column',
+              flexDirection: 'row',
               alignItems: 'center',
-              justifyContent: 'center',
+              justifyContent: 'space-between',
               positionType: 'relative',
-              width: 136 * getScaleFactor(),
-              height: 56 * getScaleFactor(),
-              margin: { top: '20%' }
+              width: 236 * getScaleFactor(),
+              height: 40 * getScaleFactor(),
+              margin: { top: '15%' }
             }}
             uiBackground={{
               textureMode: 'stretch',
-              texture: { src: 'images/optionsui/option1Background.png' }
+              texture: { src: 'images/resultsui/results1.png' }
             }}
           >
             <Label
               uiTransform={{
-                margin: { bottom: '10%' },
-                alignContent: 'center',
+                position: { left: '0%' },
+                alignContent: 'flex-start',
                 positionType: 'relative'
               }}
               value={`<b>OPTION 1 </b>`} // Agregar valor real de la Pregunta en UI anterior
@@ -104,26 +104,38 @@ export class OptionsUI {
               color={Color4.White()}
               textAlign="middle-center"
             />
+            <Label
+              uiTransform={{
+                position: { right: '0%' },
+                alignContent: 'flex-end',
+                positionType: 'relative'
+              }}
+              value={`10%`} // Agregar valor real de la Pregunta en UI anterior
+              fontSize={12 * getScaleFactor()}
+              font="sans-serif"
+              color={Color4.White()}
+              textAlign="middle-center"
+            />
           </UiEntity>
           <UiEntity
             uiTransform={{
               flexDirection: 'row',
               alignItems: 'center',
-              justifyContent: 'center',
+              justifyContent: 'space-between',
               positionType: 'relative',
-              width: 136 * getScaleFactor(),
-              height: 56 * getScaleFactor(),
-              margin: { top: '0%' }
+              width: 236 * getScaleFactor(),
+              height: 40 * getScaleFactor(),
+              margin: { top: '10%' }
             }}
             uiBackground={{
               textureMode: 'stretch',
-              texture: { src: 'images/optionsui/option2Background.png' }
+              texture: { src: 'images/resultsui/results1.png' }
             }}
           >
             <Label
               uiTransform={{
-                margin: { bottom: '10%' },
-                alignContent: 'center',
+                position: { left: '0%' },
+                alignContent: 'flex-start',
                 positionType: 'relative'
               }}
               value={`<b>OPTION 2 </b>`} // Agregar valor real de la Pregunta en UI anterior
@@ -132,26 +144,38 @@ export class OptionsUI {
               color={Color4.White()}
               textAlign="middle-center"
             />
+            <Label
+              uiTransform={{
+                position: { right: '0%' },
+                alignContent: 'flex-end',
+                positionType: 'relative'
+              }}
+              value={`10%`} // Agregar valor real de la Pregunta en UI anterior
+              fontSize={12 * getScaleFactor()}
+              font="sans-serif"
+              color={Color4.White()}
+              textAlign="middle-center"
+            />
           </UiEntity>
           <UiEntity
             uiTransform={{
               flexDirection: 'row',
               alignItems: 'center',
-              justifyContent: 'center',
+              justifyContent: 'space-between',
               positionType: 'relative',
-              width: 136 * getScaleFactor(),
-              height: 56 * getScaleFactor(),
-              margin: { top: '0%' }
+              width: 236 * getScaleFactor(),
+              height: 40 * getScaleFactor(),
+              margin: { top: '10%' }
             }}
             uiBackground={{
               textureMode: 'stretch',
-              texture: { src: 'images/optionsui/option3Background.png' }
+              texture: { src: 'images/resultsui/results1.png' }
             }}
           >
             <Label
               uiTransform={{
-                margin: { bottom: '10%' },
-                alignContent: 'center',
+                position: { left: '0%' },
+                alignContent: 'flex-start',
                 positionType: 'relative'
               }}
               value={`<b>OPTION 3 </b>`} // Agregar valor real de la Pregunta en UI anterior
@@ -160,29 +184,13 @@ export class OptionsUI {
               color={Color4.White()}
               textAlign="middle-center"
             />
-          </UiEntity>
-          <UiEntity
-            uiTransform={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'center',
-              positionType: 'relative',
-              width: 136 * getScaleFactor(),
-              height: 56 * getScaleFactor(),
-              margin: { top: '0%' }
-            }}
-            uiBackground={{
-              textureMode: 'stretch',
-              texture: { src: 'images/optionsui/option4Background.png' }
-            }}
-          >
             <Label
               uiTransform={{
-                margin: { bottom: '10%' },
-                alignContent: 'center',
+                position: { right: '0%' },
+                alignContent: 'flex-end',
                 positionType: 'relative'
               }}
-              value={`<b>OPTION 4 </b>`} // Agregar valor real de la Pregunta en UI anterior
+              value={`10%`} // Agregar valor real de la Pregunta en UI anterior
               fontSize={12 * getScaleFactor()}
               font="sans-serif"
               color={Color4.White()}
@@ -193,17 +201,56 @@ export class OptionsUI {
             uiTransform={{
               flexDirection: 'row',
               alignItems: 'center',
-              justifyContent: 'center',
+              justifyContent: 'space-between',
               positionType: 'relative',
-              width: 78 * getScaleFactor(),
-              height: 42 * getScaleFactor(),
+              width: 236 * getScaleFactor(),
+              height: 40 * getScaleFactor(),
               margin: { top: '10%' }
             }}
             uiBackground={{
               textureMode: 'stretch',
-              texture: { src: 'images/optionsui/next.png' }
+              texture: { src: 'images/resultsui/results1.png' }
             }}
-          ></UiEntity>
+          >
+            <Label
+              uiTransform={{
+                position: { left: '0%' },
+                alignContent: 'flex-start',
+                positionType: 'relative'
+              }}
+              value={`<b>OPTION 4 </b>`} // Agregar valor real de la Pregunta en UI anterior
+              fontSize={12 * getScaleFactor()}
+              font="sans-serif"
+              color={Color4.White()}
+              textAlign="middle-center"
+            />
+            <Label
+              uiTransform={{
+                position: { right: '0%' },
+                alignContent: 'flex-end',
+                positionType: 'relative'
+              }}
+              value={`10%`} // Agregar valor real de la Pregunta en UI anterior
+              fontSize={12 * getScaleFactor()}
+              font="sans-serif"
+              color={Color4.White()}
+              textAlign="middle-center"
+            />
+          </UiEntity>
+          <Label
+            uiTransform={{
+              width: '100%',
+              height: 60 * getScaleFactor(),
+              alignContent: 'center',
+              position: { bottom: '0%' },
+              margin: {top:'2%'}
+            }}
+            value={`This poll is anonymus, voter \n identities are hidden.`}
+            fontSize={12 * getScaleFactor()}
+            font="sans-serif"
+            color={Color4.White()}
+            textAlign="middle-center"
+          />
         </UiEntity>
       </UiEntity>
     )
