@@ -1,16 +1,18 @@
 import { setupAttendeePanelAndResultsButton } from '../activities/activitiesPanels'
 import { setupMessageBus } from '../messagebus/messagebus'
-import { addPollCreator } from '../polls/poll'
+import { PollCreator } from '../polls/poll'
 import { UIController } from './ui.controller'
 
 export class GameController {
   public uiController: UIController
+  public pollCreator: PollCreator
   constructor() {
-    this.uiController = new UIController()
+    this.uiController = new UIController(this)
+    this.pollCreator = new PollCreator(this)
   }
 
   start(): void {
-    addPollCreator()
+    // addPollCreator()
     setupMessageBus()
     setupAttendeePanelAndResultsButton()
   }

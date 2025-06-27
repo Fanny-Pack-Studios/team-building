@@ -3,6 +3,8 @@ import ReactEcs, { Input, Label, UiEntity } from '@dcl/sdk/react-ecs'
 import { getScaleFactor } from '../canvas/Canvas'
 import { type UIController } from '../controllers/ui.controller'
 import { Color4 } from '@dcl/sdk/math'
+import { createPollEntity } from '../polls/pollEntity'
+import { popupAttendeePanelAndResultsButton } from '../activities/activitiesPanels'
 
 export class CreatePollUI {
   public createPollUiVisibility: boolean = false
@@ -11,6 +13,9 @@ export class CreatePollUI {
   public switchOnTexture: string = 'images/createpollui/switchOn.png'
   public switchOffTexture: string = 'images/createpollui/switchOff.png'
   public switchTexture: string = this.switchOffTexture
+  private readonly questionTitle: string = ''
+  // private readonly validAnswers: () => string[] = () => answers.filter((answer) => answer.trim() !== '')
+
   constructor(uiController: UIController) {
     this.uiController = uiController
   }
@@ -281,6 +286,9 @@ export class CreatePollUI {
                 textureMode: 'stretch',
                 texture: { src: 'images/createpollui/createButton.png' }
               }}
+              onMouseDown={() => {
+                this.create()
+              }}
             ></UiEntity>
           </UiEntity>
         </UiEntity>
@@ -291,5 +299,12 @@ export class CreatePollUI {
   toggleSwitcher(): void {
     this.switchOn = !this.switchOn
     this.switchTexture = this.switchOn ? this.switchOnTexture : this.switchOffTexture
+  }
+
+  create(): void {
+    console.log('create')
+    createPollEntity('Membirllo o batata?', ['membrillo', 'batata'], false)
+    popupAttendeePanelAndResultsButton()
+    this.createPollUiVisibility = false
   }
 }
