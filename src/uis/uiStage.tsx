@@ -1,6 +1,6 @@
 import { Color4, Vector3 } from '@dcl/sdk/math'
 import { getScaleFactor } from '../canvas/Canvas'
-import ReactEcs, { Button, Input, Label, UiEntity } from '@dcl/sdk/react-ecs'
+import ReactEcs, { Button, Dropdown, Label, UiEntity } from '@dcl/sdk/react-ecs'
 import {
   Billboard,
   engine,
@@ -15,7 +15,7 @@ import {
 import { syncEntity } from '@dcl/sdk/network'
 import { getPlayer } from '@dcl/sdk/src/players'
 import { SyncEntityEnumId } from '../syncEntities'
-import { type UIController } from '../controllers/ui.controller'
+import { type GameController } from '../controllers/game.controller'
 
 export const ModeratorComponent = engine.defineComponent('ModeratorComponent', {
   whiteList: Schemas.Array(Schemas.String)
@@ -27,11 +27,11 @@ export class StageUI {
   public hostTarget = engine.addEntity()
   public hostTargetText = engine.addEntity()
   private hostValidated: boolean = false
-  public uiController: UIController
   public stageUiVisibility: boolean = false
-  public nameOrWallet: string = ''
-  constructor(uiController: UIController) {
-    this.uiController = uiController
+  public gameController: GameController
+  public playerSelected: string = ''
+  constructor(gameController: GameController) {
+    this.gameController = gameController
     ModeratorComponent.create(this.moderatorEntity)
     syncEntity(this.moderatorEntity, [ModeratorComponent.componentId], SyncEntityEnumId.MODERATOR)
     this.addPlayerToWhiteList('') // Agus User for testing - Replace it with host user from server
@@ -91,13 +91,13 @@ export class StageUI {
   }
 
   createStageUi(): ReactEcs.JSX.Element | null {
-    if (this.uiController.canvasInfo === null) return null
+    if (this.gameController.uiController.canvasInfo === null) return null
     return (
       <UiEntity
         uiTransform={{
           flexDirection: 'column',
-          width: this.uiController.canvasInfo.width,
-          height: this.uiController.canvasInfo.height,
+          width: this.gameController.uiController.canvasInfo.width,
+          height: this.gameController.uiController.canvasInfo.height,
           justifyContent: 'center',
           alignItems: 'center',
           display: this.stageUiVisibility ? 'flex' : 'none'
@@ -135,20 +135,16 @@ export class StageUI {
               justifyContent: 'center'
             }}
           >
-            <Input
-              onChange={(value) => {
-                this.nameOrWallet = value
-              }}
-              fontSize={22 * getScaleFactor()}
-              placeholder={''}
-              placeholderColor={Color4.Black()}
+            <Dropdown
+              options={this.gameController.playersOnScene.allPlayers.map((player) => player.name)}
               uiTransform={{
-                width: 300 * getScaleFactor(),
-                height: 50 * getScaleFactor(),
-                margin: '10px 0'
+                width: '50%',
+                height: '50%'
               }}
+              // eslint-disable-next-line @typescript-eslint/unbound-method
+              onChange={this.checkPlayerNameOnArray}
             />
-          </UiEntity>
+          </UiEntity> 
 
           <Label
             value="Do you want to proceed?"
@@ -181,7 +177,7 @@ export class StageUI {
                 borderRadius: 10
               }}
               onMouseDown={() => {
-                this.addPlayerToWhiteList(this.nameOrWallet)
+                this.addPlayerToWhiteList(this.playerSelected)
                 this.stageUiVisibility = false
               }}
             />
@@ -197,5 +193,10 @@ export class StageUI {
     } else {
       this.stageUiVisibility = false
     }
+  }
+
+  checkPlayerNameOnArray = (playerNumber: number): void => {
+    console.log('here', this.playerSelected)
+    this.playerSelected = this.gameController.playersOnScene.allPlayers[playerNumber].name
   }
 }
