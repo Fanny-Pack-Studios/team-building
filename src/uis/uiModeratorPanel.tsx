@@ -1,25 +1,27 @@
 import { Color4 } from '@dcl/sdk/math'
 import ReactEcs, { Label, UiEntity } from '@dcl/sdk/react-ecs'
-import { type UIController } from '../controllers/ui.controller'
+import { type GameController } from '../controllers/game.controller'
 
 export class ModeratorPanelUI {
-  uiController: UIController
   public panelUiVisibility: boolean = true
   private readonly icon: string = 'images/moderatormenu/moderator_tool_icon.png'
   public menuOpen: boolean = false
   public panel2Visible: boolean = false
-  constructor(uiController: UIController) {
-    this.uiController = uiController
+  public gameController: GameController
+  constructor(gameController: GameController) {
+    this.gameController = gameController
   }
 
   createPanelUi(): ReactEcs.JSX.Element | null {
-    if (this.uiController.canvasInfo === null) return null
+    if (this.gameController.uiController.canvasInfo === null) return null
     const uiScaleFactor =
-      (Math.min(this.uiController.canvasInfo.width, this.uiController.canvasInfo.height) / 1080) * 1.2
+      (Math.min(this.gameController.uiController.canvasInfo.width, this.gameController.uiController.canvasInfo.height) /
+        1080) *
+      1.2
     return (
       <UiEntity
         uiTransform={{
-          flexDirection: 'column',
+          flexDirection: 'column'
         }}
       >
         <UiEntity
@@ -27,8 +29,8 @@ export class ModeratorPanelUI {
             flexDirection: 'column',
             positionType: 'absolute',
             position: { top: '0%', left: '0%' },
-            width: this.uiController.canvasInfo.height * 0.25,
-            height: this.uiController.canvasInfo.height
+            width: this.gameController.uiController.canvasInfo.height * 0.25,
+            height: this.gameController.uiController.canvasInfo.height
           }}
         >
           <UiEntity
@@ -63,7 +65,7 @@ export class ModeratorPanelUI {
               texture: { src: 'https://i.postimg.cc/Ghxs5njT/teleport-tool-mainmenu-button1.png' }
             }}
             onMouseDown={() => {
-                this.uiController.kickUI.toggleVisibility()
+              this.gameController.kickUI.toggleVisibility()
             }}
           >
             {/* Text UI */}
@@ -73,7 +75,7 @@ export class ModeratorPanelUI {
                 position: { left: '100%', top: '8%' }
               }}
               value={' KICK PLAYER'}
-              fontSize={this.uiController.canvasInfo.height * 0.02}
+              fontSize={this.gameController.uiController.canvasInfo.height * 0.02}
               font="sans-serif"
               color={Color4.White()}
             />
@@ -93,8 +95,8 @@ export class ModeratorPanelUI {
               texture: { src: 'https://i.postimg.cc/N059F9vR/teleport-tool-mainmenu-button2.png' }
             }}
             onMouseDown={() => {
-                this.menuOpen = false
-                this.uiController.stageUI.toggleVisibility()
+              this.menuOpen = false
+              this.gameController.stageUI.toggleVisibility()
             }}
           >
             {/* Text UI */}
@@ -104,7 +106,7 @@ export class ModeratorPanelUI {
                 position: { left: '100%', top: '8%' }
               }}
               value={' GRANT STAGE ACCESS'}
-              fontSize={this.uiController.canvasInfo.height * 0.02}
+              fontSize={this.gameController.uiController.canvasInfo.height * 0.02}
               font="sans-serif"
               color={Color4.White()}
             />

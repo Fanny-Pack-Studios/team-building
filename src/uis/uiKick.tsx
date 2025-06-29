@@ -1,6 +1,6 @@
 import { movePlayerTo } from '~system/RestrictedActions'
 
-import ReactEcs, { Button, Input, Label, UiEntity } from '@dcl/sdk/react-ecs'
+import ReactEcs, { Button, Dropdown, Label, UiEntity } from '@dcl/sdk/react-ecs'
 import { Color4, Vector3 } from '@dcl/sdk/math'
 import { getPlayer } from '@dcl/sdk/src/players'
 import {
@@ -17,8 +17,8 @@ import {
 } from '@dcl/sdk/ecs'
 import { syncEntity } from '@dcl/sdk/network'
 import { SyncEntityEnumId } from '../syncEntities'
-import { type UIController } from '../controllers/ui.controller'
 import { getScaleFactor } from '../canvas/Canvas'
+import { type GameController } from '../controllers/game.controller'
 
 const JAIL_CENTER = Vector3.create(10.07, 10, 10.58) // Ajustá según tu escena
 
@@ -32,18 +32,18 @@ export const BannedComponent = engine.defineComponent('BannedComponent', {
 export class KickUI {
   public blackScreenVisibility: boolean = false
   public kickUiVisibility: boolean = false
-  public uiController: UIController
+  public gameController: GameController
   public bannedEntity = engine.addEntity()
   public collidersJailStructureN = engine.addEntity()
   public collidersJailStructureW = engine.addEntity()
   public collidersJailStructureE = engine.addEntity()
   public collidersJailStructureS = engine.addEntity()
-  nameOrWallet: string = ''
+  playerSelected: string = ''
   public collidersJailStructureFloor = engine.addEntity()
   public hideAvatarsArea = engine.addEntity()
 
-  constructor(uiController: UIController) {
-    this.uiController = uiController
+  constructor(gameController: GameController) {
+    this.gameController = gameController
     BannedComponent.create(this.bannedEntity)
     syncEntity(this.bannedEntity, [BannedComponent.componentId], SyncEntityEnumId.KICK)
     engine.addSystem(() => {
@@ -147,13 +147,13 @@ export class KickUI {
   }
 
   createBlackScreen(): ReactEcs.JSX.Element | null {
-    if (this.uiController.canvasInfo === null) return null
+    if (this.gameController.uiController.canvasInfo === null) return null
     return (
       <UiEntity
         uiTransform={{
           flexDirection: 'row',
-          width: this.uiController.canvasInfo.width,
-          height: this.uiController.canvasInfo.height,
+          width: this.gameController.uiController.canvasInfo.width,
+          height: this.gameController.uiController.canvasInfo.height,
           alignItems: 'center',
           justifyContent: 'center',
           positionType: 'relative',
@@ -167,8 +167,8 @@ export class KickUI {
         <Label
           uiTransform={{
             positionType: 'relative',
-            width: this.uiController.canvasInfo.height * 0.5,
-            height: this.uiController.canvasInfo.height * 0.5,
+            width: this.gameController.uiController.canvasInfo.height * 0.5,
+            height: this.gameController.uiController.canvasInfo.height * 0.5,
             position: { bottom: '0%', left: '0%' }
           }}
           value={'YOU HAVE BEEN EXPULSED FROM THE SCENE'}
@@ -182,13 +182,13 @@ export class KickUI {
   }
 
   createKickUi(): ReactEcs.JSX.Element | null {
-    if (this.uiController.canvasInfo === null) return null
+    if (this.gameController.uiController.canvasInfo === null) return null
     return (
       <UiEntity
         uiTransform={{
           flexDirection: 'column',
-          width: this.uiController.canvasInfo.width,
-          height: this.uiController.canvasInfo.height,
+          width: this.gameController.uiController.canvasInfo.width,
+          height: this.gameController.uiController.canvasInfo.height,
           justifyContent: 'center',
           alignItems: 'center',
           display: this.kickUiVisibility ? 'flex' : 'none'
@@ -207,7 +207,7 @@ export class KickUI {
           uiBackground={{ color: Color4.White() }}
         >
           <Label
-            value="Enter NAME/WALLET to kick"
+            value="Select Player to kick from the Scene"
             fontSize={24 * getScaleFactor()}
             color={Color4.Black()}
             uiTransform={{
@@ -226,18 +226,13 @@ export class KickUI {
               justifyContent: 'center'
             }}
           >
-            <Input
-              onChange={(value) => {
-                this.nameOrWallet = value
-              }}
-              fontSize={22 * getScaleFactor()}
-              placeholder={''}
-              placeholderColor={Color4.Black()}
+            <Dropdown
+              options={this.gameController.playersOnScene.allPlayers.map((player) => player.name)}
               uiTransform={{
-                width: 300 * getScaleFactor(),
-                height: 50 * getScaleFactor(),
-                margin: '10px 0'
+                width: '50%',
+                height: '50%'
               }}
+              onChange={this.checkPlayerNameOnArray}
             />
           </UiEntity>
 
@@ -274,7 +269,7 @@ export class KickUI {
               onMouseDown={() => {
                 console.log('OPENING LINK')
                 this.kickUiVisibility = false
-                this.addPlayerToBanList(this.nameOrWallet)
+                this.addPlayerToBanList(this.playerSelected)
               }}
             />
           </UiEntity>
@@ -289,5 +284,10 @@ export class KickUI {
     } else {
       this.kickUiVisibility = false
     }
+  }
+
+  checkPlayerNameOnArray = (playerNumber: number): void => {
+    console.log('here', playerNumber)
+    this.playerSelected = this.gameController.playersOnScene.allPlayers[playerNumber].name
   }
 }
