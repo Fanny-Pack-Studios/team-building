@@ -72,7 +72,7 @@ export class ModeratorPanelUI {
           {this.isHost && (
             <MenuItem
               onMouseDown={() => {
-                this.gameController.uiController.kickUI.toggleVisibility()
+                this.gameController.kickUI.toggleVisibility()
               }}
               num={1}
               label=" KICK PLAYER"

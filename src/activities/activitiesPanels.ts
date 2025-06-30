@@ -133,7 +133,7 @@ export class PopupAttendeePanelAndResultsButton {
       return { option, count, percentage }
     })
 
-    this.gameController.uiController.resultsUI.setData({
+    this.gameController.resultsUI.setData({
       question: pollState.question,
       anonymous: pollState.anonymous,
       results,
@@ -145,6 +145,6 @@ export class PopupAttendeePanelAndResultsButton {
           }))
     })
 
-    this.gameController.uiController.resultsUI.openUI()
+    this.gameController.resultsUI.openUI()
   }
 }
