@@ -24,12 +24,7 @@ export class ModeratorPanelUI {
     waitForPlayerInfo()
       .then((player) => {
         this.isHost = this.hostsController.isHost(player)
-        if (this.isHost || this.hostsController.noHostExists()) {
-          console.log('Setting panel visibility to true')
-          this.panelUiVisibility = true
-        } else {
-          this.panelUiVisibility = false
-        }
+        this.panelUiVisibility = this.isHost || this.hostsController.noHostExists()
       })
       .catch((error) => {
         console.error('Error getting player info:', error)
