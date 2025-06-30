@@ -1,18 +1,18 @@
 import ReactEcs, { Label, UiEntity } from '@dcl/sdk/react-ecs'
 
 import { getScaleFactor } from '../canvas/Canvas'
-import { type UIController } from '../controllers/ui.controller'
 import { Color4 } from '@dcl/sdk/math'
+import { type GameController } from '../controllers/game.controller'
 
 export class OptionsUI {
   public optionsUiVisibility: boolean = false
-  public uiController: UIController
   public pollQuestion = 'Membrillo o batata'
   private options: string[] = []
   private onOption: ((option: string) => void) | null = null
 
-  constructor(uiController: UIController) {
-    this.uiController = uiController
+  public gameController: GameController
+  constructor(gameController: GameController) {
+    this.gameController = gameController
   }
 
   openUI(question: string, options: string[], onOption: (option: string) => void): void {
@@ -23,14 +23,14 @@ export class OptionsUI {
   }
 
   createUi(): ReactEcs.JSX.Element | null {
-    if (this.uiController.canvasInfo === null) return null
+    if (this.gameController.uiController.canvasInfo === null) return null
 
     return (
       <UiEntity
         uiTransform={{
           flexDirection: 'column',
-          width: this.uiController.canvasInfo.width,
-          height: this.uiController.canvasInfo.height,
+          width: this.gameController.uiController.canvasInfo.width,
+          height: this.gameController.uiController.canvasInfo.height,
           justifyContent: 'center',
           alignItems: 'center',
           display: this.optionsUiVisibility ? 'flex' : 'none',

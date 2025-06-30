@@ -1,22 +1,21 @@
 import ReactEcs, { Input, Label, UiEntity } from '@dcl/sdk/react-ecs'
 
 import { getScaleFactor } from '../canvas/Canvas'
-import { type UIController } from '../controllers/ui.controller'
 import { Color4 } from '@dcl/sdk/math'
 import { createPollEntity } from '../polls/pollEntity'
+import { type GameController } from '../controllers/game.controller'
 
 export class CreatePollUI {
   public createPollUiVisibility: boolean = false
-  public uiController: UIController
   public switchOn: boolean = false
   public switchOnTexture: string = 'images/createpollui/switchOn.png'
   public switchOffTexture: string = 'images/createpollui/switchOff.png'
   public switchTexture: string = this.switchOffTexture
   public questionTitle: string = ''
   public answers: string[] = ['', '']
-
-  constructor(uiController: UIController) {
-    this.uiController = uiController
+  public gameController: GameController
+  constructor(gameController: GameController) {
+    this.gameController = gameController
   }
 
   openUI(): void {
@@ -24,14 +23,14 @@ export class CreatePollUI {
   }
 
   createUi(): ReactEcs.JSX.Element | null {
-    if (this.uiController.canvasInfo === null) return null
+    if (this.gameController.uiController.canvasInfo === null) return null
 
     return (
       <UiEntity
         uiTransform={{
           flexDirection: 'column',
-          width: this.uiController.canvasInfo.width,
-          height: this.uiController.canvasInfo.height,
+          width: this.gameController.uiController.canvasInfo.width,
+          height: this.gameController.uiController.canvasInfo.height,
           justifyContent: 'center',
           alignItems: 'center',
           display: this.createPollUiVisibility ? 'flex' : 'none',
@@ -315,7 +314,7 @@ export class CreatePollUI {
 
     console.log('create')
     createPollEntity(this.questionTitle, validAnswers, this.switchOn)
-    this.uiController.gameController.popupAtendeePanelAndResultbutton.create()
+    this.gameController.uiController.gameController.popupAtendeePanelAndResultbutton.create()
     this.createPollUiVisibility = false
   }
   // TODO

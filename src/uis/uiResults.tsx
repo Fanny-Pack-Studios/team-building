@@ -2,18 +2,17 @@ import ReactEcs, { UiEntity, Label } from '@dcl/sdk/react-ecs'
 import { Color4 } from '@dcl/sdk/math'
 
 import { getScaleFactor } from '../canvas/Canvas'
-import { type UIController } from '../controllers/ui.controller'
+import { type GameController } from '../controllers/game.controller'
 
 export class ResultsUI {
   public resultsUiVisibility: boolean = false
-  public uiController: UIController
   private pollQuestion: string = ''
   private results: Array<{ option: string; percentage: number }> = []
   private isAnonymous: boolean = true
   private votes: Array<{ option: string; userId: string }> = []
-
-  constructor(uiController: UIController) {
-    this.uiController = uiController
+  public gameController: GameController
+  constructor(gameController: GameController) {
+    this.gameController = gameController
   }
 
   setData(data: {
@@ -39,14 +38,14 @@ export class ResultsUI {
   }
 
   createUi(): ReactEcs.JSX.Element | null {
-    if (this.uiController.canvasInfo === null) return null
+    if (this.gameController.uiController.canvasInfo === null) return null
 
     return (
       <UiEntity
         uiTransform={{
           flexDirection: 'column',
-          width: this.uiController.canvasInfo.width,
-          height: this.uiController.canvasInfo.height,
+          width: this.gameController.uiController.canvasInfo.width,
+          height: this.gameController.uiController.canvasInfo.height,
           justifyContent: 'center',
           alignItems: 'center',
           display: this.resultsUiVisibility ? 'flex' : 'none',

@@ -45,6 +45,6 @@ export class PollQuestion {
     options: string[] = ['Yeah', 'Nope'],
     onOption: (option: string) => void
   ): void {
-    this.gameController.uiController.createOptionUI.openUI(pollQuestion, options, onOption)
+    this.gameController.createOptionUI.openUI(pollQuestion, options, onOption)
   }
 }

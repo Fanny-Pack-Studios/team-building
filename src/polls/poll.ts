@@ -20,6 +20,6 @@ export class PollCreator {
   }
 
   createPollUi(): void {
-    this.gameController.uiController.createPollUI.openUI()
+    this.gameController.createPollUI.openUI()
   }
 }
