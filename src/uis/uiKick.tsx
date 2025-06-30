@@ -17,8 +17,8 @@ import {
 } from '@dcl/sdk/ecs'
 import { syncEntity } from '@dcl/sdk/network'
 import { SyncEntityEnumId } from '../syncEntities'
-import { type UIController } from '../controllers/ui.controller'
 import { getScaleFactor } from '../canvas/Canvas'
+import { type GameController } from '../controllers/game.controller'
 
 const JAIL_CENTER = Vector3.create(10.07, 10, 10.58) // Ajustá según tu escena
 
@@ -32,7 +32,7 @@ export const BannedComponent = engine.defineComponent('BannedComponent', {
 export class KickUI {
   public blackScreenVisibility: boolean = false
   public kickUiVisibility: boolean = false
-  public uiController: UIController
+  public gameController:GameController
   public bannedEntity = engine.addEntity()
   public collidersJailStructureN = engine.addEntity()
   public collidersJailStructureW = engine.addEntity()
@@ -42,8 +42,8 @@ export class KickUI {
   public collidersJailStructureFloor = engine.addEntity()
   public hideAvatarsArea = engine.addEntity()
 
-  constructor(uiController: UIController) {
-    this.uiController = uiController
+  constructor(gameController:GameController) {
+    this.gameController = gameController
     BannedComponent.create(this.bannedEntity)
     syncEntity(this.bannedEntity, [BannedComponent.componentId], SyncEntityEnumId.KICK)
     engine.addSystem(() => {
@@ -147,13 +147,13 @@ export class KickUI {
   }
 
   createBlackScreen(): ReactEcs.JSX.Element | null {
-    if (this.uiController.canvasInfo === null) return null
+    if (this.gameController.uiController.canvasInfo === null) return null
     return (
       <UiEntity
         uiTransform={{
           flexDirection: 'row',
-          width: this.uiController.canvasInfo.width,
-          height: this.uiController.canvasInfo.height,
+          width: this.gameController.uiController.canvasInfo.width,
+          height: this.gameController.uiController.canvasInfo.height,
           alignItems: 'center',
           justifyContent: 'center',
           positionType: 'relative',
@@ -167,8 +167,8 @@ export class KickUI {
         <Label
           uiTransform={{
             positionType: 'relative',
-            width: this.uiController.canvasInfo.height * 0.5,
-            height: this.uiController.canvasInfo.height * 0.5,
+            width: this.gameController.uiController.canvasInfo.height * 0.5,
+            height: this.gameController.uiController.canvasInfo.height * 0.5,
             position: { bottom: '0%', left: '0%' }
           }}
           value={'YOU HAVE BEEN EXPULSED FROM THE SCENE'}
@@ -182,13 +182,13 @@ export class KickUI {
   }
 
   createKickUi(): ReactEcs.JSX.Element | null {
-    if (this.uiController.canvasInfo === null) return null
+    if (this.gameController.uiController.canvasInfo === null) return null
     return (
       <UiEntity
         uiTransform={{
           flexDirection: 'column',
-          width: this.uiController.canvasInfo.width,
-          height: this.uiController.canvasInfo.height,
+          width: this.gameController.uiController.canvasInfo.width,
+          height: this.gameController.uiController.canvasInfo.height,
           justifyContent: 'center',
           alignItems: 'center',
           display: this.kickUiVisibility ? 'flex' : 'none'

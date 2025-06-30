@@ -1,8 +1,8 @@
 import ReactEcs, { Label, UiEntity } from '@dcl/sdk/react-ecs'
 
 import { getScaleFactor } from '../canvas/Canvas'
-import { type UIController } from '../controllers/ui.controller'
 import { Color4 } from '@dcl/sdk/math'
+import { type GameController } from '../controllers/game.controller'
 
 const COLOR_INACTIVE = '#FFFFFFFF'
 const COLOR_HOVER = '#3F3B45'
@@ -10,14 +10,14 @@ const COLOR_SELECTED = '#3F3B45'
 
 export class ChooseActivityUI {
   public chooseActivityUiVisibility: boolean = false
-  public uiController: UIController
+  public gameController: GameController
   public buttonColorHover1: string = '#FFFFFFFF'
   public buttonColorHover2: string = '#FFFFFFFF'
   public buttonColorHover3: string = '#FFFFFFFF'
   public buttonColorHover4: string = '#FFFFFFFF'
   public buttonSelected: number = 0
-  constructor(uiController: UIController) {
-    this.uiController = uiController 
+  constructor(gameController: GameController) {
+    this.gameController = gameController
   }
 
   openUI(): void {
@@ -25,14 +25,14 @@ export class ChooseActivityUI {
   }
 
   createChooseActivityUi(): ReactEcs.JSX.Element | null {
-    if (this.uiController.canvasInfo === null) return null
+    if (this.gameController.uiController.canvasInfo === null) return null
 
     return (
       <UiEntity
         uiTransform={{
           flexDirection: 'column',
-          width: this.uiController.canvasInfo.width,
-          height: this.uiController.canvasInfo.height,
+          width: this.gameController.uiController.canvasInfo.width,
+          height: this.gameController.uiController.canvasInfo.height,
           justifyContent: 'center',
           alignItems: 'center',
           display: this.chooseActivityUiVisibility ? 'flex' : 'none',

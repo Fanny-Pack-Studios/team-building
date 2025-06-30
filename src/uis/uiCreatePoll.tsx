@@ -1,18 +1,21 @@
 import ReactEcs, { Input, Label, UiEntity } from '@dcl/sdk/react-ecs'
 
 import { getScaleFactor } from '../canvas/Canvas'
-import { type UIController } from '../controllers/ui.controller'
 import { Color4 } from '@dcl/sdk/math'
+import { createPollEntity } from '../polls/pollEntity'
+import { type GameController } from '../controllers/game.controller'
 
 export class CreatePollUI {
   public createPollUiVisibility: boolean = false
-  public uiController: UIController
   public switchOn: boolean = false
   public switchOnTexture: string = 'images/createpollui/switchOn.png'
   public switchOffTexture: string = 'images/createpollui/switchOff.png'
   public switchTexture: string = this.switchOffTexture
-  constructor(uiController: UIController) {
-    this.uiController = uiController
+  public questionTitle: string = ''
+  public answers: string[] = ['', '']
+  public gameController: GameController
+  constructor(gameController: GameController) {
+    this.gameController = gameController
   }
 
   openUI(): void {
@@ -20,14 +23,14 @@ export class CreatePollUI {
   }
 
   createUi(): ReactEcs.JSX.Element | null {
-    if (this.uiController.canvasInfo === null) return null
+    if (this.gameController.uiController.canvasInfo === null) return null
 
     return (
       <UiEntity
         uiTransform={{
           flexDirection: 'column',
-          width: this.uiController.canvasInfo.width,
-          height: this.uiController.canvasInfo.height,
+          width: this.gameController.uiController.canvasInfo.width,
+          height: this.gameController.uiController.canvasInfo.height,
           justifyContent: 'center',
           alignItems: 'center',
           display: this.createPollUiVisibility ? 'flex' : 'none',
@@ -124,7 +127,9 @@ export class CreatePollUI {
             }}
           >
             <Input
-              onChange={(value) => {}}
+              onChange={(value) => {
+                this.questionTitle = value
+              }}
               fontSize={17 * getScaleFactor()}
               placeholder={'Question Title'}
               placeholderColor={Color4.Gray()}
@@ -167,7 +172,9 @@ export class CreatePollUI {
             }}
           >
             <Input
-              onChange={(value) => {}}
+              onChange={(value) => {
+                this.answers[0] = value
+              }}
               fontSize={17 * getScaleFactor()}
               placeholder={'Option 1'}
               placeholderColor={Color4.Gray()}
@@ -196,7 +203,9 @@ export class CreatePollUI {
             }}
           >
             <Input
-              onChange={(value) => {}}
+              onChange={(value) => {
+                this.answers[1] = value
+              }}
               fontSize={17 * getScaleFactor()}
               placeholder={'Option 2'}
               placeholderColor={Color4.Gray()}
@@ -281,6 +290,9 @@ export class CreatePollUI {
                 textureMode: 'stretch',
                 texture: { src: 'images/createpollui/createButton.png' }
               }}
+              onMouseDown={() => {
+                this.create()
+              }}
             ></UiEntity>
           </UiEntity>
         </UiEntity>
@@ -291,5 +303,56 @@ export class CreatePollUI {
   toggleSwitcher(): void {
     this.switchOn = !this.switchOn
     this.switchTexture = this.switchOn ? this.switchOnTexture : this.switchOffTexture
+  }
+
+  create(): void {
+    const validAnswers = this.answers.filter((a) => a.trim() !== '')
+    if (this.questionTitle.trim() === '' || validAnswers.length < 2) {
+      console.log('Poll requires a title and at least 2 answers.')
+      return
+    }
+
+    console.log('create')
+    createPollEntity(this.questionTitle, validAnswers, this.switchOn)
+    this.gameController.uiController.gameController.popupAtendeePanelAndResultbutton.create()
+    this.createPollUiVisibility = false
+  }
+  // TODO
+
+  renderAnswerInputs(): ReactEcs.JSX.Element[] {
+    return this.answers.map((answer, index) => (
+      <UiEntity
+        key={index}
+        uiTransform={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'center',
+          positionType: 'relative',
+          width: 252 * getScaleFactor(),
+          height: 56 * getScaleFactor(),
+          margin: { top: '2%' }
+        }}
+        uiBackground={{
+          textureMode: 'stretch',
+          texture: { src: 'images/createpollui/answer.png' }
+        }}
+      >
+        <Input
+          onChange={(value) => {
+            this.answers[index] = value
+          }}
+          fontSize={17 * getScaleFactor()}
+          placeholder={`Option ${index + 1}`}
+          placeholderColor={Color4.Gray()}
+          uiTransform={{
+            width: '94%',
+            height: '72%',
+            positionType: 'absolute',
+            position: { top: '0%', left: '3%' }
+          }}
+          uiBackground={{ color: Color4.Clear() }}
+        />
+      </UiEntity>
+    ))
   }
 }
