@@ -52,12 +52,12 @@ export class StageUI {
   checkPlayerAccess(hosts: string[] | undefined): void {
     waitForPlayerInfo()
       .then((player) => {
-        const isHost = this.hostsController.isHost(player, hosts)
+        const isHost = this.hostsController.isHost(player.userId, hosts)
         const noHosts = hosts == null || hosts.length === 0
 
         if (noHosts || isHost) {
           this.unlockAccessToStage()
-          if (this.hostsController.isHost(player, hosts)) {
+          if (this.hostsController.isHost(player.userId, hosts)) {
             this.addTargetToHost()
           }
         } else {

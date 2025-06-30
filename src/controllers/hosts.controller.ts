@@ -15,8 +15,8 @@ export class HostsController {
     syncEntity(this.hostEntity, [HostComponent.componentId], SyncEntityEnumId.HOSTS)
   }
 
-  isHost(playerData: { userId: string; name: string }, hosts: string[] = this.getHosts()): boolean {
-    return hosts.some((host) => playerData.name.toLowerCase() === host || playerData.userId.toLowerCase() === host)
+  isHost(userId: string, hosts: string[] = this.getHosts()): boolean {
+    return hosts.some((host) => userId.toLowerCase() === host.toLowerCase())
   }
 
   getHosts(): string[] {

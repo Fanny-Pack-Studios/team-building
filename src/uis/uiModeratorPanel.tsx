@@ -23,7 +23,7 @@ export class ModeratorPanelUI {
   updatePanel(): void {
     waitForPlayerInfo()
       .then((player) => {
-        this.isHost = this.hostsController.isHost(player)
+        this.isHost = this.hostsController.isHost(player.userId)
         this.panelUiVisibility = this.isHost || this.hostsController.noHostExists()
       })
       .catch((error) => {
