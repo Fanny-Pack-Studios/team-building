@@ -1,7 +1,7 @@
 import { engine, type Entity, Schemas } from '@dcl/sdk/ecs'
 import { syncEntity } from '@dcl/sdk/network'
 import { SyncEntityEnumId } from '../syncEntities'
-import { waitForPlayerInfo } from '../utils'
+import { withPlayerInfo } from '../utils'
 
 export const HostComponent = engine.defineComponent('HostComponent', {
   hosts: Schemas.Array(Schemas.String)
@@ -38,15 +38,18 @@ export class HostsController {
   }
 
   claimHost(): void {
-    waitForPlayerInfo()
-      .then((player) => {
-        if (this.noHostExists()) {
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-          this.addHost(player.userId)
-        }
-      })
-      .catch((err) => {
-        console.error('Could not get current player info', err)
-      })
+    withPlayerInfo((player) => {
+      if (this.noHostExists()) {
+        this.addHost(player.userId)
+      }
+    })
+  }
+
+  removeHost(host: string): void {
+    const mutableHosts = HostComponent.getMutable(this.hostEntity).hosts
+    const index = mutableHosts.indexOf(host)
+    if (index !== -1) {
+      mutableHosts.splice(index, 1)
+    }
   }
 }

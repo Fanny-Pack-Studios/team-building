@@ -25,7 +25,9 @@ export function generatePollId(): string {
   return `poll_${timestamp}_${random}`
 }
 
-export async function waitForPlayerInfo(timeout: number = 10): Promise<NonNullable<ReturnType<typeof getPlayer>>> {
+type PlayerInfo = NonNullable<ReturnType<typeof getPlayer>>
+
+export async function waitForPlayerInfo(timeout: number = 10): Promise<PlayerInfo> {
   const playerInfo = getPlayer()
   return await new Promise((resolve, reject) => {
     if (playerInfo != null) {
@@ -48,4 +50,12 @@ export async function waitForPlayerInfo(timeout: number = 10): Promise<NonNullab
       engine.addSystem(systemFn)
     }
   })
+}
+
+export function withPlayerInfo(cb: (playerInfo: PlayerInfo) => void): void {
+  waitForPlayerInfo()
+    .then(cb)
+    .catch((err) => {
+      console.error('Error getting current player info ', err)
+    })
 }
