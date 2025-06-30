@@ -4,7 +4,6 @@ import { getScaleFactor } from '../canvas/Canvas'
 import { type UIController } from '../controllers/ui.controller'
 import { Color4 } from '@dcl/sdk/math'
 import { createPollEntity } from '../polls/pollEntity'
-import { popupAttendeePanelAndResultsButton } from '../activities/activitiesPanels'
 
 export class CreatePollUI {
   public createPollUiVisibility: boolean = false
@@ -13,8 +12,8 @@ export class CreatePollUI {
   public switchOnTexture: string = 'images/createpollui/switchOn.png'
   public switchOffTexture: string = 'images/createpollui/switchOff.png'
   public switchTexture: string = this.switchOffTexture
-  private readonly questionTitle: string = ''
-  // private readonly validAnswers: () => string[] = () => answers.filter((answer) => answer.trim() !== '')
+  public questionTitle: string = ''
+  public answers: string[] = ['', '']
 
   constructor(uiController: UIController) {
     this.uiController = uiController
@@ -129,7 +128,9 @@ export class CreatePollUI {
             }}
           >
             <Input
-              onChange={(value) => {}}
+              onChange={(value) => {
+                this.questionTitle = value
+              }}
               fontSize={17 * getScaleFactor()}
               placeholder={'Question Title'}
               placeholderColor={Color4.Gray()}
@@ -172,7 +173,9 @@ export class CreatePollUI {
             }}
           >
             <Input
-              onChange={(value) => {}}
+              onChange={(value) => {
+                this.answers[0] = value
+              }}
               fontSize={17 * getScaleFactor()}
               placeholder={'Option 1'}
               placeholderColor={Color4.Gray()}
@@ -201,7 +204,9 @@ export class CreatePollUI {
             }}
           >
             <Input
-              onChange={(value) => {}}
+              onChange={(value) => {
+                this.answers[1] = value
+              }}
               fontSize={17 * getScaleFactor()}
               placeholder={'Option 2'}
               placeholderColor={Color4.Gray()}
@@ -302,9 +307,53 @@ export class CreatePollUI {
   }
 
   create(): void {
+    const validAnswers = this.answers.filter((a) => a.trim() !== '')
+    if (this.questionTitle.trim() === '' || validAnswers.length < 2) {
+      console.log('Poll requires a title and at least 2 answers.')
+      return
+    }
+
     console.log('create')
-    createPollEntity('Membirllo o batata?', ['membrillo', 'batata'], false)
-    popupAttendeePanelAndResultsButton()
+    createPollEntity(this.questionTitle, validAnswers, this.switchOn)
+    this.uiController.gameController.popupAtendeePanelAndResultbutton.create()
     this.createPollUiVisibility = false
+  }
+  // TODO
+
+  renderAnswerInputs(): ReactEcs.JSX.Element[] {
+    return this.answers.map((answer, index) => (
+      <UiEntity
+        key={index}
+        uiTransform={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'center',
+          positionType: 'relative',
+          width: 252 * getScaleFactor(),
+          height: 56 * getScaleFactor(),
+          margin: { top: '2%' }
+        }}
+        uiBackground={{
+          textureMode: 'stretch',
+          texture: { src: 'images/createpollui/answer.png' }
+        }}
+      >
+        <Input
+          onChange={(value) => {
+            this.answers[index] = value
+          }}
+          fontSize={17 * getScaleFactor()}
+          placeholder={`Option ${index + 1}`}
+          placeholderColor={Color4.Gray()}
+          uiTransform={{
+            width: '94%',
+            height: '72%',
+            positionType: 'absolute',
+            position: { top: '0%', left: '3%' }
+          }}
+          uiBackground={{ color: Color4.Clear() }}
+        />
+      </UiEntity>
+    ))
   }
 }

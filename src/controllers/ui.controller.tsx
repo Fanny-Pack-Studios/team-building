@@ -14,6 +14,7 @@ import { type GameController } from './game.controller'
 
 export class UIController {
   public canvasInfo = UiCanvasInformation.getOrNull(engine.RootEntity)
+  public gameController: GameController
   public kickUI = new KickUI(this)
   public stageUI = new StageUI(this)
   public panelUI = new ModeratorPanelUI(this)
@@ -23,6 +24,7 @@ export class UIController {
   public resultsUI = new ResultsUI(this)
   constructor(gameController: GameController) {
     ReactEcsRenderer.setUiRenderer(this.render.bind(this))
+    this.gameController = gameController
   }
 
   start(): void {

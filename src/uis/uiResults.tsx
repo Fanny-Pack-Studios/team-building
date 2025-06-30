@@ -243,7 +243,7 @@ export class ResultsUI {
               height: 60 * getScaleFactor(),
               alignContent: 'center',
               position: { bottom: '0%' },
-              margin: {top:'2%'}
+              margin: { top: '2%' }
             }}
             value={`This poll is anonymus, voter \n identities are hidden.`}
             fontSize={12 * getScaleFactor()}
