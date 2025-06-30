@@ -1,18 +1,41 @@
-import ReactEcs, { Label, UiEntity } from '@dcl/sdk/react-ecs'
+import ReactEcs, { UiEntity, Label } from '@dcl/sdk/react-ecs'
+import { Color4 } from '@dcl/sdk/math'
 
 import { getScaleFactor } from '../canvas/Canvas'
 import { type UIController } from '../controllers/ui.controller'
-import { Color4 } from '@dcl/sdk/math'
 
 export class ResultsUI {
   public resultsUiVisibility: boolean = false
   public uiController: UIController
+  private pollQuestion: string = ''
+  private results: Array<{ option: string; percentage: number }> = []
+  private isAnonymous: boolean = true
+  private votes: Array<{ option: string; userId: string }> = []
+
   constructor(uiController: UIController) {
     this.uiController = uiController
   }
 
+  setData(data: {
+    question: string
+    anonymous: boolean
+    results: Array<{ option: string; percentage: number }>
+    votes?: Array<{ option: string; userId: string }>
+  }): void {
+    this.pollQuestion = data.question
+    this.results = data.results
+    this.isAnonymous = data.anonymous
+    console.log('is anonymous?', this.isAnonymous)
+    this.votes = data.votes ?? []
+    this.resultsUiVisibility = true
+  }
+
   openUI(): void {
     this.resultsUiVisibility = true
+  }
+
+  closeUI(): void {
+    this.resultsUiVisibility = false
   }
 
   createUi(): ReactEcs.JSX.Element | null {
@@ -41,9 +64,7 @@ export class ResultsUI {
           }}
           uiBackground={{
             textureMode: 'stretch',
-            texture: {
-              src: 'images/resultsui/background.png'
-            }
+            texture: { src: 'images/resultsui/background.png' }
           }}
         >
           <Label
@@ -53,12 +74,13 @@ export class ResultsUI {
               alignContent: 'center',
               position: { top: '5%' }
             }}
-            value={`<b>PASTAFROLA: </b>`} // Agregar valor real de la Pregunta en UI anterior
+            value={`<b>${this.pollQuestion}</b>`}
             fontSize={18 * getScaleFactor()}
             font="sans-serif"
             color={Color4.White()}
             textAlign="middle-center"
           />
+
           <UiEntity
             uiTransform={{
               flexDirection: 'row',
@@ -74,183 +96,70 @@ export class ResultsUI {
               texture: { src: 'images/activitiesui/exit.png' }
             }}
             onMouseDown={() => {
-              this.resultsUiVisibility = false
+              this.closeUI()
             }}
-          ></UiEntity>
-          <UiEntity
-            uiTransform={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              positionType: 'relative',
-              width: 236 * getScaleFactor(),
-              height: 40 * getScaleFactor(),
-              margin: { top: '15%' }
-            }}
-            uiBackground={{
-              textureMode: 'stretch',
-              texture: { src: 'images/resultsui/results1.png' }
-            }}
-          >
-            <Label
-              uiTransform={{
-                position: { left: '0%' },
-                alignContent: 'flex-start',
-                positionType: 'relative'
-              }}
-              value={`<b>OPTION 1 </b>`} // Agregar valor real de la Pregunta en UI anterior
-              fontSize={12 * getScaleFactor()}
-              font="sans-serif"
-              color={Color4.White()}
-              textAlign="middle-center"
-            />
-            <Label
-              uiTransform={{
-                position: { right: '0%' },
-                alignContent: 'flex-end',
-                positionType: 'relative'
-              }}
-              value={`10%`} // Agregar valor real de la Pregunta en UI anterior
-              fontSize={12 * getScaleFactor()}
-              font="sans-serif"
-              color={Color4.White()}
-              textAlign="middle-center"
-            />
-          </UiEntity>
-          <UiEntity
-            uiTransform={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              positionType: 'relative',
-              width: 236 * getScaleFactor(),
-              height: 40 * getScaleFactor(),
-              margin: { top: '10%' }
-            }}
-            uiBackground={{
-              textureMode: 'stretch',
-              texture: { src: 'images/resultsui/results1.png' }
-            }}
-          >
-            <Label
-              uiTransform={{
-                position: { left: '0%' },
-                alignContent: 'flex-start',
-                positionType: 'relative'
-              }}
-              value={`<b>OPTION 2 </b>`} // Agregar valor real de la Pregunta en UI anterior
-              fontSize={12 * getScaleFactor()}
-              font="sans-serif"
-              color={Color4.White()}
-              textAlign="middle-center"
-            />
-            <Label
-              uiTransform={{
-                position: { right: '0%' },
-                alignContent: 'flex-end',
-                positionType: 'relative'
-              }}
-              value={`10%`} // Agregar valor real de la Pregunta en UI anterior
-              fontSize={12 * getScaleFactor()}
-              font="sans-serif"
-              color={Color4.White()}
-              textAlign="middle-center"
-            />
-          </UiEntity>
-          <UiEntity
-            uiTransform={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              positionType: 'relative',
-              width: 236 * getScaleFactor(),
-              height: 40 * getScaleFactor(),
-              margin: { top: '10%' }
-            }}
-            uiBackground={{
-              textureMode: 'stretch',
-              texture: { src: 'images/resultsui/results1.png' }
-            }}
-          >
-            <Label
-              uiTransform={{
-                position: { left: '0%' },
-                alignContent: 'flex-start',
-                positionType: 'relative'
-              }}
-              value={`<b>OPTION 3 </b>`} // Agregar valor real de la Pregunta en UI anterior
-              fontSize={12 * getScaleFactor()}
-              font="sans-serif"
-              color={Color4.White()}
-              textAlign="middle-center"
-            />
-            <Label
-              uiTransform={{
-                position: { right: '0%' },
-                alignContent: 'flex-end',
-                positionType: 'relative'
-              }}
-              value={`10%`} // Agregar valor real de la Pregunta en UI anterior
-              fontSize={12 * getScaleFactor()}
-              font="sans-serif"
-              color={Color4.White()}
-              textAlign="middle-center"
-            />
-          </UiEntity>
-          <UiEntity
-            uiTransform={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              positionType: 'relative',
-              width: 236 * getScaleFactor(),
-              height: 40 * getScaleFactor(),
-              margin: { top: '10%' }
-            }}
-            uiBackground={{
-              textureMode: 'stretch',
-              texture: { src: 'images/resultsui/results1.png' }
-            }}
-          >
-            <Label
-              uiTransform={{
-                position: { left: '0%' },
-                alignContent: 'flex-start',
-                positionType: 'relative'
-              }}
-              value={`<b>OPTION 4 </b>`} // Agregar valor real de la Pregunta en UI anterior
-              fontSize={12 * getScaleFactor()}
-              font="sans-serif"
-              color={Color4.White()}
-              textAlign="middle-center"
-            />
-            <Label
-              uiTransform={{
-                position: { right: '0%' },
-                alignContent: 'flex-end',
-                positionType: 'relative'
-              }}
-              value={`10%`} // Agregar valor real de la Pregunta en UI anterior
-              fontSize={12 * getScaleFactor()}
-              font="sans-serif"
-              color={Color4.White()}
-              textAlign="middle-center"
-            />
-          </UiEntity>
-          <Label
-            uiTransform={{
-              width: '100%',
-              height: 60 * getScaleFactor(),
-              alignContent: 'center',
-              position: { bottom: '0%' },
-              margin: { top: '2%' }
-            }}
-            value={`This poll is anonymus, voter \n identities are hidden.`}
-            fontSize={12 * getScaleFactor()}
-            font="sans-serif"
-            color={Color4.White()}
-            textAlign="middle-center"
           />
+
+          {this.results.map((result, index) => (
+            <UiEntity
+              key={index}
+              uiTransform={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                positionType: 'relative',
+                width: 236 * getScaleFactor(),
+                height: 40 * getScaleFactor(),
+                margin: { top: index === 0 ? '15%' : '10%' }
+              }}
+              uiBackground={{
+                textureMode: 'stretch',
+                texture: { src: 'images/resultsui/results1.png' }
+              }}
+            >
+              <Label
+                uiTransform={{
+                  position: { left: '0%' },
+                  alignContent: 'flex-start',
+                  positionType: 'relative'
+                }}
+                value={`<b>${result.option}</b>`}
+                fontSize={12 * getScaleFactor()}
+                font="sans-serif"
+                color={Color4.White()}
+                textAlign="middle-center"
+              />
+              <Label
+                uiTransform={{
+                  position: { right: '0%' },
+                  alignContent: 'flex-end',
+                  positionType: 'relative'
+                }}
+                value={`${result.percentage}%`}
+                fontSize={12 * getScaleFactor()}
+                font="sans-serif"
+                color={Color4.White()}
+                textAlign="middle-center"
+              />
+            </UiEntity>
+          ))}
+
+          {this.isAnonymous && (
+            <Label
+              uiTransform={{
+                width: '100%',
+                height: 60 * getScaleFactor(),
+                alignContent: 'center',
+                position: { bottom: '0%' },
+                margin: { top: '2%' }
+              }}
+              value={`This poll is anonymous, voter \n identities are hidden.`}
+              fontSize={12 * getScaleFactor()}
+              font="sans-serif"
+              color={Color4.White()}
+              textAlign="middle-center"
+            />
+          )}
         </UiEntity>
       </UiEntity>
     )
