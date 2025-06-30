@@ -17,7 +17,7 @@ export class ChooseActivityUI {
   public buttonColorHover4: string = '#FFFFFFFF'
   public buttonSelected: number = 0
   constructor(uiController: UIController) {
-    this.uiController = uiController 
+    this.uiController = uiController
   }
 
   openUI(): void {

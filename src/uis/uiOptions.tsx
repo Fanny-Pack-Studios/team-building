@@ -5,10 +5,12 @@ import { type UIController } from '../controllers/ui.controller'
 import { Color4 } from '@dcl/sdk/math'
 
 export class OptionsUI {
-  public optionsUiVisibility: boolean = false
+  public optionsUiVisibility: boolean = true
   public uiController: UIController
   public pollQuestion = 'Membrillo o batata'
   private options: string[] = []
+  private hoveredIndex: number | null = null
+  private selectedIndex: number | null = null
   private onOption: ((option: string) => void) | null = null
 
   constructor(uiController: UIController) {
@@ -98,15 +100,22 @@ export class OptionsUI {
                 margin: { top: index === 0 ? '20%' : '0%' }
               }}
               uiBackground={{
+                color: this.getOptionColor(index),
                 textureMode: 'stretch',
                 texture: {
                   src: `images/optionsui/option${index + 1}Background.png`
                 }
               }}
+              onMouseEnter={() => {
+                this.hoveredIndex = index
+              }}
+              onMouseLeave={() => {
+                this.hoveredIndex = null
+              }}
               onMouseDown={() => {
+                this.selectedIndex = index // ← guardar cuál fue seleccionada
                 if (this.onOption != null) {
                   this.onOption(option)
-                  this.optionsUiVisibility = false
                 }
               }}
             >
@@ -139,9 +148,19 @@ export class OptionsUI {
               textureMode: 'stretch',
               texture: { src: 'images/optionsui/next.png' }
             }}
+            onMouseDown={() => {
+              console.log('here')
+              this.optionsUiVisibility = false
+            }}
           ></UiEntity>
         </UiEntity>
       </UiEntity>
     )
+  }
+
+  private getOptionColor(index: number): Color4 {
+    if (this.selectedIndex === index) return Color4.create(0.25, 0.23, 0.27, 1) // #3F3B45
+    if (this.hoveredIndex === index) return Color4.create(0.53, 0.53, 0.53, 1) // #888888
+    return Color4.White()
   }
 }
