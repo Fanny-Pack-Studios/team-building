@@ -1,25 +1,46 @@
 import { Color4 } from '@dcl/sdk/math'
 import ReactEcs, { Label, UiEntity } from '@dcl/sdk/react-ecs'
 import { type UIController } from '../controllers/ui.controller'
-
+import { type HostsController } from '../controllers/hosts.controller'
+import { waitForPlayerInfo } from '../utils'
 export class ModeratorPanelUI {
-  uiController: UIController
-  public panelUiVisibility: boolean = true
+  public panelUiVisibility: boolean = false
   private readonly icon: string = 'images/moderatormenu/moderator_tool_icon.png'
   public menuOpen: boolean = false
   public panel2Visible: boolean = false
-  constructor(uiController: UIController) {
-    this.uiController = uiController
+  private isHost: boolean = false
+  constructor(
+    private readonly uiController: UIController,
+    private readonly hostsController: HostsController
+  ) {
+    hostsController.onChange(() => {
+      this.updatePanel()
+    })
+
+    this.updatePanel()
+  }
+
+  updatePanel(): void {
+    waitForPlayerInfo()
+      .then((player) => {
+        this.isHost = this.hostsController.isHost(player.userId)
+        this.panelUiVisibility = this.isHost || this.hostsController.noHostExists()
+      })
+      .catch((error) => {
+        console.error('Error getting player info:', error)
+        this.panelUiVisibility = false
+      })
   }
 
   createPanelUi(): ReactEcs.JSX.Element | null {
     if (this.uiController.canvasInfo === null) return null
     const uiScaleFactor =
       (Math.min(this.uiController.canvasInfo.width, this.uiController.canvasInfo.height) / 1080) * 1.2
+
     return (
       <UiEntity
         uiTransform={{
-          flexDirection: 'column',
+          flexDirection: 'column'
         }}
       >
         <UiEntity
@@ -48,67 +69,39 @@ export class ModeratorPanelUI {
               this.toggleMenu()
             }}
           ></UiEntity>
-          <UiEntity
-            uiTransform={{
-              flexDirection: 'row',
-              width: '18%',
-              height: '4.8%',
-              justifyContent: 'flex-end',
-              positionType: 'absolute',
-              position: { top: '38%', left: '20%' },
-              display: this.panel2Visible ? 'flex' : 'none'
-            }}
-            uiBackground={{
-              textureMode: 'stretch',
-              texture: { src: 'https://i.postimg.cc/Ghxs5njT/teleport-tool-mainmenu-button1.png' }
-            }}
-            onMouseDown={() => {
+          {this.isHost && (
+            <MenuItem
+              onMouseDown={() => {
                 this.uiController.kickUI.toggleVisibility()
-            }}
-          >
-            {/* Text UI */}
-            <Label
-              uiTransform={{
-                positionType: 'absolute',
-                position: { left: '100%', top: '8%' }
               }}
-              value={' KICK PLAYER'}
-              fontSize={this.uiController.canvasInfo.height * 0.02}
-              font="sans-serif"
-              color={Color4.White()}
+              num={1}
+              label=" KICK PLAYER"
+              panel2Visible={this.panel2Visible}
+              canvasHeight={this.uiController.canvasInfo.height}
             />
-          </UiEntity>
-          <UiEntity
-            uiTransform={{
-              flexDirection: 'row',
-              width: '18%',
-              height: '4.8%',
-              justifyContent: 'flex-end',
-              positionType: 'absolute',
-              position: { top: '44%', left: '20%' },
-              display: this.panel2Visible ? 'flex' : 'none'
-            }}
-            uiBackground={{
-              textureMode: 'stretch',
-              texture: { src: 'https://i.postimg.cc/N059F9vR/teleport-tool-mainmenu-button2.png' }
-            }}
-            onMouseDown={() => {
-                this.menuOpen = false
+          )}
+          {this.isHost && (
+            <MenuItem
+              onMouseDown={() => {
                 this.uiController.stageUI.toggleVisibility()
-            }}
-          >
-            {/* Text UI */}
-            <Label
-              uiTransform={{
-                positionType: 'absolute',
-                position: { left: '100%', top: '8%' }
               }}
-              value={' GRANT STAGE ACCESS'}
-              fontSize={this.uiController.canvasInfo.height * 0.02}
-              font="sans-serif"
-              color={Color4.White()}
+              num={2}
+              label=" GRANT STAGE ACCESS"
+              panel2Visible={this.panel2Visible}
+              canvasHeight={this.uiController.canvasInfo.height}
             />
-          </UiEntity>
+          )}
+          {this.hostsController.noHostExists() && (
+            <MenuItem
+              onMouseDown={() => {
+                this.hostsController.claimHost()
+              }}
+              num={1}
+              label=" CLAIM HOST"
+              panel2Visible={this.panel2Visible}
+              canvasHeight={this.uiController.canvasInfo.height}
+            />
+          )}
         </UiEntity>
       </UiEntity>
     )
@@ -123,4 +116,45 @@ export class ModeratorPanelUI {
       this.menuOpen = false
     }
   }
+}
+
+function MenuItem(props: {
+  num: number
+  label: string
+  onMouseDown: () => void
+  panel2Visible: boolean
+  canvasHeight: number
+}): ReactEcs.JSX.Element {
+  return (
+    <UiEntity
+      uiTransform={{
+        flexDirection: 'row',
+        width: '18%',
+        height: '4.8%',
+        justifyContent: 'flex-end',
+        positionType: 'absolute',
+        position: { top: `${38 + (props.num - 1) * 8}%`, left: '20%' },
+        display: props.panel2Visible ? 'flex' : 'none'
+      }}
+      uiBackground={{
+        textureMode: 'stretch',
+        texture: { src: `https://i.postimg.cc/Ghxs5njT/teleport-tool-mainmenu-button${props.num}.png` }
+      }}
+      onMouseDown={() => {
+        props.onMouseDown()
+      }}
+    >
+      {/* Text UI */}
+      <Label
+        uiTransform={{
+          positionType: 'absolute',
+          position: { left: '100%', top: '8%' }
+        }}
+        value={props.label}
+        fontSize={props.canvasHeight * 0.02}
+        font="sans-serif"
+        color={Color4.White()}
+      />
+    </UiEntity>
+  )
 }
