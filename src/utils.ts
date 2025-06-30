@@ -1,4 +1,4 @@
-import { Transform, engine } from '@dcl/sdk/ecs'
+import { type Entity, Transform, engine } from '@dcl/sdk/ecs'
 import { type Vector3 } from '@dcl/sdk/math'
 import { getPlayer } from '@dcl/sdk/src/players'
 
@@ -58,4 +58,21 @@ export function withPlayerInfo(cb: (playerInfo: PlayerInfo) => void): void {
     .catch((err) => {
       console.error('Error getting current player info ', err)
     })
+}
+
+export function inspectEntity(entity: Entity): Record<string, any> {
+  const componentsData: Record<string, any> = {}
+  for (const comp of engine.componentsIter()) {
+    if (comp.has(entity)) {
+      componentsData[comp.componentName] = comp.get(entity)
+    }
+  }
+
+  return componentsData
+}
+
+export function getComponentNames(entity: Entity): string[] {
+  return Array.from(engine.componentsIter())
+    .filter((it) => it.has(entity))
+    .map((it) => it.componentName)
 }
