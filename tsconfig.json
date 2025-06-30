@@ -5,6 +5,7 @@
     "resolveJsonModule": true
   },
   "include": [
+    "assets/**/*.ts",
     "src/**/*.ts",
     "src/**/*.tsx"
   ],

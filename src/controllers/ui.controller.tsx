@@ -16,12 +16,13 @@ export class UIController {
   public canvasInfo = UiCanvasInformation.getOrNull(engine.RootEntity)
   public gameController: GameController
   public kickUI = new KickUI(this)
-  public stageUI = new StageUI(this)
-  public panelUI = new ModeratorPanelUI(this)
+  public stageUI = new StageUI(this, this.gameController.hostsController)
+  public panelUI = new ModeratorPanelUI(this, this.gameController.hostsController)
   public activitiesUI = new ChooseActivityUI(this)
   public createPollUI = new CreatePollUI(this)
   public createOptionUI = new OptionsUI(this)
   public resultsUI = new ResultsUI(this)
+
   constructor(gameController: GameController) {
     ReactEcsRenderer.setUiRenderer(this.render.bind(this))
     this.gameController = gameController

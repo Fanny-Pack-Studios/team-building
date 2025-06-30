@@ -1,73 +1,95 @@
-import { Color4, Vector3 } from '@dcl/sdk/math'
-import { getScaleFactor } from '../canvas/Canvas'
-import ReactEcs, { Button, Input, Label, UiEntity } from '@dcl/sdk/react-ecs'
 import {
   Billboard,
   engine,
   GltfContainer,
   InputAction,
   inputSystem,
+  MeshCollider,
   PointerEventType,
-  Schemas,
   TextShape,
   Transform
 } from '@dcl/sdk/ecs'
-import { syncEntity } from '@dcl/sdk/network'
-import { getPlayer } from '@dcl/sdk/src/players'
-import { SyncEntityEnumId } from '../syncEntities'
+import { Color4, Vector3 } from '@dcl/sdk/math'
+import ReactEcs, { Button, Input, Label, UiEntity } from '@dcl/sdk/react-ecs'
+import { EntityNames } from '../../assets/scene/entity-names'
+import { getScaleFactor } from '../canvas/Canvas'
+import { type HostsController } from '../controllers/hosts.controller'
 import { type UIController } from '../controllers/ui.controller'
-
-export const ModeratorComponent = engine.defineComponent('ModeratorComponent', {
-  whiteList: Schemas.Array(Schemas.String)
-})
+import { waitForPlayerInfo } from '../utils'
 
 export class StageUI {
   public moderatorEntity = engine.addEntity()
-  public colliderStage = engine.getEntityOrNullByName('StageWall')
   public hostTarget = engine.addEntity()
   public hostTargetText = engine.addEntity()
-  private hostValidated: boolean = false
   public uiController: UIController
   public stageUiVisibility: boolean = false
   public nameOrWallet: string = ''
-  constructor(uiController: UIController) {
+
+  private readonly stageWall = engine.getEntityByName<EntityNames>(EntityNames.StageWall)
+  private readonly stageWallColliderComponent = MeshCollider.get(this.stageWall)
+
+  constructor(
+    uiController: UIController,
+    private readonly hostsController: HostsController
+  ) {
     this.uiController = uiController
-    ModeratorComponent.create(this.moderatorEntity)
-    syncEntity(this.moderatorEntity, [ModeratorComponent.componentId], SyncEntityEnumId.MODERATOR)
-    this.addPlayerToWhiteList('') // Agus User for testing - Replace it with host user from server
-    engine.addSystem(() => {
-      if (!this.hostValidated) {
-        this.checkPlayerAcces()
-      }
+
+    this.hostsController.onChange((newHosts) => {
+      console.log('Hosts changed: ', newHosts)
+      this.checkPlayerAccess(newHosts)
     })
+
     engine.addSystem(() => {
       const cmd = inputSystem.getInputCommand(InputAction.IA_ACTION_4, PointerEventType.PET_DOWN)
       if (cmd != null) {
         this.stageUiVisibility = true
       }
     })
+
+    this.checkPlayerAccess(this.hostsController.getHosts())
   }
 
-  addPlayerToWhiteList(playerId: string): void {
-    ModeratorComponent.getMutable(this.moderatorEntity).whiteList.push(playerId.toLowerCase())
-    this.checkPlayerAcces()
-  }
+  checkPlayerAccess(hosts: string[] | undefined): void {
+    waitForPlayerInfo()
+      .then((player) => {
+        const isHost = this.hostsController.isHost(player.userId, hosts)
+        const noHosts = hosts == null || hosts.length === 0
 
-  checkPlayerAcces(): void {
-    const player = getPlayer()
-    for (const accesId of ModeratorComponent.get(this.moderatorEntity).whiteList) {
-      if (accesId === player?.userId.toLowerCase() || accesId === player?.name.toLowerCase()) {
-        if (!this.hostValidated) {
-          this.hostValidated = true
-          if (this.colliderStage !== null) {
-            engine.removeEntity(this.colliderStage)
+        if (noHosts || isHost) {
+          this.unlockAccessToStage()
+          if (this.hostsController.isHost(player.userId, hosts)) {
+            this.addTargetToHost()
           }
-          this.addTargetToHost()
-          console.log('✔️ Host validado y collider removido para:', player.name)
+        } else {
+          this.lockAccessToStage()
         }
-        break
-      }
-    }
+      })
+      .catch((error) => {
+        console.error('Error checking player access:', error)
+        this.lockAccessToStage()
+      })
+  }
+
+  lockAccessToStage(): void {
+    console.log('Access to stage locked')
+    // Hack to ensure the collider is added
+    let i = 0
+    engine.addSystem(
+      () => {
+        MeshCollider.createOrReplace(this.stageWall, this.stageWallColliderComponent)
+        i++
+        if (i > 2) {
+          engine.removeSystem('hackToEnsureColliderIsAdded')
+        }
+      },
+      0,
+      'hackToEnsureColliderIsAdded'
+    )
+  }
+
+  unlockAccessToStage(): void {
+    console.log('Access to stage unlocked')
+    MeshCollider.deleteFrom(this.stageWall)
   }
 
   addTargetToHost(): void {
@@ -88,6 +110,10 @@ export class StageUI {
     })
     Billboard.create(this.hostTargetText)
     GltfContainer.create(this.hostTarget, { src: 'assets/models/target_position.glb' })
+  }
+
+  addAsHost(nameOrWallet: string): void {
+    this.hostsController.addHost(nameOrWallet)
   }
 
   createStageUi(): ReactEcs.JSX.Element | null {
@@ -181,7 +207,7 @@ export class StageUI {
                 borderRadius: 10
               }}
               onMouseDown={() => {
-                this.addPlayerToWhiteList(this.nameOrWallet)
+                this.addAsHost(this.nameOrWallet)
                 this.stageUiVisibility = false
               }}
             />
