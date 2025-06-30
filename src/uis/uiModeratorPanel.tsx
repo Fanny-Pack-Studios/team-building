@@ -1,19 +1,18 @@
 import { Color4 } from '@dcl/sdk/math'
 import ReactEcs, { Label, UiEntity } from '@dcl/sdk/react-ecs'
-import { type UIController } from '../controllers/ui.controller'
-import { type HostsController } from '../controllers/hosts.controller'
 import { waitForPlayerInfo } from '../utils'
+import { type GameController } from '../controllers/game.controller'
 export class ModeratorPanelUI {
   public panelUiVisibility: boolean = false
   private readonly icon: string = 'images/moderatormenu/moderator_tool_icon.png'
   public menuOpen: boolean = false
   public panel2Visible: boolean = false
   private isHost: boolean = false
-  constructor(
-    private readonly uiController: UIController,
-    private readonly hostsController: HostsController
+  public gameController: GameController
+  constructor(gameController: GameController
   ) {
-    hostsController.onChange(() => {
+    this.gameController = gameController
+    this.gameController.hostsController.onChange(() => {
       this.updatePanel()
     })
 
@@ -23,8 +22,9 @@ export class ModeratorPanelUI {
   updatePanel(): void {
     waitForPlayerInfo()
       .then((player) => {
-        this.isHost = this.hostsController.isHost(player.userId)
-        this.panelUiVisibility = this.isHost || this.hostsController.noHostExists()
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+        this.isHost = this.gameController.hostsController.isHost(player.userId)
+        this.panelUiVisibility = this.isHost || this.gameController.hostsController.noHostExists()
       })
       .catch((error) => {
         console.error('Error getting player info:', error)
@@ -33,9 +33,9 @@ export class ModeratorPanelUI {
   }
 
   createPanelUi(): ReactEcs.JSX.Element | null {
-    if (this.uiController.canvasInfo === null) return null
+    if (this.gameController.uiController.canvasInfo === null) return null
     const uiScaleFactor =
-      (Math.min(this.uiController.canvasInfo.width, this.uiController.canvasInfo.height) / 1080) * 1.2
+      (Math.min(this.gameController.uiController.canvasInfo.width, this.gameController.uiController.canvasInfo.height) / 1080) * 1.2
 
     return (
       <UiEntity
@@ -48,8 +48,8 @@ export class ModeratorPanelUI {
             flexDirection: 'column',
             positionType: 'absolute',
             position: { top: '0%', left: '0%' },
-            width: this.uiController.canvasInfo.height * 0.25,
-            height: this.uiController.canvasInfo.height
+            width: this.gameController.uiController.canvasInfo.height * 0.25,
+            height: this.gameController.uiController.canvasInfo.height
           }}
         >
           <UiEntity
@@ -72,34 +72,34 @@ export class ModeratorPanelUI {
           {this.isHost && (
             <MenuItem
               onMouseDown={() => {
-                this.uiController.kickUI.toggleVisibility()
+                this.gameController.uiController.kickUI.toggleVisibility()
               }}
               num={1}
               label=" KICK PLAYER"
               panel2Visible={this.panel2Visible}
-              canvasHeight={this.uiController.canvasInfo.height}
+              canvasHeight={this.gameController.uiController.canvasInfo.height}
             />
           )}
           {this.isHost && (
             <MenuItem
               onMouseDown={() => {
-                this.uiController.stageUI.toggleVisibility()
+                this.gameController.stageUI.toggleVisibility()
               }}
               num={2}
               label=" GRANT STAGE ACCESS"
               panel2Visible={this.panel2Visible}
-              canvasHeight={this.uiController.canvasInfo.height}
+              canvasHeight={this.gameController.uiController.canvasInfo.height}
             />
           )}
-          {this.hostsController.noHostExists() && (
+          {this.gameController.hostsController.noHostExists() && (
             <MenuItem
               onMouseDown={() => {
-                this.hostsController.claimHost()
+                this.gameController.hostsController.claimHost()
               }}
               num={1}
               label=" CLAIM HOST"
               panel2Visible={this.panel2Visible}
-              canvasHeight={this.uiController.canvasInfo.height}
+              canvasHeight={this.gameController.uiController.canvasInfo.height}
             />
           )}
         </UiEntity>

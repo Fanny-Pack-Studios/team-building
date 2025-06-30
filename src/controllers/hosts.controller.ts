@@ -41,6 +41,7 @@ export class HostsController {
     waitForPlayerInfo()
       .then((player) => {
         if (this.noHostExists()) {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
           this.addHost(player.userId)
         }
       })

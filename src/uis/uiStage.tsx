@@ -13,28 +13,24 @@ import { Color4, Vector3 } from '@dcl/sdk/math'
 import ReactEcs, { Button, Input, Label, UiEntity } from '@dcl/sdk/react-ecs'
 import { EntityNames } from '../../assets/scene/entity-names'
 import { getScaleFactor } from '../canvas/Canvas'
-import { type HostsController } from '../controllers/hosts.controller'
-import { type UIController } from '../controllers/ui.controller'
 import { waitForPlayerInfo } from '../utils'
+import { type GameController } from '../controllers/game.controller'
 
 export class StageUI {
   public moderatorEntity = engine.addEntity()
   public hostTarget = engine.addEntity()
   public hostTargetText = engine.addEntity()
-  public uiController: UIController
+  public gameController: GameController
   public stageUiVisibility: boolean = false
   public nameOrWallet: string = ''
 
   private readonly stageWall = engine.getEntityByName<EntityNames>(EntityNames.StageWall)
   private readonly stageWallColliderComponent = MeshCollider.get(this.stageWall)
 
-  constructor(
-    uiController: UIController,
-    private readonly hostsController: HostsController
-  ) {
-    this.uiController = uiController
+  constructor(gameController: GameController) {
+    this.gameController = gameController
 
-    this.hostsController.onChange((newHosts) => {
+    this.gameController.hostsController.onChange((newHosts) => {
       console.log('Hosts changed: ', newHosts)
       this.checkPlayerAccess(newHosts)
     })
@@ -46,18 +42,20 @@ export class StageUI {
       }
     })
 
-    this.checkPlayerAccess(this.hostsController.getHosts())
+    this.checkPlayerAccess(this.gameController.hostsController.getHosts())
   }
 
   checkPlayerAccess(hosts: string[] | undefined): void {
     waitForPlayerInfo()
       .then((player) => {
-        const isHost = this.hostsController.isHost(player.userId, hosts)
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+        const isHost = this.gameController.hostsController.isHost(player.userId, hosts)
         const noHosts = hosts == null || hosts.length === 0
 
         if (noHosts || isHost) {
           this.unlockAccessToStage()
-          if (this.hostsController.isHost(player.userId, hosts)) {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+          if (this.gameController.hostsController.isHost(player.userId, hosts)) {
             this.addTargetToHost()
           }
         } else {
@@ -113,17 +111,17 @@ export class StageUI {
   }
 
   addAsHost(nameOrWallet: string): void {
-    this.hostsController.addHost(nameOrWallet)
+    this.gameController.hostsController.addHost(nameOrWallet)
   }
 
   createStageUi(): ReactEcs.JSX.Element | null {
-    if (this.uiController.canvasInfo === null) return null
+    if (this.gameController.uiController.canvasInfo === null) return null
     return (
       <UiEntity
         uiTransform={{
           flexDirection: 'column',
-          width: this.uiController.canvasInfo.width,
-          height: this.uiController.canvasInfo.height,
+          width: this.gameController.uiController.canvasInfo.width,
+          height: this.gameController.uiController.canvasInfo.height,
           justifyContent: 'center',
           alignItems: 'center',
           display: this.stageUiVisibility ? 'flex' : 'none'
