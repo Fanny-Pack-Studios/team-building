@@ -10,7 +10,7 @@ import {
   Transform
 } from '@dcl/sdk/ecs'
 import { Color4, Vector3 } from '@dcl/sdk/math'
-import ReactEcs, { Button, Input, Label, UiEntity } from '@dcl/sdk/react-ecs'
+import ReactEcs, { Button, Dropdown, Label, UiEntity } from '@dcl/sdk/react-ecs'
 import { EntityNames } from '../../assets/scene/entity-names'
 import { getScaleFactor } from '../canvas/Canvas'
 import { waitForPlayerInfo } from '../utils'
@@ -22,7 +22,7 @@ export class StageUI {
   public hostTargetText = engine.addEntity()
   public gameController: GameController
   public stageUiVisibility: boolean = false
-  public nameOrWallet: string = ''
+  playerSelected: string = ''
 
   private readonly stageWall = engine.getEntityByName<EntityNames>(EntityNames.StageWall)
   private readonly stageWallColliderComponent = MeshCollider.get(this.stageWall)
@@ -159,18 +159,13 @@ export class StageUI {
               justifyContent: 'center'
             }}
           >
-            <Input
-              onChange={(value) => {
-                this.nameOrWallet = value
-              }}
-              fontSize={22 * getScaleFactor()}
-              placeholder={''}
-              placeholderColor={Color4.Black()}
+            <Dropdown
+              options={this.gameController.playersOnScene.allPlayers.map((player) => player)}
               uiTransform={{
-                width: 300 * getScaleFactor(),
-                height: 50 * getScaleFactor(),
-                margin: '10px 0'
+                width: '50%',
+                height: '50%'
               }}
+              onChange={this.checkPlayerNameOnArray}
             />
           </UiEntity>
 
@@ -205,7 +200,7 @@ export class StageUI {
                 borderRadius: 10
               }}
               onMouseDown={() => {
-                this.addAsHost(this.nameOrWallet)
+                this.addAsHost(this.playerSelected)
                 this.stageUiVisibility = false
               }}
             />
@@ -221,5 +216,10 @@ export class StageUI {
     } else {
       this.stageUiVisibility = false
     }
+  }
+
+    checkPlayerNameOnArray = (playerNumber: number): void => {
+    console.log('here', playerNumber)
+    this.playerSelected = this.gameController.playersOnScene.allPlayers[playerNumber]
   }
 }

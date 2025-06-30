@@ -1,6 +1,6 @@
 import { movePlayerTo } from '~system/RestrictedActions'
 
-import ReactEcs, { Button, Input, Label, UiEntity } from '@dcl/sdk/react-ecs'
+import ReactEcs, { Button, Dropdown, Label, UiEntity } from '@dcl/sdk/react-ecs'
 import { Color4, Vector3 } from '@dcl/sdk/math'
 import { getPlayer } from '@dcl/sdk/src/players'
 import {
@@ -32,17 +32,16 @@ export const BannedComponent = engine.defineComponent('BannedComponent', {
 export class KickUI {
   public blackScreenVisibility: boolean = false
   public kickUiVisibility: boolean = false
-  public gameController:GameController
+  public gameController: GameController
   public bannedEntity = engine.addEntity()
   public collidersJailStructureN = engine.addEntity()
   public collidersJailStructureW = engine.addEntity()
   public collidersJailStructureE = engine.addEntity()
   public collidersJailStructureS = engine.addEntity()
-  nameOrWallet: string = ''
   public collidersJailStructureFloor = engine.addEntity()
   public hideAvatarsArea = engine.addEntity()
-
-  constructor(gameController:GameController) {
+  playerSelected: string = ''
+  constructor(gameController: GameController) {
     this.gameController = gameController
     BannedComponent.create(this.bannedEntity)
     syncEntity(this.bannedEntity, [BannedComponent.componentId], SyncEntityEnumId.KICK)
@@ -226,18 +225,13 @@ export class KickUI {
               justifyContent: 'center'
             }}
           >
-            <Input
-              onChange={(value) => {
-                this.nameOrWallet = value
-              }}
-              fontSize={22 * getScaleFactor()}
-              placeholder={''}
-              placeholderColor={Color4.Black()}
+            <Dropdown
+              options={this.gameController.playersOnScene.allPlayers.map((player) => player)}
               uiTransform={{
-                width: 300 * getScaleFactor(),
-                height: 50 * getScaleFactor(),
-                margin: '10px 0'
+                width: '50%',
+                height: '50%'
               }}
+              onChange={this.checkPlayerNameOnArray}
             />
           </UiEntity>
 
@@ -274,7 +268,7 @@ export class KickUI {
               onMouseDown={() => {
                 console.log('OPENING LINK')
                 this.kickUiVisibility = false
-                this.addPlayerToBanList(this.nameOrWallet)
+                this.addPlayerToBanList(this.playerSelected)
               }}
             />
           </UiEntity>
@@ -287,7 +281,12 @@ export class KickUI {
     if (!this.kickUiVisibility) {
       this.kickUiVisibility = true
     } else {
-      this.kickUiVisibility = false
+      this.kickUiVisibility = false 
     }
+  }
+
+  checkPlayerNameOnArray = (playerNumber: number): void => {
+    console.log('here', playerNumber)
+    this.playerSelected = this.gameController.playersOnScene.allPlayers[playerNumber]
   }
 }
