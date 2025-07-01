@@ -21,7 +21,7 @@ export class ModeratorPanelUI {
   updatePanel(): void {
     withPlayerInfo((player) => {
       this.isHost = this.gameController.hostsController.isHost(player.userId)
-      this.panelUiVisibility = this.isHost || this.gameController.hostsController.noHostExists()
+      this.panelUiVisibility = this.isHost
     })
   }
 
@@ -94,17 +94,6 @@ export class ModeratorPanelUI {
               }}
               num={3}
               label=" REMOVE HOST"
-              panel2Visible={this.panel2Visible}
-              canvasHeight={this.gameController.uiController.canvasInfo.height}
-            />
-          )}
-          {this.gameController.hostsController.noHostExists() && (
-            <MenuItem
-              onMouseDown={() => {
-                this.gameController.hostsController.claimHost()
-              }}
-              num={1}
-              label=" CLAIM HOST"
               panel2Visible={this.panel2Visible}
               canvasHeight={this.gameController.uiController.canvasInfo.height}
             />

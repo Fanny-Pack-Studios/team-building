@@ -43,10 +43,9 @@ export class GameController {
   public customizationUI: CustomizationUI
 
   constructor() {
+    this.hostsController = new HostsController()
     this.uiController = new UIController(this)
     this.popupAtendeePanelAndResultbutton = new PopupAttendeePanelAndResultsButton(this)
-    this.hostsController = new HostsController()
-
     this.stageUI = new StageUI(this)
     this.panelUI = new ModeratorPanelUI(this)
     this.kickUI = new KickUI(this)
