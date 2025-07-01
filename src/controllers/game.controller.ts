@@ -6,6 +6,7 @@ import { CreatePollUI } from '../uis/uiCreatePoll'
 import { KickUI } from '../uis/uiKick'
 import { ModeratorPanelUI } from '../uis/uiModeratorPanel'
 import { OptionsUI } from '../uis/uiOptions'
+import { RemoveHostModal } from '../uis/uiRemoveHost'
 import { ResultsUI } from '../uis/uiResults'
 import { StageUI } from '../uis/uiStage'
 
@@ -27,6 +28,7 @@ export class GameController {
   public createPollUI: CreatePollUI
   public createOptionUI: OptionsUI
   public resultsUI: ResultsUI
+  public removeHostUI: RemoveHostModal
 
   constructor() {
     this.uiController = new UIController(this)
@@ -40,6 +42,7 @@ export class GameController {
     this.createPollUI = new CreatePollUI(this)
     this.createOptionUI = new OptionsUI(this)
     this.resultsUI = new ResultsUI(this)
+    this.removeHostUI = new RemoveHostModal(this.hostsController)
   }
 
   start(): void {

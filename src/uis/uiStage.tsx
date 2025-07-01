@@ -15,9 +15,11 @@ import { EntityNames } from '../../assets/scene/entity-names'
 import { getScaleFactor } from '../canvas/Canvas'
 import { waitForPlayerInfo } from '../utils'
 import { type GameController } from '../controllers/game.controller'
+import { type HostsController } from '../controllers/hosts.controller'
+import { type UIController } from '../controllers/ui.controller'
+import { withPlayerInfo } from '../utils'
 
 export class StageUI {
-  public moderatorEntity = engine.addEntity()
   public hostTarget = engine.addEntity()
   public hostTargetText = engine.addEntity()
   public gameController: GameController
@@ -46,26 +48,19 @@ export class StageUI {
   }
 
   checkPlayerAccess(hosts: string[] | undefined): void {
-    waitForPlayerInfo()
-      .then((player) => {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-        const isHost = this.gameController.hostsController.isHost(player.userId, hosts)
-        const noHosts = hosts == null || hosts.length === 0
+    withPlayerInfo((player) => {
+      const isHost = this.gameController.hostsController.isHost(player.userId, hosts)
+      const noHosts = hosts == null || hosts.length === 0
 
-        if (noHosts || isHost) {
-          this.unlockAccessToStage()
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-          if (this.gameController.hostsController.isHost(player.userId, hosts)) {
-            this.addTargetToHost()
-          }
-        } else {
-          this.lockAccessToStage()
+      if (noHosts || isHost) {
+        this.unlockAccessToStage()
+        if (this.gameController.hostsController.isHost(player.userId, hosts)) {
+          this.addTargetToHost()
         }
-      })
-      .catch((error) => {
-        console.error('Error checking player access:', error)
+      } else {
         this.lockAccessToStage()
-      })
+      }
+    })
   }
 
   lockAccessToStage(): void {
