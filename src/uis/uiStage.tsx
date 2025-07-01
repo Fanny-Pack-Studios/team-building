@@ -13,10 +13,7 @@ import { Color4, Vector3 } from '@dcl/sdk/math'
 import ReactEcs, { Button, Input, Label, UiEntity } from '@dcl/sdk/react-ecs'
 import { EntityNames } from '../../assets/scene/entity-names'
 import { getScaleFactor } from '../canvas/Canvas'
-import { waitForPlayerInfo } from '../utils'
 import { type GameController } from '../controllers/game.controller'
-import { type HostsController } from '../controllers/hosts.controller'
-import { type UIController } from '../controllers/ui.controller'
 import { withPlayerInfo } from '../utils'
 
 export class StageUI {

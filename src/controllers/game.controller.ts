@@ -1,6 +1,7 @@
 import { PopupAttendeePanelAndResultsButton } from '../activities/activitiesPanels'
 import { setupMessageBus } from '../messagebus/messagebus'
 import { PollCreator } from '../polls/poll'
+import { HostIndicators } from '../uis/hostIndicators'
 import { ChooseActivityUI } from '../uis/uiActivities'
 import { CreatePollUI } from '../uis/uiCreatePoll'
 import { KickUI } from '../uis/uiKick'
@@ -29,6 +30,7 @@ export class GameController {
   public createOptionUI: OptionsUI
   public resultsUI: ResultsUI
   public removeHostUI: RemoveHostModal
+  public hostIndicators: HostIndicators
 
   constructor() {
     this.uiController = new UIController(this)
@@ -43,6 +45,7 @@ export class GameController {
     this.createOptionUI = new OptionsUI(this)
     this.resultsUI = new ResultsUI(this)
     this.removeHostUI = new RemoveHostModal(this.hostsController)
+    this.hostIndicators = new HostIndicators(this.hostsController)
   }
 
   start(): void {
