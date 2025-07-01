@@ -30,7 +30,6 @@ export class GameController {
   public createOptionUI: OptionsUI
   public resultsUI: ResultsUI
   public removeHostUI: RemoveHostModal
-
   public hostIndicators: HostIndicators
 
   constructor() {

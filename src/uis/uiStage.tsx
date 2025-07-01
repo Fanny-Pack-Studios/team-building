@@ -4,6 +4,8 @@ import ReactEcs, { Button, Input, Label, UiEntity } from '@dcl/sdk/react-ecs'
 import { EntityNames } from '../../assets/scene/entity-names'
 import { getScaleFactor } from '../canvas/Canvas'
 import { type GameController } from '../controllers/game.controller'
+import { type HostsController } from '../controllers/hosts.controller'
+import { type UIController } from '../controllers/ui.controller'
 import { withPlayerInfo } from '../utils'
 
 export class StageUI {
@@ -41,6 +43,9 @@ export class StageUI {
 
       if (noHosts || isHost) {
         this.unlockAccessToStage()
+        if (this.gameController.hostsController.isHost(player.userId, hosts)) {
+          this.addTargetToHost()
+        }
       } else {
         this.lockAccessToStage()
       }
