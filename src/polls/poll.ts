@@ -11,15 +11,15 @@ export class PollCreator {
     pointerEventsSystem.onPointerDown(
       {
         entity: this.podium,
-        opts: { button: InputAction.IA_PRIMARY, hoverText: 'Create Poll' }
+        opts: { button: InputAction.IA_PRIMARY, hoverText: 'Choose Activity' }
       },
       () => {
-        this.createPollUi()
+        this.chooseYourActivityUi()
       }
     )
   }
 
-  createPollUi(): void {
-    this.gameController.createPollUI.openUI()
+  chooseYourActivityUi(): void {
+    this.gameController.activitiesUI.openUI()
   }
 }

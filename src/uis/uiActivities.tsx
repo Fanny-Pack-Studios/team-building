@@ -120,6 +120,8 @@ export class ChooseActivityUI {
               }}
               onMouseDown={() => {
                 this.selectButton(1)
+                this.chooseActivityUiVisibility = false
+                this.gameController.createPollUI.createPollUiVisibility = true
               }}
             ></UiEntity>
             <UiEntity

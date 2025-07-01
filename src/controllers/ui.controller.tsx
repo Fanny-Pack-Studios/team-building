@@ -9,7 +9,6 @@ export class UIController {
   public canvasInfo = UiCanvasInformation.getOrNull(engine.RootEntity)
   public gameController: GameController
 
-
   constructor(gameController: GameController) {
     ReactEcsRenderer.setUiRenderer(this.render.bind(this))
     this.gameController = gameController
@@ -28,10 +27,13 @@ export class UIController {
           {this.gameController.kickUI.kickUiVisibility && this.gameController.kickUI.createKickUi()}
           {this.gameController.kickUI.blackScreenVisibility && this.gameController.kickUI.createBlackScreen()}
           {this.gameController.stageUI.stageUiVisibility && this.gameController.stageUI.createStageUi()}
-          {this.gameController.activitiesUI.chooseActivityUiVisibility && this.gameController.activitiesUI.createChooseActivityUi()}
+          {this.gameController.activitiesUI.chooseActivityUiVisibility &&
+            this.gameController.activitiesUI.createChooseActivityUi()}
           {this.gameController.createPollUI.createPollUiVisibility && this.gameController.createPollUI.createUi()}
           {this.gameController.createOptionUI.optionsUiVisibility && this.gameController.createOptionUI.createUi()}
           {this.gameController.resultsUI.resultsUiVisibility && this.gameController.resultsUI.createUi()}
+          {this.gameController.timerUI.visible && this.gameController.timerUI.createUi()}
+          {this.gameController.closePollUi.isVisible && this.gameController.closePollUi.createUi()}
           {ui.render()}
         </Canvas>
       </UiEntity>

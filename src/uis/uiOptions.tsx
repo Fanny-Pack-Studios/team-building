@@ -9,6 +9,8 @@ export class OptionsUI {
   public pollQuestion = 'Membrillo o batata'
   private options: string[] = []
   private onOption: ((option: string) => void) | null = null
+  private hoveredIndex: number | null = null
+  private selectedIndex: number | null = null
 
   public gameController: GameController
   constructor(gameController: GameController) {
@@ -85,45 +87,61 @@ export class OptionsUI {
             }}
           ></UiEntity>
 
-          {this.options.map((option, index) => (
-            <UiEntity
-              key={index}
-              uiTransform={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'center',
-                positionType: 'relative',
-                width: 136 * getScaleFactor(),
-                height: 56 * getScaleFactor(),
-                margin: { top: index === 0 ? '20%' : '0%' }
-              }}
-              uiBackground={{
-                textureMode: 'stretch',
-                texture: {
-                  src: `images/optionsui/option${index + 1}Background.png`
-                }
-              }}
-              onMouseDown={() => {
-                if (this.onOption != null) {
-                  this.onOption(option)
-                  this.optionsUiVisibility = false
-                }
-              }}
-            >
-              <Label
+          {this.options.map((option, index) => {
+            const isHovered = this.hoveredIndex === index
+            const isSelected = this.selectedIndex === index
+
+            const bgColor = isSelected
+              ? Color4.fromHexString('#3F3B45')
+              : isHovered
+                ? Color4.fromHexString('#888888')
+                : Color4.White()
+
+            return (
+              <UiEntity
+                key={index}
                 uiTransform={{
-                  margin: { bottom: '10%' },
-                  alignContent: 'center',
-                  positionType: 'relative'
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  positionType: 'relative',
+                  width: 136 * getScaleFactor(),
+                  height: 56 * getScaleFactor(),
+                  margin: { top: index === 0 ? '20%' : '0%' }
                 }}
-                value={`<b>${option}</b>`}
-                fontSize={12 * getScaleFactor()}
-                font="sans-serif"
-                color={Color4.White()}
-                textAlign="middle-center"
-              />
-            </UiEntity>
-          ))}
+                uiBackground={{
+                  textureMode: 'stretch',
+                  texture: {
+                    src: `images/optionsui/option${index + 1}Background.png`
+                  },
+                  color: bgColor
+                }}
+                onMouseEnter={() => {
+                  if (this.selectedIndex !== index) this.hoveredIndex = index
+                }}
+                onMouseLeave={() => {
+                  if (this.selectedIndex !== index) this.hoveredIndex = null
+                }}
+                onMouseDown={() => {
+                  this.selectedIndex = index
+                  this.hoveredIndex = index
+                }}
+              >
+                <Label
+                  uiTransform={{
+                    margin: { bottom: '10%' },
+                    alignContent: 'center',
+                    positionType: 'relative'
+                  }}
+                  value={`<b>${option}</b>`}
+                  fontSize={12 * getScaleFactor()}
+                  font="sans-serif"
+                  color={Color4.White()}
+                  textAlign="middle-center"
+                />
+              </UiEntity>
+            )
+          })}
 
           <UiEntity
             uiTransform={{
@@ -138,6 +156,13 @@ export class OptionsUI {
             uiBackground={{
               textureMode: 'stretch',
               texture: { src: 'images/optionsui/next.png' }
+            }}
+            onMouseDown={() => {
+              if (this.selectedIndex !== null && this.onOption != null) {
+                const selectedOption = this.options[this.selectedIndex]
+                this.onOption(selectedOption)
+                this.optionsUiVisibility = false
+              }
             }}
           ></UiEntity>
         </UiEntity>
