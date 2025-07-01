@@ -110,8 +110,10 @@ export class StageUI {
     GltfContainer.create(this.hostTarget, { src: 'assets/models/target_position.glb' })
   }
 
-  addAsHost(nameOrWallet: string): void {
-    this.gameController.hostsController.addHost(nameOrWallet)
+  addAsHost(taggedID: string): void {
+    const userID = this.gameController.playersOnScene.getUserIdFromDisplayName(taggedID)
+    if (userID === undefined) return
+    this.gameController.hostsController.addHost(userID)
   }
 
   createStageUi(): ReactEcs.JSX.Element | null {
@@ -160,7 +162,7 @@ export class StageUI {
             }}
           >
             <Dropdown
-              options={this.gameController.playersOnScene.allPlayers.map((player) => player)}
+              options={['Select Player', ...this.gameController.playersOnScene.displayPlayers]}
               uiTransform={{
                 width: '50%',
                 height: '50%'
@@ -218,8 +220,8 @@ export class StageUI {
     }
   }
 
-    checkPlayerNameOnArray = (playerNumber: number): void => {
+  checkPlayerNameOnArray = (playerNumber: number): void => {
     console.log('here', playerNumber)
-    this.playerSelected = this.gameController.playersOnScene.allPlayers[playerNumber]
+    this.playerSelected = this.gameController.playersOnScene.displayPlayers[playerNumber - 1]
   }
 }

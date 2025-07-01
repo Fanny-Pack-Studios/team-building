@@ -139,8 +139,10 @@ export class KickUI {
     }
   }
 
-  addPlayerToBanList(playerId: string): void {
-    BannedComponent.getMutable(this.bannedEntity).list.push(playerId.toLowerCase())
+  addPlayerToBanList(taggedID: string): void {
+    const userID = this.gameController.playersOnScene.getUserIdFromDisplayName(taggedID)
+    if (userID === undefined) return
+    BannedComponent.getMutable(this.bannedEntity).list.push(userID.toLowerCase())
     console.log('banned list', BannedComponent.get(this.bannedEntity).list)
     this.kickPlayers()
   }
@@ -226,7 +228,7 @@ export class KickUI {
             }}
           >
             <Dropdown
-              options={this.gameController.playersOnScene.allPlayers.map((player) => player)}
+              options={['Select Player', ...this.gameController.playersOnScene.displayPlayers]}
               uiTransform={{
                 width: '50%',
                 height: '50%'
@@ -281,12 +283,12 @@ export class KickUI {
     if (!this.kickUiVisibility) {
       this.kickUiVisibility = true
     } else {
-      this.kickUiVisibility = false 
+      this.kickUiVisibility = false
     }
   }
 
   checkPlayerNameOnArray = (playerNumber: number): void => {
     console.log('here', playerNumber)
-    this.playerSelected = this.gameController.playersOnScene.allPlayers[playerNumber]
+    this.playerSelected = this.gameController.playersOnScene.displayPlayers[playerNumber - 1]
   }
 }
