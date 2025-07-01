@@ -91,11 +91,7 @@ export class OptionsUI {
             const isHovered = this.hoveredIndex === index
             const isSelected = this.selectedIndex === index
 
-            const bgColor = isSelected
-              ? Color4.fromHexString('#3F3B45')
-              : isHovered
-                ? Color4.fromHexString('#888888')
-                : Color4.White()
+            const bgColor = isSelected || isHovered ? Color4.White() : Color4.fromHexString('#3F3B45')
 
             return (
               <UiEntity
