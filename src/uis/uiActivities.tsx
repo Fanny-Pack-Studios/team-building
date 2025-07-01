@@ -5,7 +5,7 @@ import { Color4 } from '@dcl/sdk/math'
 import { type GameController } from '../controllers/game.controller'
 
 const COLOR_INACTIVE = '#FFFFFFFF'
-const COLOR_HOVER = '#3F3B45'
+
 const COLOR_SELECTED = '#3F3B45'
 
 export class ChooseActivityUI {
@@ -112,16 +112,8 @@ export class ChooseActivityUI {
                 texture: { src: 'images/activitiesui/live poll.png' },
                 color: Color4.fromHexString(this.buttonColorHover1)
               }}
-              onMouseEnter={() => {
-                this.togglebuttonColorHover(1)
-              }}
-              onMouseLeave={() => {
-                this.togglebuttonColorHover(1)
-              }}
               onMouseDown={() => {
                 this.selectButton(1)
-                this.chooseActivityUiVisibility = false
-                this.gameController.createPollUI.createPollUiVisibility = true
               }}
             ></UiEntity>
             <UiEntity
@@ -135,12 +127,6 @@ export class ChooseActivityUI {
                 textureMode: 'stretch',
                 texture: { src: 'images/activitiesui/QA.png' },
                 color: Color4.fromHexString(this.buttonColorHover2)
-              }}
-              onMouseEnter={() => {
-                this.togglebuttonColorHover(2)
-              }}
-              onMouseLeave={() => {
-                this.togglebuttonColorHover(2)
               }}
               onMouseDown={() => {
                 this.selectButton(2)
@@ -171,12 +157,6 @@ export class ChooseActivityUI {
                 texture: { src: 'images/activitiesui/quizz.png' },
                 color: Color4.fromHexString(this.buttonColorHover3)
               }}
-              onMouseEnter={() => {
-                this.togglebuttonColorHover(3)
-              }}
-              onMouseLeave={() => {
-                this.togglebuttonColorHover(3)
-              }}
               onMouseDown={() => {
                 this.selectButton(3)
               }}
@@ -192,12 +172,6 @@ export class ChooseActivityUI {
                 textureMode: 'stretch',
                 texture: { src: 'images/activitiesui/survey.png' },
                 color: Color4.fromHexString(this.buttonColorHover4)
-              }}
-              onMouseEnter={() => {
-                this.togglebuttonColorHover(4)
-              }}
-              onMouseLeave={() => {
-                this.togglebuttonColorHover(4)
               }}
               onMouseDown={() => {
                 this.selectButton(4)
@@ -219,7 +193,7 @@ export class ChooseActivityUI {
               color: Color4.fromHexString('#36323D')
             }}
             onMouseDown={() => {
-              // Add Logics after selectin each option
+              this.executeSelectedAction()
             }}
           >
             <Label
@@ -240,32 +214,35 @@ export class ChooseActivityUI {
     )
   }
 
-  togglebuttonColorHover(buttonNumber: number): void {
-    switch (buttonNumber) {
-      case 1:
-        if (this.buttonSelected !== 1)
-          this.buttonColorHover1 = this.buttonColorHover1 === COLOR_HOVER ? COLOR_INACTIVE : COLOR_HOVER
-        break
-      case 2:
-        if (this.buttonSelected !== 2)
-          this.buttonColorHover2 = this.buttonColorHover2 === COLOR_HOVER ? COLOR_INACTIVE : COLOR_HOVER
-        break
-      case 3:
-        if (this.buttonSelected !== 3)
-          this.buttonColorHover3 = this.buttonColorHover3 === COLOR_HOVER ? COLOR_INACTIVE : COLOR_HOVER
-        break
-      case 4:
-        if (this.buttonSelected !== 4)
-          this.buttonColorHover4 = this.buttonColorHover4 === COLOR_HOVER ? COLOR_INACTIVE : COLOR_HOVER
-        break
-    }
-  }
-
   selectButton(id: number): void {
     this.buttonSelected = id
+
     this.buttonColorHover1 = id === 1 ? COLOR_SELECTED : COLOR_INACTIVE
     this.buttonColorHover2 = id === 2 ? COLOR_SELECTED : COLOR_INACTIVE
     this.buttonColorHover3 = id === 3 ? COLOR_SELECTED : COLOR_INACTIVE
     this.buttonColorHover4 = id === 4 ? COLOR_SELECTED : COLOR_INACTIVE
+  }
+
+  executeSelectedAction(): void {
+    switch (this.buttonSelected) {
+      case 1:
+        this.chooseActivityUiVisibility = false
+        this.gameController.createPollUI.createPollUiVisibility = true
+        break
+      case 2:
+        this.chooseActivityUiVisibility = false
+        // this.gameController.createQAUI.createQAUiVisibility = true
+        break
+      case 3:
+        this.chooseActivityUiVisibility = false
+        //  this.gameController.createQuizUI.createQuizUiVisibility = true
+        break
+      case 4:
+        this.chooseActivityUiVisibility = false
+        // this.gameController.createSurveyUI.createSurveyUiVisibility = true
+        break
+      default:
+        break
+    }
   }
 }

@@ -9,7 +9,7 @@ export class OptionsUI {
   public pollQuestion = 'Membrillo o batata'
   private options: string[] = []
   private onOption: ((option: string) => void) | null = null
-  private hoveredIndex: number | null = null
+
   private selectedIndex: number | null = null
 
   public gameController: GameController
@@ -88,10 +88,9 @@ export class OptionsUI {
           ></UiEntity>
 
           {this.options.map((option, index) => {
-            const isHovered = this.hoveredIndex === index
             const isSelected = this.selectedIndex === index
 
-            const bgColor = isSelected || isHovered ? Color4.White() : Color4.fromHexString('#3F3B45')
+            const bgColor = isSelected ? Color4.White() : Color4.fromHexString('#3F3B45')
 
             return (
               <UiEntity
@@ -112,15 +111,8 @@ export class OptionsUI {
                   },
                   color: bgColor
                 }}
-                onMouseEnter={() => {
-                  if (this.selectedIndex !== index) this.hoveredIndex = index
-                }}
-                onMouseLeave={() => {
-                  if (this.selectedIndex !== index) this.hoveredIndex = null
-                }}
                 onMouseDown={() => {
                   this.selectedIndex = index
-                  this.hoveredIndex = index
                 }}
               >
                 <Label
