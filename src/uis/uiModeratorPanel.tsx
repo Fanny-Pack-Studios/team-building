@@ -21,7 +21,7 @@ export class ModeratorPanelUI {
   updatePanel(): void {
     withPlayerInfo((player) => {
       this.isHost = this.gameController.hostsController.isHost(player.userId)
-      this.panelUiVisibility = this.isHost || this.gameController.hostsController.noHostExists()
+      this.panelUiVisibility = this.isHost
     })
   }
 

@@ -227,7 +227,7 @@ export class CreatePollUI {
               margin: { top: '4%' },
               position: { left: '-25%' }
             }}
-            value={`Anonymus`}
+            value={`Anonymous`}
             fontSize={12 * getScaleFactor()}
             font="sans-serif"
             color={Color4.White()}

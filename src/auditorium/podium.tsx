@@ -1,9 +1,19 @@
-import { engine, InputAction, pointerEventsSystem } from '@dcl/sdk/ecs'
+import { engine, type EventSystemCallback, InputAction, PointerEvents, pointerEventsSystem } from '@dcl/sdk/ecs'
 import { type GameController } from '../controllers/game.controller'
+import { withPlayerInfo } from '../utils'
 
 export function setupPodium(gameController: GameController): void {
-  const podium = engine.getEntityOrNullByName('Podium')
-  if (podium === null) return
+  const podiumOrNull = engine.getEntityOrNullByName('Podium')
+  if (podiumOrNull === null) return
+
+  const podium = podiumOrNull
+
+  gameController.hostsController.onChange(() => {
+    updatePodiumActions()
+  })
+
+  updatePodiumActions()
+
   pointerEventsSystem.onPointerDown(
     {
       entity: podium,
@@ -13,4 +23,42 @@ export function setupPodium(gameController: GameController): void {
       gameController.mainMenuUI.isVisible = true
     }
   )
+
+  function updatePodiumActions(): void {
+    withPlayerInfo((player) => {
+      if (gameController.hostsController.isHost(player.userId)) {
+        configurePodiumForHosts()
+      } else if (gameController.hostsController.noHostExists()) {
+        configurePodiumForClaimingHost()
+      } else {
+        disablePodium()
+      }
+    })
+  }
+
+  function configurePodiumForHosts(): void {
+    configurePodium('Interact', () => {
+      gameController.mainMenuUI.isVisible = true
+    })
+  }
+
+  function configurePodiumForClaimingHost(): void {
+    configurePodium('Claim Host', () => {
+      gameController.hostsController.claimHost()
+    })
+  }
+
+  function configurePodium(text: string, callback: EventSystemCallback): void {
+    pointerEventsSystem.onPointerDown(
+      {
+        entity: podium,
+        opts: { button: InputAction.IA_PRIMARY, hoverText: text }
+      },
+      callback
+    )
+  }
+
+  function disablePodium(): void {
+    PointerEvents.deleteFrom(podium)
+  }
 }
