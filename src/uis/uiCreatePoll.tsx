@@ -2,8 +2,9 @@ import ReactEcs, { Input, Label, UiEntity } from '@dcl/sdk/react-ecs'
 
 import { getScaleFactor } from '../canvas/Canvas'
 import { Color4 } from '@dcl/sdk/math'
-import { createPollEntity } from '../polls/pollEntity'
+import { PollState, createPollEntity, pollRegistry } from '../polls/pollEntity'
 import { type GameController } from '../controllers/game.controller'
+import { getPlayer } from '@dcl/sdk/src/players'
 
 export class CreatePollUI {
   public createPollUiVisibility: boolean = false
@@ -312,12 +313,22 @@ export class CreatePollUI {
       return
     }
 
-    console.log('create')
-    createPollEntity(this.questionTitle, validAnswers, this.switchOn)
+    const { pollId } = createPollEntity(this.questionTitle, validAnswers, this.switchOn)
+
+    const pollEntity = pollRegistry.get(pollId)
+    if (pollEntity == null) return
+
+    const pollState = PollState.get(pollEntity)
+    const player = getPlayer()
+    const userId = player?.userId
+
+    if (userId != null && userId === pollState.creatorId && !pollState.closed) {
+      this.gameController.closePollUi.show(pollId)
+    }
+
     this.gameController.uiController.gameController.popupAtendeePanelAndResultbutton.create()
     this.createPollUiVisibility = false
   }
-  // TODO
 
   renderAnswerInputs(): ReactEcs.JSX.Element[] {
     return this.answers.map((answer, index) => (

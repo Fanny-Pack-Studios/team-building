@@ -72,14 +72,23 @@ export class PopupAttendeePanelAndResultsButton {
   runCurrentActivityAsAttendee(): void {
     const allPollEntities = Array.from(engine.getEntitiesWith(PollState))
     if (allPollEntities.length <= 0) return
+
     const lastOpenedPoll = allPollEntities[allPollEntities.length - 1]
+    const pollEntity = lastOpenedPoll?.[0]
+    const pollState = PollState.getOrNull(pollEntity)
 
-    if (lastOpenedPoll !== null) {
-      // triggerPollQuestion(lastOpenedPoll[0])
-
-      const triggerPollQuestion = new PollQuestion(this.gameController, lastOpenedPoll[0])
-      console.log(triggerPollQuestion)
+    if (pollState == null) {
+      console.log('No PollState found.')
+      return
     }
+
+    if (pollState.closed) {
+      console.log('THE POLL IS CLOSED')
+      return
+    }
+
+    const triggerPollQuestion = new PollQuestion(this.gameController, pollEntity)
+    console.log(triggerPollQuestion)
   }
 
   setupShowResultsButton(): void {

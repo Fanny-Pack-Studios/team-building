@@ -4,6 +4,7 @@ import { PlayersOnScene } from '../players/playersOnScene'
 import { PollCreator } from '../polls/poll'
 import { HostIndicators } from '../uis/hostIndicators'
 import { ChooseActivityUI } from '../uis/uiActivities'
+import { ClosePollUI } from '../uis/uiClosePoll'
 import { CreatePollUI } from '../uis/uiCreatePoll'
 import { KickUI } from '../uis/uiKick'
 import { ModeratorPanelUI } from '../uis/uiModeratorPanel'
@@ -11,6 +12,7 @@ import { OptionsUI } from '../uis/uiOptions'
 import { RemoveHostModal } from '../uis/uiRemoveHost'
 import { ResultsUI } from '../uis/uiResults'
 import { StageUI } from '../uis/uiStage'
+import { TimerUI } from '../uis/uiTimer'
 
 import { HostsController } from './hosts.controller'
 import { UIController } from './ui.controller'
@@ -31,6 +33,8 @@ export class GameController {
   public createPollUI: CreatePollUI
   public createOptionUI: OptionsUI
   public resultsUI: ResultsUI
+  public timerUI: TimerUI
+  public closePollUi: ClosePollUI
   public removeHostUI: RemoveHostModal
   public hostIndicators: HostIndicators
 
@@ -46,6 +50,8 @@ export class GameController {
     this.createPollUI = new CreatePollUI(this)
     this.createOptionUI = new OptionsUI(this)
     this.resultsUI = new ResultsUI(this)
+    this.timerUI = new TimerUI(this)
+    this.closePollUi = new ClosePollUI(this)
     this.playersOnScene = new PlayersOnScene(this)
     this.removeHostUI = new RemoveHostModal(this.hostsController)
     this.hostIndicators = new HostIndicators(this.hostsController)
