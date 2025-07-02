@@ -35,6 +35,7 @@ export class ModeratorPanelUI {
     return (
       <UiEntity
         uiTransform={{
+          positionType: 'absolute',
           flexDirection: 'column'
         }}
       >
