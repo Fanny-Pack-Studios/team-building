@@ -16,6 +16,7 @@ import { ResultsUI } from '../uis/uiResults'
 import { StageUI } from '../uis/uiStage'
 import { TimerUI } from '../uis/uiTimer'
 
+import { MainMenuUi } from '../uis/ui.mainMenu'
 import { HostsController } from './hosts.controller'
 import { UIController } from './ui.controller'
 
@@ -28,6 +29,7 @@ export class GameController {
 
   // UIS
 
+  public mainMenuUI: MainMenuUi
   public stageUI: StageUI
   public panelUI: ModeratorPanelUI
   public kickUI: KickUI
@@ -60,6 +62,7 @@ export class GameController {
     this.removeHostUI = new RemoveHostModal(this.hostsController)
     this.hostIndicators = new HostIndicators(this.hostsController)
     this.customizationUI = new CustomizationUI()
+    this.mainMenuUI = new MainMenuUi(this)
   }
 
   start(): void {
