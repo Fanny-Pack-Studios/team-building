@@ -118,16 +118,16 @@
               "y": 7.25,
               "z": 12.75
             },
+            "scale": {
+              "x": 13.800000190734863,
+              "y": 6,
+              "z": 1
+            },
             "rotation": {
               "x": 0,
               "y": 0,
               "z": 0,
               "w": 1
-            },
-            "scale": {
-              "x": 13.800000190734863,
-              "y": 6,
-              "z": 1
             },
             "parent": 0
           }
@@ -156,14 +156,9 @@
         "516": {
           "json": {
             "position": {
-              "x": -6.0484771728515625,
-              "y": 2,
-              "z": 11.279850006103516
-            },
-            "scale": {
               "x": 1,
-              "y": 1,
-              "z": 1
+              "y": -1,
+              "z": 11.25
             },
             "rotation": {
               "x": 0,
@@ -171,7 +166,96 @@
               "z": 0,
               "w": 1
             },
+            "scale": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
             "parent": 0
+          }
+        },
+        "517": {
+          "json": {
+            "position": {
+              "x": -5,
+              "y": 2.25,
+              "z": 5.249998569488525
+            },
+            "rotation": {
+              "x": 0,
+              "y": -0.2826078236103058,
+              "z": 0,
+              "w": 0.9592355489730835
+            },
+            "scale": {
+              "x": 1.9999998807907104,
+              "y": 4,
+              "z": 0.09999997168779373
+            },
+            "parent": 521
+          }
+        },
+        "518": {
+          "json": {
+            "position": {
+              "x": -5,
+              "y": 2.25,
+              "z": 5.199999809265137
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0.258819043636322,
+              "z": 0,
+              "w": -0.9659258127212524
+            },
+            "scale": {
+              "x": 1.5,
+              "y": 1.5,
+              "z": 0.10000000149011612
+            },
+            "parent": 521
+          }
+        },
+        "519": {
+          "json": {
+            "position": {
+              "x": 5,
+              "y": 2.25,
+              "z": 5.25
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0.28894826769828796,
+              "z": 0,
+              "w": 0.9573447108268738
+            },
+            "scale": {
+              "x": 2,
+              "y": 4,
+              "z": 0.10000000149011612
+            },
+            "parent": 521
+          }
+        },
+        "520": {
+          "json": {
+            "position": {
+              "x": 4.949999809265137,
+              "y": 2.25,
+              "z": 5.230000019073486
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0.28894826769828796,
+              "z": 0,
+              "w": 0.9573447108268738
+            },
+            "scale": {
+              "x": 1.5,
+              "y": 1.5,
+              "z": 0.10000000149011612
+            },
+            "parent": 521
           }
         },
         "521": {
@@ -181,16 +265,16 @@
               "y": 0,
               "z": 8
             },
+            "scale": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
             "rotation": {
               "x": 0,
               "y": 0,
               "z": 0,
               "w": 1
-            },
-            "scale": {
-              "x": 1,
-              "y": 1,
-              "z": 1
             },
             "parent": 0
           }
@@ -299,6 +383,48 @@
             },
             "parent": 0
           }
+        },
+        "527": {
+          "json": {
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "scale": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
+            "parent": 0
+          }
+        },
+        "536": {
+          "json": {
+            "position": {
+              "x": 0,
+              "y": 0.2981259226799011,
+              "z": 2.6299996376037598
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "scale": {
+              "x": 1.5,
+              "y": 0.10000000149011612,
+              "z": 1.5
+            },
+            "parent": 521
+          }
         }
       }
     },
@@ -354,7 +480,16 @@
         },
         "513": {
           "json": {
-            "states": []
+            "states": [
+              {
+                "clip": "estrado_pantallaAction",
+                "playing": true,
+                "weight": 1,
+                "speed": 1,
+                "loop": true,
+                "shouldReset": false
+              }
+            ]
           }
         },
         "514": {
@@ -368,6 +503,26 @@
           }
         },
         "516": {
+          "json": {
+            "states": []
+          }
+        },
+        "517": {
+          "json": {
+            "states": []
+          }
+        },
+        "518": {
+          "json": {
+            "states": []
+          }
+        },
+        "519": {
+          "json": {
+            "states": []
+          }
+        },
+        "520": {
           "json": {
             "states": []
           }
@@ -398,6 +553,16 @@
           }
         },
         "526": {
+          "json": {
+            "states": []
+          }
+        },
+        "527": {
+          "json": {
+            "states": []
+          }
+        },
+        "536": {
           "json": {
             "states": []
           }
@@ -437,7 +602,7 @@
         "521": {
           "json": {
             "src": "assets/models/podium_V2.glb",
-            "visibleMeshesCollisionMask": 1,
+            "visibleMeshesCollisionMask": 3,
             "invisibleMeshesCollisionMask": 2
           }
         },
@@ -489,6 +654,298 @@
                 "metallic": 0,
                 "roughness": 1,
                 "specularIntensity": 0
+              }
+            }
+          }
+        },
+        "517": {
+          "json": {
+            "material": {
+              "$case": "pbr",
+              "pbr": {
+                "texture": {
+                  "tex": {
+                    "$case": "texture",
+                    "texture": {
+                      "src": "",
+                      "wrapMode": 0,
+                      "filterMode": 0
+                    }
+                  }
+                },
+                "alphaTest": 0.5,
+                "castShadows": true,
+                "alphaTexture": {
+                  "tex": {
+                    "$case": "texture",
+                    "texture": {
+                      "src": "",
+                      "wrapMode": 0,
+                      "filterMode": 0
+                    }
+                  }
+                },
+                "emissiveTexture": {
+                  "tex": {
+                    "$case": "texture",
+                    "texture": {
+                      "src": "",
+                      "wrapMode": 0,
+                      "filterMode": 0
+                    }
+                  }
+                },
+                "bumpTexture": {
+                  "tex": {
+                    "$case": "texture",
+                    "texture": {
+                      "src": "",
+                      "wrapMode": 0,
+                      "filterMode": 0
+                    }
+                  }
+                },
+                "albedoColor": {
+                  "r": 0,
+                  "g": 0,
+                  "b": 0,
+                  "a": 1
+                },
+                "emissiveColor": {
+                  "r": 1,
+                  "g": 1,
+                  "b": 1
+                },
+                "reflectivityColor": {
+                  "r": 1,
+                  "g": 1,
+                  "b": 1
+                },
+                "transparencyMode": 4,
+                "metallic": 0.5,
+                "roughness": 0.5,
+                "specularIntensity": 1,
+                "emissiveIntensity": 0,
+                "directIntensity": 1
+              }
+            }
+          }
+        },
+        "518": {
+          "json": {
+            "material": {
+              "$case": "pbr",
+              "pbr": {
+                "texture": {
+                  "tex": {
+                    "$case": "texture",
+                    "texture": {
+                      "src": "",
+                      "wrapMode": 0,
+                      "filterMode": 0
+                    }
+                  }
+                },
+                "alphaTest": 0.5,
+                "castShadows": false,
+                "alphaTexture": {
+                  "tex": {
+                    "$case": "texture",
+                    "texture": {
+                      "src": "",
+                      "wrapMode": 0,
+                      "filterMode": 0
+                    }
+                  }
+                },
+                "emissiveTexture": {
+                  "tex": {
+                    "$case": "texture",
+                    "texture": {
+                      "src": "",
+                      "wrapMode": 0,
+                      "filterMode": 0
+                    }
+                  }
+                },
+                "bumpTexture": {
+                  "tex": {
+                    "$case": "texture",
+                    "texture": {
+                      "src": "",
+                      "wrapMode": 0,
+                      "filterMode": 0
+                    }
+                  }
+                },
+                "albedoColor": {
+                  "r": 0,
+                  "g": 0,
+                  "b": 0,
+                  "a": 1
+                },
+                "emissiveColor": {
+                  "r": 1,
+                  "g": 1,
+                  "b": 1
+                },
+                "reflectivityColor": {
+                  "r": 1,
+                  "g": 1,
+                  "b": 1
+                },
+                "transparencyMode": 4,
+                "metallic": 0.5,
+                "roughness": 0.5,
+                "specularIntensity": 1,
+                "emissiveIntensity": 0,
+                "directIntensity": 1
+              }
+            }
+          }
+        },
+        "519": {
+          "json": {
+            "material": {
+              "$case": "pbr",
+              "pbr": {
+                "texture": {
+                  "tex": {
+                    "$case": "texture",
+                    "texture": {
+                      "src": "",
+                      "wrapMode": 0,
+                      "filterMode": 0
+                    }
+                  }
+                },
+                "alphaTest": 0.5,
+                "castShadows": true,
+                "alphaTexture": {
+                  "tex": {
+                    "$case": "texture",
+                    "texture": {
+                      "src": "",
+                      "wrapMode": 0,
+                      "filterMode": 0
+                    }
+                  }
+                },
+                "emissiveTexture": {
+                  "tex": {
+                    "$case": "texture",
+                    "texture": {
+                      "src": "",
+                      "wrapMode": 0,
+                      "filterMode": 0
+                    }
+                  }
+                },
+                "bumpTexture": {
+                  "tex": {
+                    "$case": "texture",
+                    "texture": {
+                      "src": "",
+                      "wrapMode": 0,
+                      "filterMode": 0
+                    }
+                  }
+                },
+                "albedoColor": {
+                  "r": 0,
+                  "g": 0,
+                  "b": 0,
+                  "a": 1
+                },
+                "emissiveColor": {
+                  "r": 1,
+                  "g": 1,
+                  "b": 1
+                },
+                "reflectivityColor": {
+                  "r": 1,
+                  "g": 1,
+                  "b": 1
+                },
+                "transparencyMode": 4,
+                "metallic": 0.5,
+                "roughness": 0.5,
+                "specularIntensity": 1,
+                "emissiveIntensity": 0,
+                "directIntensity": 1
+              }
+            }
+          }
+        },
+        "520": {
+          "json": {
+            "material": {
+              "$case": "pbr",
+              "pbr": {
+                "texture": {
+                  "tex": {
+                    "$case": "texture",
+                    "texture": {
+                      "src": "",
+                      "wrapMode": 0,
+                      "filterMode": 0
+                    }
+                  }
+                },
+                "alphaTest": 0.5,
+                "castShadows": false,
+                "alphaTexture": {
+                  "tex": {
+                    "$case": "texture",
+                    "texture": {
+                      "src": "",
+                      "wrapMode": 0,
+                      "filterMode": 0
+                    }
+                  }
+                },
+                "emissiveTexture": {
+                  "tex": {
+                    "$case": "texture",
+                    "texture": {
+                      "src": "",
+                      "wrapMode": 0,
+                      "filterMode": 0
+                    }
+                  }
+                },
+                "bumpTexture": {
+                  "tex": {
+                    "$case": "texture",
+                    "texture": {
+                      "src": "",
+                      "wrapMode": 0,
+                      "filterMode": 0
+                    }
+                  }
+                },
+                "albedoColor": {
+                  "r": 0,
+                  "g": 0,
+                  "b": 0,
+                  "a": 1
+                },
+                "emissiveColor": {
+                  "r": 1,
+                  "g": 1,
+                  "b": 1
+                },
+                "reflectivityColor": {
+                  "r": 1,
+                  "g": 1,
+                  "b": 1
+                },
+                "transparencyMode": 4,
+                "metallic": 0.5,
+                "roughness": 0.5,
+                "specularIntensity": 1,
+                "emissiveIntensity": 0,
+                "directIntensity": 1
               }
             }
           }
@@ -545,6 +1002,57 @@
               }
             }
           }
+        },
+        "517": {
+          "json": {
+            "mesh": {
+              "$case": "plane",
+              "plane": {
+                "uvs": []
+              }
+            }
+          }
+        },
+        "518": {
+          "json": {
+            "mesh": {
+              "$case": "plane",
+              "plane": {
+                "uvs": []
+              }
+            }
+          }
+        },
+        "519": {
+          "json": {
+            "mesh": {
+              "$case": "plane",
+              "plane": {
+                "uvs": []
+              }
+            }
+          }
+        },
+        "520": {
+          "json": {
+            "mesh": {
+              "$case": "plane",
+              "plane": {
+                "uvs": []
+              }
+            }
+          }
+        },
+        "536": {
+          "json": {
+            "mesh": {
+              "$case": "cylinder",
+              "cylinder": {
+                "radiusTop": 0.5,
+                "radiusBottom": 0.5
+              }
+            }
+          }
         }
       }
     },
@@ -581,9 +1089,29 @@
             "value": "Admin Tools"
           }
         },
+        "517": {
+          "json": {
+            "value": "BannerBackground"
+          }
+        },
+        "518": {
+          "json": {
+            "value": "BannerLogo"
+          }
+        },
+        "519": {
+          "json": {
+            "value": "BannerBackground_2"
+          }
+        },
+        "520": {
+          "json": {
+            "value": "BannerLogo_2"
+          }
+        },
         "521": {
           "json": {
-            "value": "podium_V2.glb"
+            "value": "Stage"
           }
         },
         "522": {
@@ -609,6 +1137,16 @@
         "526": {
           "json": {
             "value": "AttendeePanel"
+          }
+        },
+        "527": {
+          "json": {
+            "value": "AuditoriumCamera"
+          }
+        },
+        "536": {
+          "json": {
+            "value": "Logo"
           }
         }
       }
@@ -693,9 +1231,9 @@
         "serializationType": "map"
       },
       "data": {
-        "521": {
+        "536": {
           "json": {
-            "gizmo": 3
+            "gizmo": 0
           }
         }
       }
@@ -1090,7 +1628,8 @@
                   522,
                   523,
                   526,
-                  515
+                  515,
+                  527
                 ]
               },
               {
@@ -1115,7 +1654,14 @@
               },
               {
                 "entity": 521,
-                "children": []
+                "open": true,
+                "children": [
+                  517,
+                  518,
+                  519,
+                  520,
+                  536
+                ]
               },
               {
                 "entity": 522,
@@ -1144,6 +1690,31 @@
               },
               {
                 "entity": 515,
+                "children": []
+              },
+              {
+                "entity": 517,
+                "open": true,
+                "children": []
+              },
+              {
+                "entity": 518,
+                "children": []
+              },
+              {
+                "entity": 519,
+                "children": []
+              },
+              {
+                "entity": 520,
+                "children": []
+              },
+              {
+                "entity": 527,
+                "children": []
+              },
+              {
+                "entity": 536,
                 "children": []
               }
             ]
@@ -1727,6 +2298,18 @@
         "516": {
           "json": {}
         },
+        "517": {
+          "json": {}
+        },
+        "518": {
+          "json": {}
+        },
+        "519": {
+          "json": {}
+        },
+        "520": {
+          "json": {}
+        },
         "521": {
           "json": {}
         },
@@ -1744,6 +2327,32 @@
         },
         "526": {
           "json": {}
+        },
+        "527": {
+          "json": {}
+        },
+        "536": {
+          "json": {}
+        }
+      }
+    },
+    {
+      "name": "inspector::Hide",
+      "jsonSchema": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "boolean",
+            "serializationType": "boolean"
+          }
+        },
+        "serializationType": "map"
+      },
+      "data": {
+        "522": {
+          "json": {
+            "value": true
+          }
         }
       }
     },
