@@ -34,6 +34,8 @@ export class UIController {
           {this.gameController.resultsUI.resultsUiVisibility && this.gameController.resultsUI.createUi()}
           {this.gameController.timerUI.visible && this.gameController.timerUI.createUi()}
           {this.gameController.closePollUi.isVisible && this.gameController.closePollUi.createUi()}
+          {this.gameController.removeHostUI.removeHostVisibility &&
+            this.gameController.removeHostUI.createRemoveHostModal()}
           {ui.render()}
         </Canvas>
       </UiEntity>
