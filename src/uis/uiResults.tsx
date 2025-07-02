@@ -9,7 +9,7 @@ export class ResultsUI {
   private pollQuestion: string = ''
   private results: Array<{ option: string; percentage: number }> = []
   private isAnonymous: boolean = true
-  private votes: Array<{ option: string; userId: string }> = []
+  private votes: Array<{ option: string; userId?: string }> = []
   public gameController: GameController
   constructor(gameController: GameController) {
     this.gameController = gameController
@@ -19,13 +19,13 @@ export class ResultsUI {
     question: string
     anonymous: boolean
     results: Array<{ option: string; percentage: number }>
-    votes?: Array<{ option: string; userId: string }>
+    votes: Array<{ option: string; userId?: string }>
   }): void {
     this.pollQuestion = data.question
     this.results = data.results
     this.isAnonymous = data.anonymous
     console.log('is anonymous?', this.isAnonymous)
-    this.votes = data.votes ?? []
+    this.votes = data.votes
     this.resultsUiVisibility = true
   }
 

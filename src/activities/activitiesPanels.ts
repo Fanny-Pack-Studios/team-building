@@ -146,12 +146,7 @@ export class PopupAttendeePanelAndResultsButton {
       question: pollState.question,
       anonymous: pollState.anonymous,
       results,
-      votes: pollState.anonymous
-        ? undefined
-        : pollState.votes.map((vote) => ({
-            option: vote.option,
-            userId: vote.userId
-          }))
+      votes: pollState.votes.map((vote) => ({ option: vote.option, userId: vote.userId }))
     })
 
     this.gameController.resultsUI.openUI()

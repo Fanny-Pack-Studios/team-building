@@ -109,7 +109,7 @@ export function showPollResultsUI(pollId: string): void {
 
     for (const vote of pollState.votes) {
       prompt.addText({
-        value: `${vote.userId.slice(0, 6)}... → ${vote.option}`,
+        value: `${vote.userId?.slice(0, 6)}... → ${vote.option}`,
         size: 12,
         xPosition: -100,
         yPosition: y
