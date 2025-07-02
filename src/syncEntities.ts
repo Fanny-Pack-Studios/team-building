@@ -3,5 +3,6 @@ export enum SyncEntityEnumId {
   HOSTS = 2,
   MESSAGE_BUS = 3,
   INTERACTABLE = 4,
-  SHOW_RESULTS_BUTTON = 5
+  SHOW_RESULTS_BUTTON = 5,
+  CUSTOMIZATION_STATE = 6
 }

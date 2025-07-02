@@ -1,4 +1,5 @@
 import { PopupAttendeePanelAndResultsButton } from '../activities/activitiesPanels'
+import { setupCustomization } from '../auditorium/customization'
 import { setupMessageBus } from '../messagebus/messagebus'
 import { PlayersOnScene } from '../players/playersOnScene'
 import { PollCreator } from '../polls/poll'
@@ -58,6 +59,7 @@ export class GameController {
   }
 
   start(): void {
+    setupCustomization()
     setupMessageBus()
     this.popupAtendeePanelAndResultbutton.setupAttendeePanelAndResultsButton()
   }
