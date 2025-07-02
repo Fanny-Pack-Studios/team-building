@@ -31,14 +31,14 @@ const MainMenu = (props: { gameController: GameController } & EntityPropTypes): 
       uiBackground={primaryTheme.uiBackground}
     >
       <Button
-        value="Create Poll"
+        value="Start an Activity"
         uiTransform={primaryTheme.primaryButtonTransform}
         fontSize={primaryTheme.fontSize}
         font={primaryTheme.font}
         uiBackground={primaryTheme.primaryButtonBackground}
         onMouseDown={() => {
           props.gameController.mainMenuUI.isVisible = false
-          props.gameController.createPollUI.createPollUiVisibility = true
+          props.gameController.activitiesUI.openUI()
         }}
       />
       <Button

@@ -1,8 +1,8 @@
 import { PopupAttendeePanelAndResultsButton } from '../activities/activitiesPanels'
 import { setupCustomization } from '../auditorium/customization'
+import { setupPodium } from '../auditorium/podium'
 import { setupMessageBus } from '../messagebus/messagebus'
 import { PlayersOnScene } from '../players/playersOnScene'
-import { PollCreator } from '../polls/poll'
 import { HostIndicators } from '../uis/hostIndicators'
 import { CustomizationUI } from '../uis/ui.customization'
 import { ChooseActivityUI } from '../uis/uiActivities'
@@ -23,7 +23,6 @@ import { UIController } from './ui.controller'
 export class GameController {
   public uiController: UIController
   public hostsController: HostsController
-  public pollCreator: PollCreator
   public popupAtendeePanelAndResultbutton: PopupAttendeePanelAndResultsButton
   public playersOnScene: PlayersOnScene
 
@@ -45,7 +44,6 @@ export class GameController {
 
   constructor() {
     this.uiController = new UIController(this)
-    this.pollCreator = new PollCreator(this)
     this.popupAtendeePanelAndResultbutton = new PopupAttendeePanelAndResultsButton(this)
     this.hostsController = new HostsController()
 
@@ -69,5 +67,6 @@ export class GameController {
     setupCustomization()
     setupMessageBus()
     this.popupAtendeePanelAndResultbutton.setupAttendeePanelAndResultsButton()
+    setupPodium(this)
   }
 }
