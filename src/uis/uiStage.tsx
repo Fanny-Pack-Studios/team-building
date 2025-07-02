@@ -1,15 +1,5 @@
-import {
-  Billboard,
-  engine,
-  GltfContainer,
-  InputAction,
-  inputSystem,
-  MeshCollider,
-  PointerEventType,
-  TextShape,
-  Transform
-} from '@dcl/sdk/ecs'
-import { Color4, Vector3 } from '@dcl/sdk/math'
+import { engine, InputAction, inputSystem, MeshCollider, PointerEventType } from '@dcl/sdk/ecs'
+import { Color4 } from '@dcl/sdk/math'
 import ReactEcs, { Button, Dropdown, Label, UiEntity } from '@dcl/sdk/react-ecs'
 import { EntityNames } from '../../assets/scene/entity-names'
 import { getScaleFactor } from '../canvas/Canvas'
@@ -51,9 +41,6 @@ export class StageUI {
 
       if (noHosts || isHost) {
         this.unlockAccessToStage()
-        if (this.gameController.hostsController.isHost(player.userId, hosts)) {
-          this.addTargetToHost()
-        }
       } else {
         this.lockAccessToStage()
       }
@@ -80,26 +67,6 @@ export class StageUI {
   unlockAccessToStage(): void {
     console.log('Access to stage unlocked')
     MeshCollider.deleteFrom(this.stageWall)
-  }
-
-  addTargetToHost(): void {
-    Transform.create(this.hostTarget, {
-      position: Vector3.create(0, 0, 0),
-      scale: Vector3.create(34, 34, 34),
-      parent: engine.PlayerEntity
-    })
-    Transform.create(this.hostTargetText, {
-      position: Vector3.create(0, 2.3, 0),
-      scale: Vector3.create(1, 1, 1),
-      parent: engine.PlayerEntity
-    })
-    TextShape.create(this.hostTargetText, {
-      text: 'HOST',
-      fontSize: 1,
-      textColor: Color4.create(1, 0.84, 0, 1)
-    })
-    Billboard.create(this.hostTargetText)
-    GltfContainer.create(this.hostTarget, { src: 'assets/models/target_position.glb' })
   }
 
   addAsHost(taggedID: string): void {
