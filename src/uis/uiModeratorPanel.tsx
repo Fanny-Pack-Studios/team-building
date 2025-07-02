@@ -1,7 +1,7 @@
 import { Color4 } from '@dcl/sdk/math'
 import ReactEcs, { Label, UiEntity } from '@dcl/sdk/react-ecs'
-import { waitForPlayerInfo } from '../utils'
 import { type GameController } from '../controllers/game.controller'
+import { withPlayerInfo } from '../utils'
 export class ModeratorPanelUI {
   public panelUiVisibility: boolean = false
   private readonly icon: string = 'images/moderatormenu/moderator_tool_icon.png'
@@ -9,8 +9,7 @@ export class ModeratorPanelUI {
   public panel2Visible: boolean = false
   private isHost: boolean = false
   public gameController: GameController
-  constructor(gameController: GameController
-  ) {
+  constructor(gameController: GameController) {
     this.gameController = gameController
     this.gameController.hostsController.onChange(() => {
       this.updatePanel()
@@ -20,22 +19,18 @@ export class ModeratorPanelUI {
   }
 
   updatePanel(): void {
-    waitForPlayerInfo()
-      .then((player) => {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-        this.isHost = this.gameController.hostsController.isHost(player.userId)
-        this.panelUiVisibility = this.isHost || this.gameController.hostsController.noHostExists()
-      })
-      .catch((error) => {
-        console.error('Error getting player info:', error)
-        this.panelUiVisibility = false
-      })
+    withPlayerInfo((player) => {
+      this.isHost = this.gameController.hostsController.isHost(player.userId)
+      this.panelUiVisibility = this.isHost || this.gameController.hostsController.noHostExists()
+    })
   }
 
   createPanelUi(): ReactEcs.JSX.Element | null {
     if (this.gameController.uiController.canvasInfo === null) return null
     const uiScaleFactor =
-      (Math.min(this.gameController.uiController.canvasInfo.width, this.gameController.uiController.canvasInfo.height) / 1080) * 1.2
+      (Math.min(this.gameController.uiController.canvasInfo.width, this.gameController.uiController.canvasInfo.height) /
+        1080) *
+      1.2
 
     return (
       <UiEntity
@@ -87,6 +82,18 @@ export class ModeratorPanelUI {
               }}
               num={2}
               label=" GRANT STAGE ACCESS"
+              panel2Visible={this.panel2Visible}
+              canvasHeight={this.gameController.uiController.canvasInfo.height}
+            />
+          )}
+
+          {this.isHost && (
+            <MenuItem
+              onMouseDown={() => {
+                this.gameController.removeHostUI.toggleVisibility()
+              }}
+              num={3}
+              label=" REMOVE HOST"
               panel2Visible={this.panel2Visible}
               canvasHeight={this.gameController.uiController.canvasInfo.height}
             />
