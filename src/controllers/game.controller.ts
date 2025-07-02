@@ -4,6 +4,7 @@ import { setupMessageBus } from '../messagebus/messagebus'
 import { PlayersOnScene } from '../players/playersOnScene'
 import { PollCreator } from '../polls/poll'
 import { HostIndicators } from '../uis/hostIndicators'
+import { CustomizationUI } from '../uis/ui.customization'
 import { ChooseActivityUI } from '../uis/uiActivities'
 import { ClosePollUI } from '../uis/uiClosePoll'
 import { CreatePollUI } from '../uis/uiCreatePoll'
@@ -38,12 +39,14 @@ export class GameController {
   public closePollUi: ClosePollUI
   public removeHostUI: RemoveHostModal
   public hostIndicators: HostIndicators
+  public customizationUI: CustomizationUI
 
   constructor() {
     this.uiController = new UIController(this)
     this.pollCreator = new PollCreator(this)
     this.popupAtendeePanelAndResultbutton = new PopupAttendeePanelAndResultsButton(this)
     this.hostsController = new HostsController()
+
     this.stageUI = new StageUI(this)
     this.panelUI = new ModeratorPanelUI(this)
     this.kickUI = new KickUI(this)
@@ -56,6 +59,7 @@ export class GameController {
     this.playersOnScene = new PlayersOnScene(this)
     this.removeHostUI = new RemoveHostModal(this.hostsController)
     this.hostIndicators = new HostIndicators(this.hostsController)
+    this.customizationUI = new CustomizationUI()
   }
 
   start(): void {
