@@ -19,6 +19,7 @@ import { TimerUI } from '../uis/uiTimer'
 import { MainMenuUi } from '../uis/ui.mainMenu'
 import { HostsController } from './hosts.controller'
 import { UIController } from './ui.controller'
+import { WorkInProgressUI } from '../uis/uiWorkInProgress'
 
 export class GameController {
   public uiController: UIController
@@ -41,6 +42,7 @@ export class GameController {
   public removeHostUI: RemoveHostModal
   public hostIndicators: HostIndicators
   public customizationUI: CustomizationUI
+  public workInProgressUI: WorkInProgressUI
 
   constructor() {
     this.hostsController = new HostsController()
@@ -60,6 +62,7 @@ export class GameController {
     this.hostIndicators = new HostIndicators(this.hostsController)
     this.customizationUI = new CustomizationUI()
     this.mainMenuUI = new MainMenuUi(this)
+    this.workInProgressUI = new WorkInProgressUI(this)
   }
 
   start(): void {
