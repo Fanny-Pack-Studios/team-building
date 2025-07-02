@@ -50,7 +50,7 @@ export class PlayersOnScene {
   }
 
   public getUserIdFromDisplayName(displayName: string): string | undefined {
-    console.log('display name',displayName)
+    console.log('display name', displayName)
     const splitIndex = displayName.lastIndexOf('#')
     if (splitIndex === -1) return undefined
 
@@ -60,5 +60,14 @@ export class PlayersOnScene {
     const found = this.allPlayers.find((p) => p.name === namePart && p.userId.endsWith(last4))
 
     return found?.userId
+  }
+
+  getTaggedNamesFromWallets(wallets: string[]): string[] {
+    return wallets.map((wallet) => {
+      const found = this.allPlayers.find((p) => p.userId.toLowerCase() === wallet.toLowerCase())
+      if (found == null) return wallet
+      const last4 = found.userId.slice(-4)
+      return `${found.name}#${last4}`
+    })
   }
 }

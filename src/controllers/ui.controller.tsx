@@ -25,6 +25,7 @@ export class UIController {
         <Canvas>
           {this.gameController.panelUI.panelUiVisibility && this.gameController.panelUI.createPanelUi()}
           {this.gameController.kickUI.kickUiVisibility && this.gameController.kickUI.createKickUi()}
+          {this.gameController.kickUI.unKickUiVisibility && this.gameController.kickUI.createUnKickUi()}
           {this.gameController.kickUI.blackScreenVisibility && this.gameController.kickUI.createBlackScreen()}
           {this.gameController.stageUI.stageUiVisibility && this.gameController.stageUI.createStageUi()}
           {this.gameController.activitiesUI.chooseActivityUiVisibility &&
