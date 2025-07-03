@@ -67,7 +67,7 @@ export class GameController {
 
   start(): void {
     setupCustomization()
-    setupMessageBus()
+    setupMessageBus(this)
     this.popupAtendeePanelAndResultbutton.setupAttendeePanelAndResultsButton()
     setupPodium(this)
   }
