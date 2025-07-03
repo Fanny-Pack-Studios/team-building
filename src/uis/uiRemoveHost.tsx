@@ -40,6 +40,7 @@ export class RemoveHostModal {
   }
 
   toggleVisibility(): void {
+    this.gameController.uiController.closeAllModerationUIs()
     this.removeHostVisibility = !this.removeHostVisibility
   }
 

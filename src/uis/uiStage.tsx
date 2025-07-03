@@ -191,6 +191,7 @@ export class StageUI {
   }
 
   toggleVisibility(): void {
+    this.gameController.uiController.closeAllModerationUIs()
     if (!this.stageUiVisibility) {
       this.stageUiVisibility = true
     } else {

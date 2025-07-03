@@ -45,4 +45,11 @@ export class UIController {
       </UiEntity>
     )
   }
+
+  closeAllModerationUIs(): void {
+    this.gameController.kickUI.kickUiVisibility = false
+    this.gameController.kickUI.unKickUiVisibility = false
+    this.gameController.stageUI.stageUiVisibility = false
+    this.gameController.removeHostUI.removeHostVisibility = false
+  }
 }

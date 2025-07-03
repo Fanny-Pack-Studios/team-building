@@ -440,6 +440,7 @@ export class KickUI {
   }
 
   toggleVisibility(ui: KickUiType): void {
+    this.gameController.uiController.closeAllModerationUIs()
     switch (ui) {
       case 'kick':
         this.kickUiVisibility = !this.kickUiVisibility
