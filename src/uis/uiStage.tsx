@@ -100,8 +100,26 @@ export class StageUI {
           }}
           uiBackground={{ color: Color4.White() }}
         >
+          <UiEntity
+            uiTransform={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+              positionType: 'absolute',
+              width: 22 * getScaleFactor(),
+              height: 22 * getScaleFactor(),
+              position: { top: '3%', right: '2%' }
+            }}
+            uiBackground={{
+              textureMode: 'stretch',
+              texture: { src: 'images/moderatormenu/exit.png' }
+            }}
+            onMouseDown={() => {
+              this.stageUiVisibility = false
+            }}
+          ></UiEntity>
           <Label
-            value="Enter the player's name to grant stage access"
+            value="Select Player to Grant Stage Access"
             fontSize={24 * getScaleFactor()}
             color={Color4.Black()}
             uiTransform={{
@@ -123,9 +141,10 @@ export class StageUI {
             <Dropdown
               options={['Select Player', ...this.gameController.playersOnScene.displayPlayers]}
               uiTransform={{
-                width: '50%',
-                height: '50%'
+                width: 300 * getScaleFactor(),
+                height: 40 * getScaleFactor()
               }}
+              fontSize={16 * getScaleFactor()}
               onChange={this.checkPlayerNameOnArray}
             />
           </UiEntity>

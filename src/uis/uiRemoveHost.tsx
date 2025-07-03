@@ -1,8 +1,9 @@
 import { Color4 } from '@dcl/sdk/math'
-import ReactEcs, { Button, Dropdown, Label, scaleFontSize, UiEntity } from '@dcl/sdk/react-ecs'
+import ReactEcs, { Button, Dropdown, Label, UiEntity } from '@dcl/sdk/react-ecs'
 import { getPlayer } from '@dcl/sdk/src/players'
-import { type HostsController } from '../controllers/hosts.controller'
 import { withPlayerInfo } from '../utils'
+import { getScaleFactor } from '../canvas/Canvas'
+import { type GameController } from '../controllers/game.controller'
 
 export class RemoveHostModal {
   public removeHostVisibility: boolean = false
@@ -10,12 +11,13 @@ export class RemoveHostModal {
   // This local list of hosts is to ensure a correlation between the index of the array and the corresponding hosts.
   private hosts: string[] = []
   private selectedHostIndex: number = -1
-
-  constructor(private readonly hostsController: HostsController) {
-    this.hostsController.onChange((newHosts) => {
+  private readonly gameController: GameController
+  constructor(gameController: GameController) {
+    this.gameController = gameController
+    this.gameController.hostsController.onChange((newHosts) => {
       this.updateHosts(newHosts ?? [])
     })
-    this.updateHosts(this.hostsController.getHosts())
+    this.updateHosts(this.gameController.hostsController.getHosts())
   }
 
   updateHosts(someHosts: string[]): void {
@@ -25,7 +27,7 @@ export class RemoveHostModal {
     }
 
     withPlayerInfo((player) => {
-      if (!this.hostsController.isHost(player.userId)) {
+      if (!this.gameController.hostsController.isHost(player.userId)) {
         this.removeHostVisibility = false
       }
     })
@@ -33,7 +35,7 @@ export class RemoveHostModal {
 
   removeSelectedHost(): void {
     if (this.selectedHostIndex !== -1) {
-      this.hostsController.removeHost(this.hosts[this.selectedHostIndex])
+      this.gameController.hostsController.removeHost(this.hosts[this.selectedHostIndex])
     }
   }
 
@@ -42,12 +44,13 @@ export class RemoveHostModal {
   }
 
   createRemoveHostModal(): ReactEcs.JSX.Element | null {
+    if (this.gameController.uiController.canvasInfo === null) return null
     return (
       <UiEntity
         uiTransform={{
           flexDirection: 'column',
-          width: '100%',
-          height: '100%',
+          width: this.gameController.uiController.canvasInfo.width,
+          height: this.gameController.uiController.canvasInfo.height,
           justifyContent: 'center',
           alignItems: 'center',
           display: this.removeHostVisibility ? 'flex' : 'none'
@@ -58,38 +61,81 @@ export class RemoveHostModal {
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
-            width: '35%',
-            height: '35%',
-            display: 'flex'
+            positionType: 'absolute',
+            width: 550 * getScaleFactor(), // Use scale factor to make it responsive
+            height: 300 * getScaleFactor(), // Use scale factor to make it responsive
+            borderRadius: 15
           }}
           uiBackground={{ color: Color4.White() }}
         >
-          <Label
-            value="Select NAME/WALLET to remove host"
-            fontSize={scaleFontSize(24)}
-            color={Color4.Black()}
-            textAlign="middle-center"
+          <UiEntity
             uiTransform={{
-              width: '90%',
-              height: '20%',
-              margin: '1vw 1vw 1vw 1vw'
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+              positionType: 'absolute',
+              width: 22 * getScaleFactor(),
+              height: 22 * getScaleFactor(),
+              position: { top: '3%', right: '2%' }
+            }}
+            uiBackground={{
+              textureMode: 'stretch',
+              texture: { src: 'images/moderatormenu/exit.png' }
+            }}
+            onMouseDown={() => {
+              this.removeHostVisibility = false
+            }}
+          ></UiEntity>
+          <Label
+            value="Select Player to Remove Host Access"
+            fontSize={24 * getScaleFactor()}
+            color={Color4.Black()}
+            uiTransform={{
+              width: 300 * getScaleFactor(),
+              height: 60 * getScaleFactor(),
+              alignContent: 'center',
+              margin: '20px 20px 20px 20px'
             }}
           />
-
-          <Dropdown
-            options={this.hosts.map((host) => getPlayer({ userId: host })?.name ?? host)}
-            onChange={(index) => {
-              this.selectedHostIndex = index
+          <UiEntity
+            uiTransform={{
+              flexDirection: 'row', // Set to 'row' to align children (Input, Label) side by side
+              width: 400 * getScaleFactor(),
+              height: 50 * getScaleFactor(),
+              alignItems: 'center',
+              justifyContent: 'center'
             }}
-            uiTransform={{ width: '50%', height: '15%' }}
-            fontSize={scaleFontSize(18)}
-            selectedIndex={this.selectedHostIndex >= 0 ? this.selectedHostIndex : 0}
+          >
+            <Dropdown
+              options={this.hosts.map((host) => getPlayer({ userId: host })?.name ?? host)}
+              onChange={(index) => {
+                this.selectedHostIndex = index
+              }}
+              uiTransform={{
+                width: 300 * getScaleFactor(),
+                height: 40 * getScaleFactor()
+              }}
+              fontSize={16 * getScaleFactor()}
+              selectedIndex={this.selectedHostIndex >= 0 ? this.selectedHostIndex : 0}
+            />
+          </UiEntity>
+
+          <Label
+            value="Do you want to proceed?"
+            fontSize={24 * getScaleFactor()}
+            color={Color4.Black()}
+            uiTransform={{
+              width: 350 * getScaleFactor(),
+              height: 60 * getScaleFactor(),
+              alignContent: 'center',
+              margin: '5px 5px 5px 5px'
+            }}
           />
 
           <UiEntity
             uiTransform={{
-              flexDirection: 'row',
-              width: '100%',
+              flexDirection: 'row', // Set to 'row' to align children side by side
+              width: 450 * getScaleFactor(),
               alignItems: 'center',
               justifyContent: 'center'
             }}
@@ -97,13 +143,12 @@ export class RemoveHostModal {
             <Button
               value="PROCEED"
               variant="primary"
-              fontSize={scaleFontSize(18)}
+              fontSize={18 * getScaleFactor()}
               uiTransform={{
-                width: 'auto',
-                height: 'auto',
+                width: 200 * getScaleFactor(),
+                height: 40 * getScaleFactor(),
                 margin: '15px',
-                borderRadius: '1vh',
-                padding: '1vw'
+                borderRadius: 10
               }}
               onMouseDown={() => {
                 this.removeSelectedHost()
