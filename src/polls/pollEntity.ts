@@ -9,9 +9,10 @@ export const PollState = engine.defineComponent('pollState', {
   question: Schemas.String,
   options: Schemas.Array(Schemas.String),
   anonymous: Schemas.Boolean,
+  userIdsThatVoted: Schemas.Array(Schemas.String),
   votes: Schemas.Array(
     Schemas.Map({
-      userId: Schemas.String,
+      userId: Schemas.Optional(Schemas.String),
       option: Schemas.String
     })
   ),
