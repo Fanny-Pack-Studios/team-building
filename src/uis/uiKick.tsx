@@ -229,6 +229,24 @@ export class KickUI {
           }}
           uiBackground={{ color: Color4.White() }}
         >
+          <UiEntity
+            uiTransform={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+              positionType: 'absolute',
+              width: 22 * getScaleFactor(),
+              height: 22 * getScaleFactor(),
+              position: { top: '3%', right: '2%' }
+            }}
+            uiBackground={{
+              textureMode: 'stretch',
+              texture: { src: 'images/moderatormenu/exit.png' }
+            }}
+            onMouseDown={() => {
+              this.unKickUiVisibility = false
+            }}
+          ></UiEntity>
           <Label
             value="Select Player to Unban"
             fontSize={24 * getScaleFactor()}
@@ -250,15 +268,15 @@ export class KickUI {
             }}
           >
             <Dropdown
-              emptyLabel='Select Player'
+              emptyLabel="Select Player"
               options={this.gameController.playersOnScene.getTaggedNamesFromWallets(
-                  BannedComponent.get(this.bannedEntity).list
-                )
-              }
+                BannedComponent.get(this.bannedEntity).list
+              )}
               uiTransform={{
-                width: '50%',
-                height: '50%'
+                width: 300 * getScaleFactor(),
+                height: 40 * getScaleFactor()
               }}
+              fontSize={16 * getScaleFactor()}
               onChange={this.checkPlayerNameOnArray}
             />
           </UiEntity>
@@ -330,6 +348,24 @@ export class KickUI {
           }}
           uiBackground={{ color: Color4.White() }}
         >
+          <UiEntity
+            uiTransform={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+              positionType: 'absolute',
+              width: 22 * getScaleFactor(),
+              height: 22 * getScaleFactor(),
+              position: { top: '3%', right: '2%' }
+            }}
+            uiBackground={{
+              textureMode: 'stretch',
+              texture: { src: 'images/moderatormenu/exit.png' }
+            }}
+            onMouseDown={() => {
+              this.kickUiVisibility = false
+            }}
+          ></UiEntity>
           <Label
             value="Select Player to Ban"
             fontSize={24 * getScaleFactor()}
@@ -353,9 +389,10 @@ export class KickUI {
             <Dropdown
               options={['Select Player', ...this.gameController.playersOnScene.displayPlayers]}
               uiTransform={{
-                width: '50%',
-                height: '50%'
+                width: 300 * getScaleFactor(),
+                height: 40 * getScaleFactor()
               }}
+              fontSize={16 * getScaleFactor()}
               onChange={this.checkPlayerNameOnArray}
             />
           </UiEntity>
