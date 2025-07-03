@@ -58,7 +58,7 @@ export class GameController {
     this.timerUI = new TimerUI(this)
     this.closePollUi = new ClosePollUI(this)
     this.playersOnScene = new PlayersOnScene(this)
-    this.removeHostUI = new RemoveHostModal(this.hostsController)
+    this.removeHostUI = new RemoveHostModal(this)
     this.hostIndicators = new HostIndicators(this.hostsController)
     this.customizationUI = new CustomizationUI()
     this.mainMenuUI = new MainMenuUi(this)
