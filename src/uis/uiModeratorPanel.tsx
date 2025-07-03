@@ -68,12 +68,13 @@ export class ModeratorPanelUI {
           {this.isHost && (
             <MenuItem
               onMouseDown={() => {
-                this.gameController.kickUI.toggleVisibility()
+                this.gameController.kickUI.toggleVisibility('kick')
               }}
               num={1}
-              label=" KICK PLAYER"
+              label=" BAN PLAYER"
               panel2Visible={this.panel2Visible}
               canvasHeight={this.gameController.uiController.canvasInfo.height}
+              textureSrc='https://i.postimg.cc/Ghxs5njT/teleport-tool-mainmenu-button1.png'
             />
           )}
           {this.isHost && (
@@ -85,6 +86,7 @@ export class ModeratorPanelUI {
               label=" GRANT STAGE ACCESS"
               panel2Visible={this.panel2Visible}
               canvasHeight={this.gameController.uiController.canvasInfo.height}
+              textureSrc='https://i.postimg.cc/N059F9vR/teleport-tool-mainmenu-button2.png'
             />
           )}
 
@@ -97,6 +99,32 @@ export class ModeratorPanelUI {
               label=" REMOVE HOST"
               panel2Visible={this.panel2Visible}
               canvasHeight={this.gameController.uiController.canvasInfo.height}
+              textureSrc='https://i.postimg.cc/vZ86R2Pq/teleport-tool-mainmenu-button3.png'
+            />
+          )}
+
+            {this.isHost && (
+            <MenuItem
+              onMouseDown={() => {
+                this.gameController.kickUI.toggleVisibility('unKick')
+              }}
+              num={4}
+              label=" UNBAN PLAYER"
+              panel2Visible={this.panel2Visible}
+              canvasHeight={this.gameController.uiController.canvasInfo.height}
+              textureSrc='https://i.postimg.cc/Vk70z9pY/teleport-tool-mainmenu-button4.png'
+            />
+          )}
+          {this.gameController.hostsController.noHostExists() && (
+            <MenuItem
+              onMouseDown={() => {
+                this.gameController.hostsController.claimHost()
+              }}
+              num={1}
+              label=" CLAIM HOST"
+              panel2Visible={this.panel2Visible}
+              canvasHeight={this.gameController.uiController.canvasInfo.height}
+              textureSrc='https://i.postimg.cc/Ghxs5njT/teleport-tool-mainmenu-button1.png'
             />
           )}
         </UiEntity>
@@ -121,6 +149,7 @@ function MenuItem(props: {
   onMouseDown: () => void
   panel2Visible: boolean
   canvasHeight: number
+  textureSrc: string
 }): ReactEcs.JSX.Element {
   return (
     <UiEntity
@@ -135,7 +164,7 @@ function MenuItem(props: {
       }}
       uiBackground={{
         textureMode: 'stretch',
-        texture: { src: `https://i.postimg.cc/Ghxs5njT/teleport-tool-mainmenu-button${props.num}.png` }
+        texture: { src: props.textureSrc }
       }}
       onMouseDown={() => {
         props.onMouseDown()
