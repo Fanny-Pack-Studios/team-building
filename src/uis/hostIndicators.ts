@@ -52,6 +52,7 @@ export class HostIndicators {
   deleteIndicatorIfExists(address: string): void {
     const entities = this.indicatorEntities.get(address)
     if (entities !== undefined) {
+      this.indicatorEntities.delete(address)
       engine.removeEntityWithChildren(entities.indicatorEntity)
     }
   }
