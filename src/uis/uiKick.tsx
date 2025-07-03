@@ -251,12 +251,11 @@ export class KickUI {
             }}
           >
             <Dropdown
-              options={[
-                'Select Player',
-                ...this.gameController.playersOnScene.getTaggedNamesFromWallets(
+              emptyLabel='Select Player'
+              options={this.gameController.playersOnScene.getTaggedNamesFromWallets(
                   BannedComponent.get(this.bannedEntity).list
                 )
-              ]}
+              }
               uiTransform={{
                 width: '50%',
                 height: '50%'
