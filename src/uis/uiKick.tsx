@@ -50,7 +50,7 @@ export class KickUI {
     BannedComponent.create(this.bannedEntity)
     syncEntity(this.bannedEntity, [BannedComponent.componentId], SyncEntityEnumId.KICK)
     engine.addSystem(() => {
-      this.kickPlayers()
+      this.updateKickStatus()
     })
     engine.addSystem(() => {
       const cmd = inputSystem.getInputCommand(InputAction.IA_ACTION_3, PointerEventType.PET_DOWN)
@@ -129,7 +129,7 @@ export class KickUI {
     this.kickUiVisibility = true
   }
 
-  kickPlayers(): void {
+  updateKickStatus(): void {
     const player = getPlayer()
     if (player == null) return
 
@@ -157,7 +157,6 @@ export class KickUI {
 
     const banned = BannedComponent.getMutable(this.bannedEntity)
     banned.list = banned.list.filter((id) => id.toLowerCase() !== userID.toLowerCase())
-    this.blackScreenVisibility = false
 
     console.log('banned list', BannedComponent.get(this.bannedEntity).list)
   }
@@ -167,7 +166,7 @@ export class KickUI {
     if (userID === undefined) return
     BannedComponent.getMutable(this.bannedEntity).list.push(userID.toLowerCase())
     console.log('banned list', BannedComponent.get(this.bannedEntity).list)
-    this.kickPlayers()
+    this.updateKickStatus()
   }
 
   createBlackScreen(): ReactEcs.JSX.Element | null {
@@ -411,9 +410,6 @@ export class KickUI {
         break
       case 'unKick':
         this.unKickUiVisibility = !this.unKickUiVisibility
-        break
-      case 'blackScreen':
-        this.blackScreenVisibility = !this.blackScreenVisibility
         break
     }
   }
