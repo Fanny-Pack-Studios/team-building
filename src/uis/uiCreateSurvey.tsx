@@ -10,6 +10,7 @@ import { merge } from 'ts-deepmerge'
 import { SurveyIcon } from '../surveys/surveyIcon'
 import { type OptionsQuantity, RatingSelector } from '../surveys/rating'
 import { Switch } from './components/switch'
+import { createSurveyEntity } from '../surveys/surveyEntity'
 
 function IconEntity(props: {
   icon: SurveyIcon
@@ -57,8 +58,9 @@ export class CreateSurveyUI {
   private selectedIcon: SurveyIcon = SurveyIcon.STAR
   private isAnonymous: boolean = false
   private optionsQty: OptionsQuantity = 5
+  private questionTitle: string = ''
 
-  public isVisible: boolean = true
+  public isVisible: boolean = false
   constructor(private readonly gameController: GameController) {}
 
   createUI(): ReactEcs.JSX.Element | null {
@@ -74,7 +76,12 @@ export class CreateSurveyUI {
         />
         <LabeledInput
           labelProps={{ value: '<b>Question Title: </b>' }}
-          inputProps={{ placeholder: 'Question Title' }}
+          inputProps={{
+            placeholder: 'Question Title',
+            onChange: (value) => {
+              this.questionTitle = value
+            }
+          }}
         />
 
         <VerticalLabeledControl
@@ -132,6 +139,7 @@ export class CreateSurveyUI {
         </VerticalLabeledControl>
         <Button
           value="<b>Create</b>"
+          color={this.areInputsValid() ? primaryTheme.fontColor : primaryTheme.disabledFontColor}
           uiTransform={{
             width: '10vw',
             height: '3vw',
@@ -140,10 +148,26 @@ export class CreateSurveyUI {
             margin: { top: '2vw' }
           }}
           fontSize="1.2vw"
-          uiBackground={primaryTheme.primaryButtonBackground}
-          onMouseDown={() => {}}
+          uiBackground={
+            this.areInputsValid() ? primaryTheme.primaryButtonBackground : primaryTheme.primaryButtonDisabledBackground
+          }
+          onMouseDown={() => {
+            if (this.areInputsValid()) {
+              this.createSurvey()
+            }
+          }}
         ></Button>
       </ModalWindow>
     )
+  }
+
+  areInputsValid(): boolean {
+    return this.questionTitle !== ''
+  }
+
+  createSurvey(): void {
+    createSurveyEntity(this.questionTitle, this.selectedIcon, this.optionsQty, this.isAnonymous)
+    this.gameController.uiController.gameController.popupAtendeePanelAndResultbutton.create()
+    this.isVisible = false
   }
 }

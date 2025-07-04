@@ -70,6 +70,7 @@ export class PopupAttendeePanelAndResultsButton {
   }
 
   runCurrentActivityAsAttendee(): void {
+    // Add code to run the survey as atendee here
     const allPollEntities = Array.from(engine.getEntitiesWith(PollState))
     if (allPollEntities.length <= 0) return
 

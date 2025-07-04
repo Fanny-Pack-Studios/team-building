@@ -239,7 +239,7 @@ export class ChooseActivityUI {
         break
       case 4:
         this.chooseActivityUiVisibility = false
-        // this.gameController.createSurveyUI.createSurveyUiVisibility = true
+        this.gameController.createSurveyUI.isVisible = true
         break
       default:
         break
