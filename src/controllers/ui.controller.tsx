@@ -36,6 +36,12 @@ export class UIController {
           {this.gameController.closePollUi.isVisible && this.gameController.closePollUi.createUi()}
           {this.gameController.removeHostUI.removeHostVisibility &&
             this.gameController.removeHostUI.createRemoveHostModal()}
+          {this.gameController.choosePollUI.choosePollUiVisibility &&
+            this.gameController.choosePollUI.createChoosePollUi()}
+          {this.gameController.createZonePollUI.createZonePollUiVisibility &&
+            this.gameController.createZonePollUI.createUi()}
+          {this.gameController.zonePollQuestionUI.visible && this.gameController.zonePollQuestionUI.createUi()}
+
           {ui.render()}
         </Canvas>
       </UiEntity>
