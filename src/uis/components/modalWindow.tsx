@@ -16,7 +16,7 @@ export function ModalWindow(
         flexDirection: 'column',
         width: '30vw',
         height: '40vw',
-        padding: '3vw'
+        padding: '2.5vw 4vw'
       } satisfies UiTransformProps,
       uiBackground: {
         texture: {

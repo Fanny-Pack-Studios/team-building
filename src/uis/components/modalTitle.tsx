@@ -6,7 +6,7 @@ export function ModalTitle(props: UiLabelProps): ReactEcs.JSX.Element {
   return Label({
     uiTransform: {
       width: '100%',
-      height: '2vw'
+      height: '3vw'
     },
     font: 'sans-serif',
     color: Color4.White(),
