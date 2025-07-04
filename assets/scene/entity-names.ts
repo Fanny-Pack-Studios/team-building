@@ -14,5 +14,10 @@ export enum EntityNames {
   StageWall = "StageWall",
   Video_Screen = "Video Screen",
   podium_V2_glb = "podium_V2.glb",
+  stage_glb = "stage.glb",
+  voting_door01_glb = "voting_door01.glb",
+  voting_door02_glb = "voting_door02.glb",
+  voting_door03_glb = "voting_door03.glb",
+  voting_door04_glb = "voting_door04.glb",
   voting_zone_glb = "voting_zone.glb",
 } 

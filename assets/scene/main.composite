@@ -97,16 +97,16 @@
               "y": 0,
               "z": 8.25
             },
-            "scale": {
-              "x": 1,
-              "y": 1,
-              "z": 1
-            },
             "rotation": {
               "x": 0,
               "y": 0,
               "z": 0,
               "w": 1
+            },
+            "scale": {
+              "x": 1,
+              "y": 1,
+              "z": 1
             },
             "parent": 0
           }
@@ -114,9 +114,9 @@
         "514": {
           "json": {
             "position": {
-              "x": 7.5,
-              "y": 7.25,
-              "z": 12.75
+              "x": 8,
+              "y": 3.799999952316284,
+              "z": 13.300000190734863
             },
             "rotation": {
               "x": 0,
@@ -125,8 +125,8 @@
               "w": 1
             },
             "scale": {
-              "x": 13.800000190734863,
-              "y": 6,
+              "x": 5.5,
+              "y": 3,
               "z": 1
             },
             "parent": 0
@@ -174,12 +174,17 @@
             "parent": 0
           }
         },
-        "521": {
+        "517": {
           "json": {
             "position": {
               "x": 8,
               "y": 0,
               "z": 8
+            },
+            "scale": {
+              "x": 1,
+              "y": 1,
+              "z": 1
             },
             "rotation": {
               "x": 0,
@@ -187,10 +192,26 @@
               "z": 0,
               "w": 1
             },
+            "parent": 0
+          }
+        },
+        "521": {
+          "json": {
+            "position": {
+              "x": 8,
+              "y": 0,
+              "z": 8
+            },
             "scale": {
               "x": 1,
               "y": 1,
               "z": 1
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
             },
             "parent": 0
           }
@@ -299,6 +320,90 @@
             },
             "parent": 0
           }
+        },
+        "527": {
+          "json": {
+            "position": {
+              "x": 8,
+              "y": 0,
+              "z": 8
+            },
+            "scale": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "parent": 0
+          }
+        },
+        "528": {
+          "json": {
+            "position": {
+              "x": 8,
+              "y": 0,
+              "z": 8
+            },
+            "scale": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "parent": 0
+          }
+        },
+        "529": {
+          "json": {
+            "position": {
+              "x": 8,
+              "y": 0,
+              "z": 8
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "scale": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
+            "parent": 0
+          }
+        },
+        "530": {
+          "json": {
+            "position": {
+              "x": 8,
+              "y": 0,
+              "z": 8
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "scale": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
+            "parent": 0
+          }
         }
       }
     },
@@ -354,7 +459,16 @@
         },
         "513": {
           "json": {
-            "states": []
+            "states": [
+              {
+                "clip": "estrado_pantallaAction",
+                "playing": true,
+                "weight": 1,
+                "speed": 1,
+                "loop": true,
+                "shouldReset": false
+              }
+            ]
           }
         },
         "514": {
@@ -368,6 +482,11 @@
           }
         },
         "516": {
+          "json": {
+            "states": []
+          }
+        },
+        "517": {
           "json": {
             "states": []
           }
@@ -400,6 +519,62 @@
         "526": {
           "json": {
             "states": []
+          }
+        },
+        "527": {
+          "json": {
+            "states": [
+              {
+                "clip": "voting_door04_open",
+                "playing": true,
+                "weight": 1,
+                "speed": 1,
+                "loop": true,
+                "shouldReset": false
+              }
+            ]
+          }
+        },
+        "528": {
+          "json": {
+            "states": [
+              {
+                "clip": "voting_door01_open",
+                "playing": true,
+                "weight": 1,
+                "speed": 1,
+                "loop": true,
+                "shouldReset": false
+              }
+            ]
+          }
+        },
+        "529": {
+          "json": {
+            "states": [
+              {
+                "clip": "voting_door02_open",
+                "playing": true,
+                "weight": 1,
+                "speed": 1,
+                "loop": true,
+                "shouldReset": false
+              }
+            ]
+          }
+        },
+        "530": {
+          "json": {
+            "states": [
+              {
+                "clip": "voting_door03_open",
+                "playing": true,
+                "weight": 1,
+                "speed": 1,
+                "loop": true,
+                "shouldReset": false
+              }
+            ]
           }
         }
       }
@@ -434,6 +609,13 @@
             "invisibleMeshesCollisionMask": 0
           }
         },
+        "517": {
+          "json": {
+            "src": "assets/models/stage.glb",
+            "visibleMeshesCollisionMask": 0,
+            "invisibleMeshesCollisionMask": 3
+          }
+        },
         "521": {
           "json": {
             "src": "assets/models/podium_V2.glb",
@@ -460,6 +642,34 @@
             "src": "assets/asset-packs/ring_-_green_light/Ring_Green_Light.glb",
             "visibleMeshesCollisionMask": 1,
             "invisibleMeshesCollisionMask": 2
+          }
+        },
+        "527": {
+          "json": {
+            "src": "assets/models/voting_door04.glb",
+            "visibleMeshesCollisionMask": 0,
+            "invisibleMeshesCollisionMask": 3
+          }
+        },
+        "528": {
+          "json": {
+            "src": "assets/models/voting_door01.glb",
+            "visibleMeshesCollisionMask": 0,
+            "invisibleMeshesCollisionMask": 3
+          }
+        },
+        "529": {
+          "json": {
+            "src": "assets/models/voting_door02.glb",
+            "visibleMeshesCollisionMask": 0,
+            "invisibleMeshesCollisionMask": 3
+          }
+        },
+        "530": {
+          "json": {
+            "src": "assets/models/voting_door03.glb",
+            "visibleMeshesCollisionMask": 0,
+            "invisibleMeshesCollisionMask": 3
           }
         }
       }
@@ -581,6 +791,11 @@
             "value": "Admin Tools"
           }
         },
+        "517": {
+          "json": {
+            "value": "stage.glb"
+          }
+        },
         "521": {
           "json": {
             "value": "podium_V2.glb"
@@ -609,6 +824,26 @@
         "526": {
           "json": {
             "value": "AttendeePanel"
+          }
+        },
+        "527": {
+          "json": {
+            "value": "voting_door04.glb"
+          }
+        },
+        "528": {
+          "json": {
+            "value": "voting_door01.glb"
+          }
+        },
+        "529": {
+          "json": {
+            "value": "voting_door02.glb"
+          }
+        },
+        "530": {
+          "json": {
+            "value": "voting_door03.glb"
           }
         }
       }
@@ -693,7 +928,7 @@
         "serializationType": "map"
       },
       "data": {
-        "521": {
+        "514": {
           "json": {
             "gizmo": 3
           }
@@ -1090,7 +1325,12 @@
                   522,
                   523,
                   526,
-                  515
+                  515,
+                  517,
+                  527,
+                  528,
+                  529,
+                  530
                 ]
               },
               {
@@ -1144,6 +1384,26 @@
               },
               {
                 "entity": 515,
+                "children": []
+              },
+              {
+                "entity": 517,
+                "children": []
+              },
+              {
+                "entity": 527,
+                "children": []
+              },
+              {
+                "entity": 528,
+                "children": []
+              },
+              {
+                "entity": 529,
+                "children": []
+              },
+              {
+                "entity": 530,
                 "children": []
               }
             ]
@@ -1727,6 +1987,9 @@
         "516": {
           "json": {}
         },
+        "517": {
+          "json": {}
+        },
         "521": {
           "json": {}
         },
@@ -1743,6 +2006,18 @@
           "json": {}
         },
         "526": {
+          "json": {}
+        },
+        "527": {
+          "json": {}
+        },
+        "528": {
+          "json": {}
+        },
+        "529": {
+          "json": {}
+        },
+        "530": {
           "json": {}
         }
       }
