@@ -14,6 +14,7 @@ import { Color4, Quaternion, Vector3 } from '@dcl/sdk/math'
 // import { syncEntity } from '@dcl/sdk/network'
 import { getPlayerPosition } from '../utils'
 import { type GameController } from '../controllers/game.controller'
+import { syncEntity } from '@dcl/sdk/network'
 
 export class OptionZone {
   entity: Entity
@@ -62,7 +63,14 @@ export class OptionZone {
     })
     Billboard.create(this.textEntity)
     this.createQuestionEntity(this.question)
-    // syncEntity(this.textEntity, [Transform.componentId, Animator.componentId], 1)
+
+    syncEntity(this.entity, [Transform.componentId, Material.componentId, MeshRenderer.componentId], 1)
+
+    syncEntity(this.textEntity, [Transform.componentId, TextShape.componentId, Billboard.componentId], 1)
+
+    if (this.questionEntity !== undefined) {
+      syncEntity(this.questionEntity, [Transform.componentId, GltfContainer.componentId, Billboard.componentId], 1)
+    }
   }
 
   update(dt: number): void {

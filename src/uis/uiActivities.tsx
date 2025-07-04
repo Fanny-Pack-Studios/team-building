@@ -227,7 +227,7 @@ export class ChooseActivityUI {
     switch (this.buttonSelected) {
       case 1:
         this.chooseActivityUiVisibility = false
-        this.gameController.createPollUI.createPollUiVisibility = true
+        this.gameController.choosePollUI.choosePollUiVisibility = true
         break
       case 2:
         this.chooseActivityUiVisibility = false
