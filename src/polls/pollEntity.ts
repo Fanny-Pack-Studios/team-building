@@ -1,7 +1,7 @@
 import { engine, Schemas, type Entity } from '@dcl/sdk/ecs'
 import { syncEntity } from '@dcl/sdk/network'
 import { generatePollId } from '../utils'
-import { createShowResultsEntity } from './resultLink'
+
 import { getPlayer } from '@dcl/sdk/src/players'
 
 export const PollState = engine.defineComponent('pollState', {
@@ -9,9 +9,10 @@ export const PollState = engine.defineComponent('pollState', {
   question: Schemas.String,
   options: Schemas.Array(Schemas.String),
   anonymous: Schemas.Boolean,
+  userIdsThatVoted: Schemas.Array(Schemas.String),
   votes: Schemas.Array(
     Schemas.Map({
-      userId: Schemas.String,
+      userId: Schemas.Optional(Schemas.String),
       option: Schemas.String
     })
   ),
@@ -39,7 +40,6 @@ export function createPollEntity(
     creatorId,
     closed: false
   })
-  createShowResultsEntity(pollEntity, pollId)
   pollRegistry.set(pollId, pollEntity)
 
   syncEntity(pollEntity, [PollState.componentId])

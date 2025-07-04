@@ -1,16 +1,6 @@
-import {
-  Billboard,
-  engine,
-  GltfContainer,
-  InputAction,
-  inputSystem,
-  MeshCollider,
-  PointerEventType,
-  TextShape,
-  Transform
-} from '@dcl/sdk/ecs'
-import { Color4, Vector3 } from '@dcl/sdk/math'
-import ReactEcs, { Button, Input, Label, UiEntity } from '@dcl/sdk/react-ecs'
+import { engine, InputAction, inputSystem, MeshCollider, PointerEventType } from '@dcl/sdk/ecs'
+import { Color4 } from '@dcl/sdk/math'
+import ReactEcs, { Button, Dropdown, Label, UiEntity } from '@dcl/sdk/react-ecs'
 import { EntityNames } from '../../assets/scene/entity-names'
 import { getScaleFactor } from '../canvas/Canvas'
 import { type GameController } from '../controllers/game.controller'
@@ -21,7 +11,7 @@ export class StageUI {
   public hostTargetText = engine.addEntity()
   public gameController: GameController
   public stageUiVisibility: boolean = false
-  public nameOrWallet: string = ''
+  playerSelected: string = ''
 
   private readonly stageWall = engine.getEntityByName<EntityNames>(EntityNames.StageWall)
   private readonly stageWallColliderComponent = MeshCollider.get(this.stageWall)
@@ -51,9 +41,6 @@ export class StageUI {
 
       if (noHosts || isHost) {
         this.unlockAccessToStage()
-        if (this.gameController.hostsController.isHost(player.userId, hosts)) {
-          this.addTargetToHost()
-        }
       } else {
         this.lockAccessToStage()
       }
@@ -82,28 +69,10 @@ export class StageUI {
     MeshCollider.deleteFrom(this.stageWall)
   }
 
-  addTargetToHost(): void {
-    Transform.create(this.hostTarget, {
-      position: Vector3.create(0, 0, 0),
-      scale: Vector3.create(34, 34, 34),
-      parent: engine.PlayerEntity
-    })
-    Transform.create(this.hostTargetText, {
-      position: Vector3.create(0, 2.3, 0),
-      scale: Vector3.create(1, 1, 1),
-      parent: engine.PlayerEntity
-    })
-    TextShape.create(this.hostTargetText, {
-      text: 'HOST',
-      fontSize: 1,
-      textColor: Color4.create(1, 0.84, 0, 1)
-    })
-    Billboard.create(this.hostTargetText)
-    GltfContainer.create(this.hostTarget, { src: 'assets/models/target_position.glb' })
-  }
-
-  addAsHost(nameOrWallet: string): void {
-    this.gameController.hostsController.addHost(nameOrWallet)
+  addAsHost(taggedID: string): void {
+    const userID = this.gameController.playersOnScene.getUserIdFromDisplayName(taggedID)
+    if (userID === undefined) return
+    this.gameController.hostsController.addHost(userID)
   }
 
   createStageUi(): ReactEcs.JSX.Element | null {
@@ -151,18 +120,13 @@ export class StageUI {
               justifyContent: 'center'
             }}
           >
-            <Input
-              onChange={(value) => {
-                this.nameOrWallet = value
-              }}
-              fontSize={22 * getScaleFactor()}
-              placeholder={''}
-              placeholderColor={Color4.Black()}
+            <Dropdown
+              options={['Select Player', ...this.gameController.playersOnScene.displayPlayers]}
               uiTransform={{
-                width: 300 * getScaleFactor(),
-                height: 50 * getScaleFactor(),
-                margin: '10px 0'
+                width: '50%',
+                height: '50%'
               }}
+              onChange={this.checkPlayerNameOnArray}
             />
           </UiEntity>
 
@@ -197,7 +161,7 @@ export class StageUI {
                 borderRadius: 10
               }}
               onMouseDown={() => {
-                this.addAsHost(this.nameOrWallet)
+                this.addAsHost(this.playerSelected)
                 this.stageUiVisibility = false
               }}
             />
@@ -213,5 +177,10 @@ export class StageUI {
     } else {
       this.stageUiVisibility = false
     }
+  }
+
+  checkPlayerNameOnArray = (playerNumber: number): void => {
+    console.log('here', playerNumber)
+    this.playerSelected = this.gameController.playersOnScene.displayPlayers[playerNumber - 1]
   }
 }

@@ -25,6 +25,7 @@ export class UIController {
         <Canvas>
           {this.gameController.panelUI.panelUiVisibility && this.gameController.panelUI.createPanelUi()}
           {this.gameController.kickUI.kickUiVisibility && this.gameController.kickUI.createKickUi()}
+          {this.gameController.kickUI.unKickUiVisibility && this.gameController.kickUI.createUnKickUi()}
           {this.gameController.kickUI.blackScreenVisibility && this.gameController.kickUI.createBlackScreen()}
           {this.gameController.stageUI.stageUiVisibility && this.gameController.stageUI.createStageUi()}
           {this.gameController.activitiesUI.chooseActivityUiVisibility &&
@@ -42,6 +43,9 @@ export class UIController {
             this.gameController.createZonePollUI.createUi()}
           {this.gameController.zonePollQuestionUI.visible && this.gameController.zonePollQuestionUI.createUi()}
 
+          {this.gameController.customizationUI.create()}
+          {this.gameController.mainMenuUI.create()}
+          {this.gameController.workInProgressUI.create()}
           {ui.render()}
         </Canvas>
       </UiEntity>

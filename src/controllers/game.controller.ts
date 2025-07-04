@@ -1,7 +1,10 @@
 import { PopupAttendeePanelAndResultsButton } from '../activities/activitiesPanels'
+import { setupCustomization } from '../auditorium/customization'
+import { setupPodium } from '../auditorium/podium'
 import { setupMessageBus } from '../messagebus/messagebus'
-import { PollCreator } from '../polls/poll'
+import { PlayersOnScene } from '../players/playersOnScene'
 import { HostIndicators } from '../uis/hostIndicators'
+import { CustomizationUI } from '../uis/ui.customization'
 import { ChooseActivityUI } from '../uis/uiActivities'
 import { ChoosePollUI } from '../uis/uiChoosePoll'
 import { ClosePollUI } from '../uis/uiClosePoll'
@@ -17,17 +20,20 @@ import { TimerUI } from '../uis/uiTimer'
 import { ZonePollQuestionUI } from '../uis/uiZonePollQuestion'
 import { type OptionZone } from '../zonePolls/optionZone'
 
+import { MainMenuUi } from '../uis/ui.mainMenu'
 import { HostsController } from './hosts.controller'
 import { UIController } from './ui.controller'
+import { WorkInProgressUI } from '../uis/uiWorkInProgress'
 
 export class GameController {
   public uiController: UIController
   public hostsController: HostsController
-  public pollCreator: PollCreator
   public popupAtendeePanelAndResultbutton: PopupAttendeePanelAndResultsButton
+  public playersOnScene: PlayersOnScene
 
   // UIS
 
+  public mainMenuUI: MainMenuUi
   public stageUI: StageUI
   public panelUI: ModeratorPanelUI
   public kickUI: KickUI
@@ -50,11 +56,13 @@ export class GameController {
   public zone4: OptionZone | null
   public zoneUpdateSystems = new Set<(dt: number) => void>()
 
+  public customizationUI: CustomizationUI
+  public workInProgressUI: WorkInProgressUI
+
   constructor() {
-    this.uiController = new UIController(this)
-    this.pollCreator = new PollCreator(this)
-    this.popupAtendeePanelAndResultbutton = new PopupAttendeePanelAndResultsButton(this)
     this.hostsController = new HostsController()
+    this.uiController = new UIController(this)
+    this.popupAtendeePanelAndResultbutton = new PopupAttendeePanelAndResultsButton(this)
     this.stageUI = new StageUI(this)
     this.panelUI = new ModeratorPanelUI(this)
     this.kickUI = new KickUI(this)
@@ -69,15 +77,23 @@ export class GameController {
     this.choosePollUI = new ChoosePollUI(this)
     this.createZonePollUI = new ZonePollUI(this)
     this.zonePollQuestionUI = new ZonePollQuestionUI(this)
-    
+
     this.zone1 = null
     this.zone2 = null
     this.zone3 = null
     this.zone4 = null
+    this.playersOnScene = new PlayersOnScene(this)
+    this.removeHostUI = new RemoveHostModal(this.hostsController)
+    this.hostIndicators = new HostIndicators(this.hostsController)
+    this.customizationUI = new CustomizationUI()
+    this.mainMenuUI = new MainMenuUi(this)
+    this.workInProgressUI = new WorkInProgressUI(this)
   }
 
   start(): void {
-    setupMessageBus()
+    setupCustomization()
+    setupMessageBus(this)
     this.popupAtendeePanelAndResultbutton.setupAttendeePanelAndResultsButton()
+    setupPodium(this)
   }
 }

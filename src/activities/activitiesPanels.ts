@@ -14,6 +14,7 @@ import { PollState } from '../polls/pollEntity'
 import { PollQuestion } from '../polls/pollQuestionUi'
 import { SyncEntityEnumId } from '../syncEntities'
 import { type GameController } from '../controllers/game.controller'
+import { pushSyncedMessage } from '../messagebus/messagebus'
 
 export class PopupAttendeePanelAndResultsButton {
   public attendeePanelEntity = engine.getEntityOrNullByName('AttendeePanel')
@@ -101,7 +102,7 @@ export class PopupAttendeePanelAndResultsButton {
           opts: { button: InputAction.IA_POINTER, hoverText: 'Show Results' }
         },
         () => {
-          this.showResultsFromCurrentActivity()
+          pushSyncedMessage('showCurrentActivityResults', {})
         }
       )
     }
@@ -146,12 +147,7 @@ export class PopupAttendeePanelAndResultsButton {
       question: pollState.question,
       anonymous: pollState.anonymous,
       results,
-      votes: pollState.anonymous
-        ? undefined
-        : pollState.votes.map((vote) => ({
-            option: vote.option,
-            userId: vote.userId
-          }))
+      votes: pollState.votes.map((vote) => ({ option: vote.option, userId: vote.userId }))
     })
 
     this.gameController.resultsUI.openUI()

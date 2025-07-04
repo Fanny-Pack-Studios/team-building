@@ -1,15 +1,27 @@
 import { engine, type MapComponentDefinition, Schemas } from '@dcl/ecs'
 import { syncEntity } from '@dcl/sdk/network'
 import { SyncEntityEnumId } from '../syncEntities'
-import { showPollResultsUI } from '../polls/pollResults'
+import { type GameController } from '../controllers/game.controller'
 
 let lastMessageConsumed = Date.now()
 export const messageBusEntity = engine.addEntity()
 
+// This is the section that should be modified if you want to add new messages
+
 const messageContentAlternatives = {
   // messageType: messageSchema
-  showPollResultsUI: Schemas.Map({ pollId: Schemas.String })
+  showCurrentActivityResults: Schemas.Map({})
 }
+
+function handleMessage(message: Message, gameController: GameController): void {
+  switch (message.content.$case) {
+    case 'showCurrentActivityResults':
+      gameController.popupAtendeePanelAndResultbutton.showResultsFromCurrentActivity()
+      break
+  }
+}
+
+// section ends here
 
 export const MessageBusComponent = engine.defineComponent('MessageBus', {
   messages: Schemas.Array(
@@ -35,7 +47,7 @@ export function pushSyncedMessage(messageType: MessageType, messageContent: Mess
   })
 }
 
-export function setupMessageBus(): void {
+export function setupMessageBus(gameController: GameController): void {
   MessageBusComponent.create(messageBusEntity, {
     messages: []
   })
@@ -50,16 +62,8 @@ export function setupMessageBus(): void {
     newMessages.sort((a, b) => a.timestamp - b.timestamp)
 
     for (const message of newMessages) {
-      handleMessage(message)
+      handleMessage(message, gameController)
       lastMessageConsumed = message.timestamp
     }
   })
-}
-
-function handleMessage(message: Message): void {
-  switch (message.content.$case) {
-    case 'showPollResultsUI':
-      showPollResultsUI(message.content.value.pollId)
-      break
-  }
 }
