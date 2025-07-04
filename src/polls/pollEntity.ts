@@ -1,6 +1,7 @@
 import { engine, Schemas, type Entity } from '@dcl/sdk/ecs'
 import { syncEntity } from '@dcl/sdk/network'
 import { generatePollId } from '../utils'
+
 import { getPlayer } from '@dcl/sdk/src/players'
 
 export const PollState = engine.defineComponent('pollState', {

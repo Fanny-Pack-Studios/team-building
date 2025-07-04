@@ -8,8 +8,8 @@ const COLOR_INACTIVE = '#FFFFFFFF'
 
 const COLOR_SELECTED = '#3F3B45'
 
-export class ChooseActivityUI {
-  public chooseActivityUiVisibility: boolean = false
+export class ChoosePollUI {
+  public choosePollUiVisibility: boolean = false
   public gameController: GameController
   public buttonColorHover1: string = '#FFFFFFFF'
   public buttonColorHover2: string = '#FFFFFFFF'
@@ -21,10 +21,10 @@ export class ChooseActivityUI {
   }
 
   openUI(): void {
-    this.chooseActivityUiVisibility = true
+    this.choosePollUiVisibility = true
   }
 
-  createChooseActivityUi(): ReactEcs.JSX.Element | null {
+  createChoosePollUi(): ReactEcs.JSX.Element | null {
     if (this.gameController.uiController.canvasInfo === null) return null
 
     return (
@@ -35,7 +35,7 @@ export class ChooseActivityUI {
           height: this.gameController.uiController.canvasInfo.height,
           justifyContent: 'center',
           alignItems: 'center',
-          display: this.chooseActivityUiVisibility ? 'flex' : 'none',
+          display: this.choosePollUiVisibility ? 'flex' : 'none',
           borderRadius: 50
         }}
       >
@@ -63,7 +63,7 @@ export class ChooseActivityUI {
               position: { bottom: '35%' },
               margin: '20px 20px 20px 20px'
             }}
-            value={`<b>Choose your \n activity</b>`}
+            value={`<b>Choose poll \n type</b>`}
             fontSize={22 * getScaleFactor()}
             font="sans-serif"
             color={Color4.White()}
@@ -84,7 +84,7 @@ export class ChooseActivityUI {
               texture: { src: 'images/activitiesui/exit.png' }
             }}
             onMouseDown={() => {
-              this.chooseActivityUiVisibility = false
+              this.choosePollUiVisibility = false
             }}
           ></UiEntity>
 
@@ -109,7 +109,7 @@ export class ChooseActivityUI {
               }}
               uiBackground={{
                 textureMode: 'stretch',
-                texture: { src: 'images/activitiesui/live poll.png' },
+                texture: { src: 'images/choosepollui/wordP.png' },
                 color: Color4.fromHexString(this.buttonColorHover1)
               }}
               onMouseDown={() => {
@@ -125,7 +125,7 @@ export class ChooseActivityUI {
               }}
               uiBackground={{
                 textureMode: 'stretch',
-                texture: { src: 'images/activitiesui/QA.png' },
+                texture: { src: 'images/choosepollui/zoneP.png' },
                 color: Color4.fromHexString(this.buttonColorHover2)
               }}
               onMouseDown={() => {
@@ -154,7 +154,7 @@ export class ChooseActivityUI {
               }}
               uiBackground={{
                 textureMode: 'stretch',
-                texture: { src: 'images/activitiesui/quizz.png' },
+                texture: { src: 'images/choosepollui/activeP.png' },
                 color: Color4.fromHexString(this.buttonColorHover3)
               }}
               onMouseDown={() => {
@@ -170,7 +170,7 @@ export class ChooseActivityUI {
               }}
               uiBackground={{
                 textureMode: 'stretch',
-                texture: { src: 'images/activitiesui/survey.png' },
+                texture: { src: 'images/choosepollui/emoteP.png' },
                 color: Color4.fromHexString(this.buttonColorHover4)
               }}
               onMouseDown={() => {
@@ -226,19 +226,19 @@ export class ChooseActivityUI {
   executeSelectedAction(): void {
     switch (this.buttonSelected) {
       case 1:
-        this.chooseActivityUiVisibility = false
-        this.gameController.choosePollUI.choosePollUiVisibility = true
+        this.choosePollUiVisibility = false
+        this.gameController.createPollUI.createPollUiVisibility = true
         break
       case 2:
-        this.chooseActivityUiVisibility = false
-        // this.gameController.createQAUI.createQAUiVisibility = true
+        this.choosePollUiVisibility = false
+        this.gameController.createZonePollUI.createZonePollUiVisibility = true
         break
       case 3:
-        this.chooseActivityUiVisibility = false
+        this.choosePollUiVisibility = false
         //  this.gameController.createQuizUI.createQuizUiVisibility = true
         break
       case 4:
-        this.chooseActivityUiVisibility = false
+        this.choosePollUiVisibility = false
         // this.gameController.createSurveyUI.createSurveyUiVisibility = true
         break
       default:
