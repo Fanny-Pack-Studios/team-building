@@ -2,7 +2,7 @@ import { engine, MainCamera, Transform, VirtualCamera } from '@dcl/sdk/ecs'
 import { Color4, Vector3, Color3 } from '@dcl/sdk/math'
 import ReactEcs, { Button, type EntityPropTypes, Input, Label, UiEntity } from '@dcl/sdk/react-ecs'
 import { getMutableCustomizationState } from '../auditorium/customization'
-import { LabeledControl } from './components/labeledControl'
+import { HorizontalLabeledControl as LabeledControl } from './components/labeledControl'
 import { ValidatedInput } from './components/validatedInput'
 import { primaryTheme } from './themes/themes'
 

@@ -20,9 +20,17 @@ export function getPlayerPosition(): Vector3 | undefined {
 
 engine.addSystem(getPlayerPosition)
 export function generatePollId(): string {
+  return generateId('poll')
+}
+
+export function generateSurveyId(): string {
+  return generateId('survey')
+}
+
+export function generateId(prefix: string): string {
   const timestamp = Date.now().toString(36)
   const random = Math.random().toString(36).substr(2, 5)
-  return `poll_${timestamp}_${random}`
+  return `${prefix}_${timestamp}_${random}`
 }
 
 type PlayerInfo = NonNullable<ReturnType<typeof getPlayer>>

@@ -20,6 +20,7 @@ import { MainMenuUi } from '../uis/ui.mainMenu'
 import { HostsController } from './hosts.controller'
 import { UIController } from './ui.controller'
 import { WorkInProgressUI } from '../uis/uiWorkInProgress'
+import { CreateSurveyUI } from '../uis/uiCreateSurvey'
 
 export class GameController {
   public uiController: UIController
@@ -36,6 +37,7 @@ export class GameController {
   public activitiesUI: ChooseActivityUI
   public createPollUI: CreatePollUI
   public createOptionUI: OptionsUI
+  public createSurveyUI: CreateSurveyUI
   public resultsUI: ResultsUI
   public timerUI: TimerUI
   public closePollUi: ClosePollUI
@@ -54,6 +56,7 @@ export class GameController {
     this.activitiesUI = new ChooseActivityUI(this)
     this.createPollUI = new CreatePollUI(this)
     this.createOptionUI = new OptionsUI(this)
+    this.createSurveyUI = new CreateSurveyUI(this)
     this.resultsUI = new ResultsUI(this)
     this.timerUI = new TimerUI(this)
     this.closePollUi = new ClosePollUI(this)
