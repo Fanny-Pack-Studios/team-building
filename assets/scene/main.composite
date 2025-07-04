@@ -97,16 +97,16 @@
               "y": 0,
               "z": 8.25
             },
+            "scale": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
             "rotation": {
               "x": 0,
               "y": 0,
               "z": 0,
               "w": 1
-            },
-            "scale": {
-              "x": 1,
-              "y": 1,
-              "z": 1
             },
             "parent": 0
           }
@@ -118,16 +118,16 @@
               "y": 3.799999952316284,
               "z": 13.300000190734863
             },
+            "scale": {
+              "x": 5.5,
+              "y": 3,
+              "z": 1
+            },
             "rotation": {
               "x": 0,
               "y": 0,
               "z": 0,
               "w": 1
-            },
-            "scale": {
-              "x": 5.5,
-              "y": 3,
-              "z": 1
             },
             "parent": 0
           }
@@ -370,16 +370,16 @@
               "y": 0,
               "z": 8
             },
+            "scale": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
             "rotation": {
               "x": 0,
               "y": 0,
               "z": 0,
               "w": 1
-            },
-            "scale": {
-              "x": 1,
-              "y": 1,
-              "z": 1
             },
             "parent": 0
           }
@@ -391,16 +391,16 @@
               "y": 0,
               "z": 8
             },
+            "scale": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
             "rotation": {
               "x": 0,
               "y": 0,
               "z": 0,
               "w": 1
-            },
-            "scale": {
-              "x": 1,
-              "y": 1,
-              "z": 1
             },
             "parent": 0
           }
@@ -928,7 +928,7 @@
         "serializationType": "map"
       },
       "data": {
-        "514": {
+        "0": {
           "json": {
             "gizmo": 3
           }
@@ -1221,19 +1221,22 @@
             "thumbnail": "images/scene-thumbnail.png",
             "categories": [],
             "author": "SDK",
+            "email": "",
             "tags": [],
             "layout": {
-              "base": {
-                "x": 0,
-                "y": 0
-              },
               "parcels": [
                 {
                   "x": 0,
                   "y": 0
                 }
-              ]
+              ],
+              "base": {
+                "x": 0,
+                "y": 0
+              }
             },
+            "silenceVoiceChat": false,
+            "disablePortableExperiences": false,
             "spawnPoints": [
               {
                 "name": "spawn1",
