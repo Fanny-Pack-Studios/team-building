@@ -4,7 +4,8 @@ import ReactEcs, {
   type UiTransformProps,
   UiEntity,
   Label,
-  type EntityPropTypes
+  type EntityPropTypes,
+  type UiBackgroundProps
 } from '@dcl/sdk/react-ecs'
 import { primaryTheme } from '../themes/themes'
 import { merge } from 'ts-deepmerge'
@@ -12,10 +13,14 @@ import { merge } from 'ts-deepmerge'
 export const HorizontalLabeledControl = (props: {
   labelProps?: UiLabelProps
   uiTransform?: UiTransformProps
+  uiBackground?: UiBackgroundProps
   children?: ReactEcs.JSX.Element
 }): ReactEcs.JSX.Element => {
   return (
-    <UiEntity uiTransform={{ display: 'flex', flexDirection: 'row', ...props.uiTransform }}>
+    <UiEntity
+      uiTransform={{ display: 'flex', flexDirection: 'row', ...props.uiTransform }}
+      uiBackground={props.uiBackground}
+    >
       <Label
         value={props.labelProps?.value ?? ''}
         color={Color4.Black()}

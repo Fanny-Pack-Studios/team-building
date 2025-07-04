@@ -14,7 +14,10 @@ export type UiTheme = {
   font: UiFontType
   primaryButtonTransform: UiTransformProps
   primaryButtonBackground: UiBackgroundProps
-  primaryButtonDisabledBackground: UiBackgroundProps
+  primaryButtonDisabledBackground: UiBackgroundProps,
+  // to use in options/buttons/inputs/etc when there are several of them:
+  secondaryBackgrounds: UiBackgroundProps[],
+  inputBackgroundColor: UiBackgroundProps
 }
 
 export const primaryTheme: UiTheme = {
@@ -32,6 +35,8 @@ export const primaryTheme: UiTheme = {
   primaryButtonBackground: {
     color: accentColor
   },
+  secondaryBackgrounds: ["#F99C58", "#ED6E52", "#E85A4F", "#E03A4C"].map(hexString => ({ color: Color4.fromHexString(hexString) })),
+  inputBackgroundColor: { color: Color4.fromHexString('#6A627A') },
   primaryButtonDisabledBackground: {
     color: Color4.multiply(accentColor, Color4.Gray())
   },
@@ -58,7 +63,7 @@ export const primaryTheme: UiTheme = {
 const primaryButtonColor = Color4.fromColor3(Color3.fromHexString('#393541'))
 
 export const mainTheme: UiTheme = {
-  fontColor: Color4.White(),
+  fontColor: Color4.Black(),
   disabledFontColor: Color4.multiply(Color4.White(), Color4.Gray()),
   buttonFontSize: 30,
   fontSize: 30,
@@ -92,5 +97,7 @@ export const mainTheme: UiTheme = {
       left: 0.1,
       right: 0.1
     }
-  }
+  },
+  secondaryBackgrounds: ["#F99C58", "#ED6E52", "#E85A4F", "#E03A4C"].map(hexString => ({ color: Color4.fromHexString(hexString) })),
+  inputBackgroundColor: { color: Color4.fromHexString("#E03A4C") },
 }
