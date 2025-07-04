@@ -7,7 +7,7 @@ import { type GameController } from '../controllers/game.controller'
 import { getPlayer } from '@dcl/sdk/src/players'
 
 export class CreatePollUI {
-  public createPollUiVisibility: boolean = false
+  public createPollUiVisibility: boolean = true
   public switchOn: boolean = false
   public switchOnTexture: string = 'images/createpollui/switchOn.png'
   public switchOffTexture: string = 'images/createpollui/switchOff.png'
@@ -15,6 +15,9 @@ export class CreatePollUI {
   public questionTitle: string = ''
   public answers: string[] = ['', '']
   public gameController: GameController
+  public answerScrollIndex: number = 0
+  public maxAnswers: number = 4
+
   constructor(gameController: GameController) {
     this.gameController = gameController
   }
@@ -54,6 +57,7 @@ export class CreatePollUI {
             }
           }}
         >
+          {/* Header */}
           <Label
             uiTransform={{
               width: 300 * getScaleFactor(),
@@ -67,6 +71,7 @@ export class CreatePollUI {
             color={Color4.White()}
             textAlign="middle-center"
           />
+
           <Label
             uiTransform={{
               width: 300 * getScaleFactor(),
@@ -80,6 +85,8 @@ export class CreatePollUI {
             color={Color4.White()}
             textAlign="middle-center"
           />
+
+          {/* Exit button */}
           <UiEntity
             uiTransform={{
               flexDirection: 'row',
@@ -97,7 +104,9 @@ export class CreatePollUI {
             onMouseDown={() => {
               this.createPollUiVisibility = false
             }}
-          ></UiEntity>
+          />
+
+          {/* Question title */}
           <Label
             uiTransform={{
               width: 300 * getScaleFactor(),
@@ -112,6 +121,7 @@ export class CreatePollUI {
             color={Color4.White()}
             textAlign="middle-center"
           />
+
           <UiEntity
             uiTransform={{
               flexDirection: 'row',
@@ -143,6 +153,8 @@ export class CreatePollUI {
               uiBackground={{ color: Color4.Clear() }}
             />
           </UiEntity>
+
+          {/* Options Label */}
           <Label
             uiTransform={{
               width: 300 * getScaleFactor(),
@@ -157,68 +169,66 @@ export class CreatePollUI {
             color={Color4.White()}
             textAlign="middle-center"
           />
+
+          {/* OPTIONS SCROLL AREA */}
           <UiEntity
             uiTransform={{
-              flexDirection: 'row',
+              flexDirection: 'column',
               alignItems: 'center',
-              justifyContent: 'center',
+              justifyContent: 'flex-start',
+              width: 300 * getScaleFactor(),
+              height: (56 * 2 + 10) * getScaleFactor(),
+              margin: { top: '2%' },
               positionType: 'relative',
-              width: 252 * getScaleFactor(),
-              height: 56 * getScaleFactor(),
-              margin: { top: '5%' }
-            }}
-            uiBackground={{
-              textureMode: 'stretch',
-              texture: { src: 'images/createpollui/answer.png' }
+              overflow: 'hidden'
             }}
           >
-            <Input
-              onChange={(value) => {
-                this.answers[0] = value
-              }}
-              fontSize={17 * getScaleFactor()}
-              placeholder={'Option 1'}
-              placeholderColor={Color4.Gray()}
-              uiTransform={{
-                width: '94%',
-                height: '72%',
-                positionType: 'absolute',
-                position: { top: '0%', left: '3%' }
-              }}
-              uiBackground={{ color: Color4.Clear() }}
-            />
+            {this.renderAnswerInputs()}
+
+            {this.answers.length > 2 && (
+              <UiEntity
+                uiTransform={{
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  width: 300 * getScaleFactor(),
+                  height: 40 * getScaleFactor(),
+                  margin: { top: '2%' }
+                }}
+              >
+                <UiEntity
+                  uiTransform={{
+                    width: 25 * getScaleFactor(),
+                    height: 34 * getScaleFactor(),
+                    margin: { right: '5%' }
+                  }}
+                  uiBackground={{
+                    textureMode: 'center',
+                    texture: { src: 'images/createpollui/arrowLeft.png' }
+                  }}
+                  onMouseDown={() => {
+                    this.scrollLeft()
+                  }}
+                />
+                <UiEntity
+                  uiTransform={{
+                    width: 25 * getScaleFactor(),
+                    height: 34 * getScaleFactor(),
+                    margin: { left: '5%' }
+                  }}
+                  uiBackground={{
+                    textureMode: 'center',
+                    texture: { src: 'images/createpollui/arrowRight.png' }
+                  }}
+                  onMouseDown={() => {
+                    this.scrollRight()
+                  }}
+                />
+              </UiEntity>
+            )}
           </UiEntity>
-          <UiEntity
-            uiTransform={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'center',
-              positionType: 'relative',
-              width: 252 * getScaleFactor(),
-              height: 56 * getScaleFactor(),
-              margin: { top: '0%' }
-            }}
-            uiBackground={{
-              textureMode: 'stretch',
-              texture: { src: 'images/createpollui/answer.png' }
-            }}
-          >
-            <Input
-              onChange={(value) => {
-                this.answers[1] = value
-              }}
-              fontSize={17 * getScaleFactor()}
-              placeholder={'Option 2'}
-              placeholderColor={Color4.Gray()}
-              uiTransform={{
-                width: '94%',
-                height: '72%',
-                positionType: 'absolute',
-                position: { top: '0%', left: '3%' }
-              }}
-              uiBackground={{ color: Color4.Clear() }}
-            />
-          </UiEntity>
+
+          {/* Anonymous label and switch */}
           <Label
             uiTransform={{
               width: 300 * getScaleFactor(),
@@ -233,6 +243,7 @@ export class CreatePollUI {
             color={Color4.White()}
             textAlign="middle-center"
           />
+
           <UiEntity
             uiTransform={{
               flexDirection: 'row',
@@ -250,7 +261,9 @@ export class CreatePollUI {
             onMouseDown={() => {
               this.toggleSwitcher()
             }}
-          ></UiEntity>
+          />
+
+          {/* Bottom buttons */}
           <UiEntity
             uiTransform={{
               flexDirection: 'row',
@@ -276,7 +289,11 @@ export class CreatePollUI {
                 textureMode: 'stretch',
                 texture: { src: 'images/createpollui/addAnswerButton.png' }
               }}
-            ></UiEntity>
+              onMouseDown={() => {
+                this.addAnswer()
+              }}
+            />
+
             <UiEntity
               uiTransform={{
                 flexDirection: 'row',
@@ -294,7 +311,7 @@ export class CreatePollUI {
               onMouseDown={() => {
                 this.create()
               }}
-            ></UiEntity>
+            />
           </UiEntity>
         </UiEntity>
       </UiEntity>
@@ -330,40 +347,82 @@ export class CreatePollUI {
     this.createPollUiVisibility = false
   }
 
-  renderAnswerInputs(): ReactEcs.JSX.Element[] {
-    return this.answers.map((answer, index) => (
-      <UiEntity
-        key={index}
-        uiTransform={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'center',
-          positionType: 'relative',
-          width: 252 * getScaleFactor(),
-          height: 56 * getScaleFactor(),
-          margin: { top: '2%' }
-        }}
-        uiBackground={{
-          textureMode: 'stretch',
-          texture: { src: 'images/createpollui/answer.png' }
-        }}
-      >
-        <Input
-          onChange={(value) => {
-            this.answers[index] = value
-          }}
-          fontSize={17 * getScaleFactor()}
-          placeholder={`Option ${index + 1}`}
-          placeholderColor={Color4.Gray()}
-          uiTransform={{
-            width: '94%',
-            height: '72%',
-            positionType: 'absolute',
-            position: { top: '0%', left: '3%' }
-          }}
-          uiBackground={{ color: Color4.Clear() }}
-        />
-      </UiEntity>
-    ))
+renderAnswerInputs(): ReactEcs.JSX.Element[] {
+  const elements: ReactEcs.JSX.Element[] = []
+  const sf = getScaleFactor()
+
+  if (this.answerScrollIndex === 0) {
+    // Página 1: siempre 1 y 2 si existen
+    if (this.answers.length > 0) elements.push(this.renderAnswerInput(0, sf))
+    if (this.answers.length > 1) elements.push(this.renderAnswerInput(1, sf))
+  } else if (this.answerScrollIndex === 1) {
+    // Página 2: 3 y 4 si existen
+    if (this.answers.length > 2) elements.push(this.renderAnswerInput(2, sf))
+    if (this.answers.length > 3) elements.push(this.renderAnswerInput(3, sf))
   }
+
+  return elements
+}
+
+
+renderAnswerInput(index: number, sf: number): ReactEcs.JSX.Element {
+  return (
+    <UiEntity
+      key={index}
+      uiTransform={{
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        positionType: 'relative',
+        width: 252 * sf,
+        height: 56 * sf,
+        margin: { top: '2%' }
+      }}
+      uiBackground={{
+        textureMode: 'stretch',
+        texture: { src: 'images/createpollui/answer.png' }
+      }}
+    >
+      <Input
+        onChange={(val) => {
+          this.answers[index] = val
+        }}
+        fontSize={17 * sf}
+        placeholder={`Option ${index + 1}`}
+        placeholderColor={Color4.Gray()}
+        value={this.answers[index] ?? ''}
+        uiTransform={{
+          width: '94%',
+          height: '72%',
+          positionType: 'absolute',
+          position: { top: '0%', left: '3%' }
+        }}
+        uiBackground={{ color: Color4.Clear() }}
+      />
+    </UiEntity>
+  )
+}
+
+
+  addAnswer(): void {
+    if (this.answers.length < this.maxAnswers) {  
+      this.answers.push('')
+      if (this.answers.length > 2) {
+        // Mover el scrollIndex para que muestre el final válido
+        this.answerScrollIndex = Math.max(0, this.answers.length - 2)  
+      }
+    }
+  }
+
+scrollRight(): void {
+  if (this.answers.length > 2) {
+    this.answerScrollIndex = 1
+  }
+}
+
+scrollLeft(): void {
+  this.answerScrollIndex = 0
+}
+
+
 }
