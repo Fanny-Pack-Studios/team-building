@@ -17,7 +17,7 @@ export class CreatePollUI {
   public gameController: GameController
   public answerScrollIndex: number = 0
   public maxAnswers: number = 4
-
+  public addAnswerButtonDisabled: Color4 | undefined = undefined
   constructor(gameController: GameController) {
     this.gameController = gameController
   }
@@ -288,7 +288,8 @@ export class CreatePollUI {
               }}
               uiBackground={{
                 textureMode: 'stretch',
-                texture: { src: 'images/createpollui/addAnswerButton.png' }
+                texture: { src: 'images/createpollui/addAnswerButton.png' },
+                color: this.addAnswerButtonDisabled
               }}
               onMouseDown={() => {
                 this.addAnswer()
@@ -401,6 +402,14 @@ export class CreatePollUI {
     )
   }
 
+  updateAddAnswerButtonColor(): void {
+    if (this.answers.length >= this.maxAnswers) {
+      this.addAnswerButtonDisabled = Color4.Gray()
+    } else {
+      this.addAnswerButtonDisabled = undefined
+    }
+  }
+
   addAnswer(): void {
     if (this.answers.length < this.maxAnswers) {
       this.answers.push('')
@@ -408,6 +417,7 @@ export class CreatePollUI {
         this.answerScrollIndex = 1
       }
     }
+    this.updateAddAnswerButtonColor()
   }
 
   scrollRight(): void {
