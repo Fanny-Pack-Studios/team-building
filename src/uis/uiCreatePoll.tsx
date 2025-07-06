@@ -7,7 +7,7 @@ import { type GameController } from '../controllers/game.controller'
 import { getPlayer } from '@dcl/sdk/src/players'
 
 export class CreatePollUI {
-  public createPollUiVisibility: boolean = true
+  public createPollUiVisibility: boolean = false
   public switchOn: boolean = false
   public switchOnTexture: string = 'images/createpollui/switchOn.png'
   public switchOffTexture: string = 'images/createpollui/switchOff.png'
@@ -170,61 +170,62 @@ export class CreatePollUI {
             textAlign="middle-center"
           />
 
-          {/* OPTIONS SCROLL AREA */}
           <UiEntity
             uiTransform={{
-              flexDirection: 'column',
+              flexDirection: 'row',
               alignItems: 'center',
-              justifyContent: 'flex-start',
-              width: 300 * getScaleFactor(),
+              justifyContent: 'center',
+              width: 350 * getScaleFactor(),
               height: (56 * 2 + 10) * getScaleFactor(),
               margin: { top: '2%' },
-              positionType: 'relative',
-              overflow: 'hidden'
+              positionType: 'relative'
             }}
           >
-            {this.renderAnswerInputs()}
+            {this.answers.length > 2 && (
+              <UiEntity
+                uiTransform={{
+                  width: 25 * getScaleFactor(),
+                  height: 34 * getScaleFactor(),
+                  margin: { right: '0%' }
+                }}
+                uiBackground={{
+                  textureMode: 'center',
+                  texture: { src: 'images/createpollui/arrowLeft.png' }
+                }}
+                onMouseDown={() => {
+                  this.scrollLeft()
+                }}
+              />
+            )}
+
+            <UiEntity
+              uiTransform={{
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'flex-start',
+                width: 252 * getScaleFactor(),
+                height: (56 * 2 + 10) * getScaleFactor(),
+                overflow: 'hidden'
+              }}
+            >
+              {this.renderAnswerInputs()}
+            </UiEntity>
 
             {this.answers.length > 2 && (
               <UiEntity
                 uiTransform={{
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  width: 300 * getScaleFactor(),
-                  height: 40 * getScaleFactor(),
-                  margin: { top: '2%' }
+                  width: 25 * getScaleFactor(),
+                  height: 34 * getScaleFactor(),
+                  margin: { left: '0%' }
                 }}
-              >
-                <UiEntity
-                  uiTransform={{
-                    width: 25 * getScaleFactor(),
-                    height: 34 * getScaleFactor(),
-                    margin: { right: '5%' }
-                  }}
-                  uiBackground={{
-                    textureMode: 'center',
-                    texture: { src: 'images/createpollui/arrowLeft.png' }
-                  }}
-                  onMouseDown={() => {
-                    this.scrollLeft()
-                  }}
-                />
-                <UiEntity
-                  uiTransform={{
-                    width: 25 * getScaleFactor(),
-                    height: 34 * getScaleFactor(),
-                    margin: { left: '5%' }
-                  }}
-                  uiBackground={{
-                    textureMode: 'center',
-                    texture: { src: 'images/createpollui/arrowRight.png' }
-                  }}
-                  onMouseDown={() => {
-                    this.scrollRight()
-                  }}
-                />
-              </UiEntity>
+                uiBackground={{
+                  textureMode: 'center',
+                  texture: { src: 'images/createpollui/arrowRight.png' }
+                }}
+                onMouseDown={() => {
+                  this.scrollRight()
+                }}
+              />
             )}
           </UiEntity>
 
@@ -347,82 +348,75 @@ export class CreatePollUI {
     this.createPollUiVisibility = false
   }
 
-renderAnswerInputs(): ReactEcs.JSX.Element[] {
-  const elements: ReactEcs.JSX.Element[] = []
-  const sf = getScaleFactor()
+  renderAnswerInputs(): ReactEcs.JSX.Element[] {
+    const elements: ReactEcs.JSX.Element[] = []
+    const sf = getScaleFactor()
 
-  if (this.answerScrollIndex === 0) {
-    // Página 1: siempre 1 y 2 si existen
-    if (this.answers.length > 0) elements.push(this.renderAnswerInput(0, sf))
-    if (this.answers.length > 1) elements.push(this.renderAnswerInput(1, sf))
-  } else if (this.answerScrollIndex === 1) {
-    // Página 2: 3 y 4 si existen
-    if (this.answers.length > 2) elements.push(this.renderAnswerInput(2, sf))
-    if (this.answers.length > 3) elements.push(this.renderAnswerInput(3, sf))
+    if (this.answerScrollIndex === 0) {
+      if (this.answers.length > 0) elements.push(this.renderAnswerInput(0, sf))
+      if (this.answers.length > 1) elements.push(this.renderAnswerInput(1, sf))
+    } else if (this.answerScrollIndex === 1) {
+      if (this.answers.length > 2) elements.push(this.renderAnswerInput(2, sf))
+      if (this.answers.length > 3) elements.push(this.renderAnswerInput(3, sf))
+    }
+
+    return elements
   }
 
-  return elements
-}
-
-
-renderAnswerInput(index: number, sf: number): ReactEcs.JSX.Element {
-  return (
-    <UiEntity
-      key={index}
-      uiTransform={{
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        positionType: 'relative',
-        width: 252 * sf,
-        height: 56 * sf,
-        margin: { top: '2%' }
-      }}
-      uiBackground={{
-        textureMode: 'stretch',
-        texture: { src: 'images/createpollui/answer.png' }
-      }}
-    >
-      <Input
-        onChange={(val) => {
-          this.answers[index] = val
-        }}
-        fontSize={17 * sf}
-        placeholder={`Option ${index + 1}`}
-        placeholderColor={Color4.Gray()}
-        value={this.answers[index] ?? ''}
+  renderAnswerInput(index: number, sf: number): ReactEcs.JSX.Element {
+    return (
+      <UiEntity
+        key={index}
         uiTransform={{
-          width: '94%',
-          height: '72%',
-          positionType: 'absolute',
-          position: { top: '0%', left: '3%' }
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'center',
+          positionType: 'relative',
+          width: 252 * sf,
+          height: 56 * sf,
+          margin: { top: '2%' }
         }}
-        uiBackground={{ color: Color4.Clear() }}
-      />
-    </UiEntity>
-  )
-}
-
+        uiBackground={{
+          textureMode: 'stretch',
+          texture: { src: 'images/createpollui/answer.png' }
+        }}
+      >
+        <Input
+          onChange={(val) => {
+            this.answers[index] = val
+          }}
+          fontSize={17 * sf}
+          placeholder={`Option ${index + 1}`}
+          placeholderColor={Color4.Gray()}
+          value={this.answers[index] === '' ? undefined : this.answers[index]}
+          uiTransform={{
+            width: '94%',
+            height: '72%',
+            positionType: 'absolute',
+            position: { top: '0%', left: '3%' }
+          }}
+          uiBackground={{ color: Color4.Clear() }}
+        />
+      </UiEntity>
+    )
+  }
 
   addAnswer(): void {
-    if (this.answers.length < this.maxAnswers) {  
+    if (this.answers.length < this.maxAnswers) {
       this.answers.push('')
       if (this.answers.length > 2) {
-        // Mover el scrollIndex para que muestre el final válido
-        this.answerScrollIndex = Math.max(0, this.answers.length - 2)  
+        this.answerScrollIndex = 1
       }
     }
   }
 
-scrollRight(): void {
-  if (this.answers.length > 2) {
-    this.answerScrollIndex = 1
+  scrollRight(): void {
+    if (this.answers.length > 2) {
+      this.answerScrollIndex = 1
+    }
   }
-}
 
-scrollLeft(): void {
-  this.answerScrollIndex = 0
-}
-
-
+  scrollLeft(): void {
+    this.answerScrollIndex = 0
+  }
 }
