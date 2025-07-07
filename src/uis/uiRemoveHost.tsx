@@ -160,4 +160,13 @@ export class RemoveHostModal {
       </UiEntity>
     )
   }
+
+  removeHostByUserId(userId: string): void {
+    const index = this.hosts.indexOf(userId)
+    if (index !== -1) {
+      this.gameController.hostsController.removeHost(this.hosts[index])
+    } else {
+      console.log(`User ${userId} not found in hosts list.`)
+    }
+  }
 }
