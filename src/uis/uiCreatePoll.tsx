@@ -367,6 +367,9 @@ export class CreatePollUI {
   }
 
   renderAnswerInput(index: number, sf: number): ReactEcs.JSX.Element {
+    // Decidimos el ancho del Input dinámicamente
+    const inputWidth = this.answers.length > 2 ? '88%' : '94%'
+
     return (
       <UiEntity
         key={index}
@@ -391,15 +394,45 @@ export class CreatePollUI {
           fontSize={17 * sf}
           placeholder={`Option ${index + 1}`}
           placeholderColor={Color4.Gray()}
-          value={this.answers[index] === '' ? undefined : this.answers[index]}
+          value={this.answers[index]}
           uiTransform={{
-            width: '94%',
+            width: inputWidth,
             height: '72%',
             positionType: 'absolute',
             position: { top: '0%', left: '3%' }
           }}
           uiBackground={{ color: Color4.Clear() }}
         />
+
+        {this.answers.length > 2 && (
+          <UiEntity
+            uiTransform={{
+              width: 16 * sf,
+              height: 16 * sf,
+              positionType: 'absolute',
+              position: { right: '3%', top: '22%' }
+            }}
+            onMouseDown={() => {
+              this.answers.splice(index, 1)
+              if (this.answers.length <= 2) {
+                this.answerScrollIndex = 0
+              }
+              this.updateAddAnswerButtonColor()
+            }}
+          >
+            <Label
+              value="-"
+              fontSize={12 * sf}
+              color={Color4.White()}
+              textAlign="middle-center"
+              uiTransform={{
+                width: '100%',
+                height: '100%',
+                alignContent: 'center'
+              }}
+            />
+          </UiEntity>
+        )}
       </UiEntity>
     )
   }
