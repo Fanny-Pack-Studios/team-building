@@ -1,6 +1,5 @@
 import { Color4 } from '@dcl/sdk/math'
 import ReactEcs, { Button, Dropdown, Label, UiEntity } from '@dcl/sdk/react-ecs'
-import { getPlayer } from '@dcl/sdk/src/players'
 import { withPlayerInfo } from '../utils'
 import { getScaleFactor } from '../canvas/Canvas'
 import { type GameController } from '../controllers/game.controller'
@@ -108,7 +107,14 @@ export class RemoveHostModal {
             }}
           >
             <Dropdown
-              options={this.hosts.map((host) => getPlayer({ userId: host })?.name ?? host)}
+              options={this.hosts.map((host) => {
+                const player = this.gameController.playersOnScene.allPlayers.find((p) => p.userId === host)
+                if (player != null) {
+                  const last4 = player.userId.slice(-4)
+                  return `${player.name}#${last4}`
+                }
+                return host
+              })}
               onChange={(index) => {
                 this.selectedHostIndex = index
               }}
