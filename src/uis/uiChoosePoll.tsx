@@ -178,37 +178,6 @@ export class ChoosePollUI {
               }}
             ></UiEntity>
           </UiEntity>
-          <UiEntity
-            uiTransform={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'center',
-              positionType: 'absolute',
-              position: { bottom: '8%' },
-              width: 80 * getScaleFactor(),
-              height: 35 * getScaleFactor(),
-              borderRadius: 10
-            }}
-            uiBackground={{
-              color: Color4.fromHexString('#36323D')
-            }}
-            onMouseDown={() => {
-              this.executeSelectedAction()
-            }}
-          >
-            <Label
-              uiTransform={{
-                width: '100%',
-                height: '100%',
-                positionType: 'absolute'
-              }}
-              value={'Next'}
-              fontSize={15 * getScaleFactor()}
-              font="sans-serif"
-              color={Color4.White()}
-              textAlign="middle-center"
-            />
-          </UiEntity>
         </UiEntity>
       </UiEntity>
     )
@@ -221,6 +190,7 @@ export class ChoosePollUI {
     this.buttonColorHover2 = id === 2 ? COLOR_SELECTED : COLOR_INACTIVE
     this.buttonColorHover3 = id === 3 ? COLOR_SELECTED : COLOR_INACTIVE
     this.buttonColorHover4 = id === 4 ? COLOR_SELECTED : COLOR_INACTIVE
+    this.executeSelectedAction()
   }
 
   executeSelectedAction(): void {
