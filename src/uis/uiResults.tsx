@@ -5,7 +5,7 @@ import { getScaleFactor } from '../canvas/Canvas'
 import { type GameController } from '../controllers/game.controller'
 
 export class ResultsUI {
-  public resultsUiVisibility: boolean = false
+  public resultsUiVisibility: boolean = true
   private pollQuestion: string = ''
   private results: Array<{ option: string; percentage: number }> = []
   private isAnonymous: boolean = true
@@ -103,43 +103,75 @@ export class ResultsUI {
             <UiEntity
               key={index}
               uiTransform={{
-                flexDirection: 'row',
+                flexDirection: 'column',
                 alignItems: 'center',
-                justifyContent: 'space-between',
+                justifyContent: 'flex-start',
                 positionType: 'relative',
                 width: 236 * getScaleFactor(),
-                height: 40 * getScaleFactor(),
+                height: 50 * getScaleFactor(),
                 margin: { top: index === 0 ? '15%' : '10%' }
               }}
-              uiBackground={{
-                textureMode: 'stretch',
-                texture: { src: 'images/resultsui/results1.png' }
-              }}
             >
-              <Label
+              <UiEntity
                 uiTransform={{
-                  position: { left: '0%' },
-                  alignContent: 'flex-start',
-                  positionType: 'relative'
+                  width: '100%',
+                  height: 30 * getScaleFactor(),
+                  positionType: 'relative',
+                  flexDirection: 'row',
+                  justifyContent: 'flex-start',
+                  alignItems: 'center',
+                  borderRadius: 5
                 }}
-                value={`<b>${result.option}</b>`}
-                fontSize={12 * getScaleFactor()}
-                font="sans-serif"
-                color={Color4.White()}
-                textAlign="middle-center"
-              />
-              <Label
+                uiBackground={{
+                  color: Color4.fromHexString('#444444FF')
+                }}
+              >
+                <UiEntity
+                  uiTransform={{
+                    width: `${result.percentage}%`,
+                    height: '100%',
+                    positionType: 'relative',
+                    borderRadius: 5
+                  }}
+                  uiBackground={{
+                    textureMode: 'stretch',
+                    texture: { src: 'images/resultsui/results1.png' }
+                  }}
+                />
+              </UiEntity>
+
+              <UiEntity
                 uiTransform={{
-                  position: { right: '0%' },
-                  alignContent: 'flex-end',
-                  positionType: 'relative'
+                  positionType: 'absolute',
+                  width: '100%',
+                  height: 30 * getScaleFactor(),
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  padding: 4
                 }}
-                value={`${result.percentage}%`}
-                fontSize={12 * getScaleFactor()}
-                font="sans-serif"
-                color={Color4.White()}
-                textAlign="middle-center"
-              />
+              >
+                <Label
+                  uiTransform={{
+                    positionType: 'relative'
+                  }}
+                  value={`<b>${result.option}</b>`}
+                  fontSize={12 * getScaleFactor()}
+                  font="sans-serif"
+                  color={Color4.White()}
+                  textAlign="middle-left"
+                />
+                <Label
+                  uiTransform={{
+                    positionType: 'relative'
+                  }}
+                  value={`${result.percentage}%`}
+                  fontSize={12 * getScaleFactor()}
+                  font="sans-serif"
+                  color={Color4.White()}
+                  textAlign="middle-right"
+                />
+              </UiEntity>
             </UiEntity>
           ))}
 
