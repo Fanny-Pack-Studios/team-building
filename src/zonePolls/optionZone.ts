@@ -66,10 +66,6 @@ export class OptionZone {
     syncEntity(this.entity, [Transform.componentId, Material.componentId, MeshRenderer.componentId])
 
     syncEntity(this.textEntity, [Transform.componentId, TextShape.componentId, Billboard.componentId])
-
-    if (this.questionEntity !== undefined) {
-      syncEntity(this.questionEntity, [Transform.componentId, GltfContainer.componentId, Billboard.componentId])
-    }
   }
 
   update(dt: number): void {
@@ -120,6 +116,10 @@ export class OptionZone {
     })
     Billboard.create(this.questionEntity)
     Billboard.create(textEntity)
+
+    if (this.questionEntity !== undefined) {
+      syncEntity(this.questionEntity, [Transform.componentId, GltfContainer.componentId, Billboard.componentId])
+    }
   }
 
   isInside(pos: Vector3): boolean {

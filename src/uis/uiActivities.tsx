@@ -4,10 +4,6 @@ import { getScaleFactor } from '../canvas/Canvas'
 import { Color4 } from '@dcl/sdk/math'
 import { type GameController } from '../controllers/game.controller'
 
-const COLOR_INACTIVE = '#FFFFFFFF'
-
-const COLOR_SELECTED = '#3F3B45'
-
 export class ChooseActivityUI {
   public chooseActivityUiVisibility: boolean = false
   public gameController: GameController
@@ -186,10 +182,6 @@ export class ChooseActivityUI {
   selectButton(id: number): void {
     this.buttonSelected = id
 
-    this.buttonColorHover1 = id === 1 ? COLOR_SELECTED : COLOR_INACTIVE
-    this.buttonColorHover2 = id === 2 ? COLOR_SELECTED : COLOR_INACTIVE
-    this.buttonColorHover3 = id === 3 ? COLOR_SELECTED : COLOR_INACTIVE
-    this.buttonColorHover4 = id === 4 ? COLOR_SELECTED : COLOR_INACTIVE
     this.executeSelectedAction()
   }
 
