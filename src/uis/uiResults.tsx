@@ -5,7 +5,7 @@ import { getScaleFactor } from '../canvas/Canvas'
 import { type GameController } from '../controllers/game.controller'
 
 export class ResultsUI {
-  public resultsUiVisibility: boolean = true
+  public resultsUiVisibility: boolean = false
   private pollQuestion: string = ''
   private results: Array<{ option: string; percentage: number }> = []
   private isAnonymous: boolean = true
