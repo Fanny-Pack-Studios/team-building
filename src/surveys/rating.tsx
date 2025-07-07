@@ -17,13 +17,13 @@ function IconEntity(props: {
     <UiEntity uiTransform={{ flexDirection: 'column', width: 'auto', height: 'auto', alignItems: 'center' }}>
       <Label value={props.ratingValue.toString()} textAlign="middle-center" fontSize="1vw"></Label>
       <UiEntity
-        uiTransform={{ width: '3vw', height: '3vw' }}
+        uiTransform={{ width: '4vw', height: '4vw' }}
         onMouseDown={() => {
           props.onSelected(props.ratingValue)
         }}
         uiBackground={{
           texture: { src: `images/createSurveyUi/${imageName}.png` },
-          textureMode: 'center'
+          textureMode: 'stretch'
         }}
       ></UiEntity>
     </UiEntity>

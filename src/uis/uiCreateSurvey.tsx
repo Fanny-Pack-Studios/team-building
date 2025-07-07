@@ -20,14 +20,14 @@ function IconEntity(props: {
   const selectedColor = props.value === props.icon ? Color4.White() : Color4.Gray()
   return (
     <UiEntity
-      uiTransform={{ width: '3vw', height: '3vw', borderWidth: 2, borderColor: selectedColor, borderRadius: 10 }}
+      uiTransform={{ width: '4vw', height: '4vw', borderWidth: 2, borderColor: selectedColor, borderRadius: 10 }}
       onMouseDown={() => {
         props.onChange(props.icon)
       }}
       uiBackground={{
         color: selectedColor,
         texture: { src: `images/createSurveyUi/${props.icon}.png` },
-        textureMode: 'center'
+        textureMode: 'stretch'
       }}
     ></UiEntity>
   )
@@ -41,7 +41,7 @@ function IconSelector(
 ): ReactEcs.JSX.Element {
   const { onChange, value, ...rest } = merge(
     {
-      uiTransform: { width: '8vw', height: 'auto', flexDirection: 'row', justifyContent: 'space-around' }
+      uiTransform: { width: '50%', height: 'auto', flexDirection: 'row', justifyContent: 'space-around' }
     } satisfies EntityPropTypes,
     props
   )
@@ -60,7 +60,7 @@ export class CreateSurveyUI {
   private optionsQty: OptionsQuantity = 5
   private questionTitle: string = ''
 
-  public isVisible: boolean = false
+  public isVisible: boolean = true
   constructor(private readonly gameController: GameController) {}
 
   createUI(): ReactEcs.JSX.Element | null {
@@ -90,25 +90,26 @@ export class CreateSurveyUI {
         >
           <UiEntity
             uiTransform={{
-              width: '50%',
+              width: '100%',
               height: 'auto',
               flexDirection: 'row',
-              justifyContent: 'space-between',
+              justifyContent: 'flex-start',
               alignItems: 'center',
               alignContent: 'center'
             }}
           >
             <UiEntity
               uiTransform={{
-                height: '2.5vw',
-                width: '2.5vw',
+                height: '3vw',
+                width: '3vw',
                 alignItems: 'center',
-                borderRadius: 10
+                borderRadius: 10,
+                margin: '1vw'
               }}
               uiBackground={primaryTheme.primaryButtonBackground}
             >
               <Dropdown
-                uiTransform={{ height: '2vw', width: '2vw' }}
+                uiTransform={{ height: '2.5vw', width: '2.5vw' }}
                 textAlign="middle-center"
                 fontSize={'1.2vw'}
                 color={primaryTheme.fontColor}
