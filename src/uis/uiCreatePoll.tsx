@@ -181,12 +181,13 @@ export class CreatePollUI {
               positionType: 'relative'
             }}
           >
-            {this.answers.length > 2 && (
+            {this.canScrollLeft() && (
               <UiEntity
                 uiTransform={{
+                  positionType: 'absolute',
+                  position: { left: '8%' },
                   width: 25 * getScaleFactor(),
-                  height: 34 * getScaleFactor(),
-                  margin: { right: '0%' }
+                  height: 34 * getScaleFactor()
                 }}
                 uiBackground={{
                   textureMode: 'center',
@@ -211,12 +212,13 @@ export class CreatePollUI {
               {this.renderAnswerInputs()}
             </UiEntity>
 
-            {this.answers.length > 2 && (
+            {this.canScrollRight() && (
               <UiEntity
                 uiTransform={{
+                  positionType: 'absolute',
+                  position: { right: '8%' },
                   width: 25 * getScaleFactor(),
-                  height: 34 * getScaleFactor(),
-                  margin: { left: '0%' }
+                  height: 34 * getScaleFactor()
                 }}
                 uiBackground={{
                   textureMode: 'center',
@@ -428,5 +430,13 @@ export class CreatePollUI {
 
   scrollLeft(): void {
     this.answerScrollIndex = 0
+  }
+
+  canScrollLeft(): boolean {
+    return this.answers.length > 2 && this.answerScrollIndex > 0
+  }
+
+  canScrollRight(): boolean {
+    return this.answers.length > 2 && this.answerScrollIndex < Math.floor((this.answers.length - 1) / 2)
   }
 }
