@@ -7,7 +7,7 @@ import { type GameController } from '../controllers/game.controller'
 import { getPlayer } from '@dcl/sdk/src/players'
 
 export class CreatePollUI {
-  public createPollUiVisibility: boolean = false
+  public createPollUiVisibility: boolean = true
   public switchOn: boolean = false
   public switchOnTexture: string = 'images/createpollui/switchOn.png'
   public switchOffTexture: string = 'images/createpollui/switchOff.png'
@@ -368,7 +368,9 @@ export class CreatePollUI {
 
   renderAnswerInput(index: number, sf: number): ReactEcs.JSX.Element {
     // Decidimos el ancho del Input dinámicamente
-    const inputWidth = this.answers.length > 2 ? '88%' : '94%'
+    const inputWidth = this.answers.length > 2 ? '84%' : '94%'
+    // Calcular tamaño del ícono con un límite mínimo
+    const iconSize = Math.max(16, 20 * sf)
 
     return (
       <UiEntity
@@ -407,10 +409,14 @@ export class CreatePollUI {
         {this.answers.length > 2 && (
           <UiEntity
             uiTransform={{
-              width: 16 * sf,
-              height: 16 * sf,
+              width: iconSize,
+              height: iconSize,
               positionType: 'absolute',
-              position: { right: '3%', top: '22%' }
+              position: { right: '4%', top: '22%' }
+            }}
+            uiBackground={{
+              textureMode: 'stretch',
+              texture: { src: 'images/createpollui/trash_icon.png' }
             }}
             onMouseDown={() => {
               this.answers.splice(index, 1)
@@ -419,19 +425,7 @@ export class CreatePollUI {
               }
               this.updateAddAnswerButtonColor()
             }}
-          >
-            <Label
-              value="-"
-              fontSize={12 * sf}
-              color={Color4.White()}
-              textAlign="middle-center"
-              uiTransform={{
-                width: '100%',
-                height: '100%',
-                alignContent: 'center'
-              }}
-            />
-          </UiEntity>
+          ></UiEntity>
         )}
       </UiEntity>
     )
