@@ -141,6 +141,7 @@ export class KickUI {
       void movePlayerTo({ newRelativePosition: JAIL_CENTER })
       this.blackScreenVisibility = true
       this.wasKicked = true
+      this.gameController.removeHostUI.removeHostByUserId(player.userId.toLowerCase())
     }
 
     if (!isBanned && this.wasKicked) {
