@@ -7,7 +7,7 @@ import { type GameController } from '../controllers/game.controller'
 import { getPlayer } from '@dcl/sdk/src/players'
 
 export class CreatePollUI {
-  public createPollUiVisibility: boolean = true
+  public createPollUiVisibility: boolean = false
   public switchOn: boolean = false
   public switchOnTexture: string = 'images/createpollui/switchOn.png'
   public switchOffTexture: string = 'images/createpollui/switchOff.png'
