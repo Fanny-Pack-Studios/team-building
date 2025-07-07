@@ -32,6 +32,7 @@ export class UIController {
             this.gameController.activitiesUI.createChooseActivityUi()}
           {this.gameController.createPollUI.createPollUiVisibility && this.gameController.createPollUI.createUi()}
           {this.gameController.createOptionUI.optionsUiVisibility && this.gameController.createOptionUI.createUi()}
+          {this.gameController.createSurveyUI.isVisible && this.gameController.createSurveyUI.createUI()}
           {this.gameController.resultsUI.resultsUiVisibility && this.gameController.resultsUI.createUi()}
           {this.gameController.timerUI.visible && this.gameController.timerUI.createUi()}
           {this.gameController.closePollUi.isVisible && this.gameController.closePollUi.createUi()}
