@@ -6,6 +6,7 @@ import { type GameController } from '../controllers/game.controller'
 
 import { OptionZone } from '../zonePolls/optionZone'
 import { engine } from '@dcl/sdk/ecs'
+import { pushSyncedMessage } from '../messagebus/messagebus'
 
 export class ZonePollUI {
   public createZonePollUiVisibility: boolean = false
@@ -263,7 +264,8 @@ export class ZonePollUI {
                 texture: { src: 'images/createpollui/createButton.png' }
               }}
               onMouseDown={() => {
-                this.create()
+                // this.create()
+                pushSyncedMessage('showZonePollUi', {})
               }}
             ></UiEntity>
           </UiEntity>

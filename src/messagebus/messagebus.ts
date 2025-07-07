@@ -10,7 +10,8 @@ export const messageBusEntity = engine.addEntity()
 
 const messageContentAlternatives = {
   // messageType: messageSchema
-  showCurrentActivityResults: Schemas.Map({})
+  showCurrentActivityResults: Schemas.Map({}),
+  showZonePollUi: Schemas.Map({})
 }
 
 function handleMessage(message: Message, gameController: GameController): void {
@@ -18,6 +19,8 @@ function handleMessage(message: Message, gameController: GameController): void {
     case 'showCurrentActivityResults':
       gameController.popupAtendeePanelAndResultbutton.showResultsFromCurrentActivity()
       break
+    case 'showZonePollUi':
+      gameController.createZonePollUI.create()
   }
 }
 
