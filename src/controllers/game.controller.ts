@@ -83,7 +83,7 @@ export class GameController {
     this.zone3 = null
     this.zone4 = null
     this.playersOnScene = new PlayersOnScene(this)
-    this.removeHostUI = new RemoveHostModal(this.hostsController)
+    this.removeHostUI = new RemoveHostModal(this)
     this.hostIndicators = new HostIndicators(this.hostsController)
     this.customizationUI = new CustomizationUI()
     this.mainMenuUI = new MainMenuUi(this)
