@@ -23,27 +23,22 @@ export class UIController {
     return (
       <UiEntity>
         <Canvas>
-          {this.gameController.panelUI.panelUiVisibility && this.gameController.panelUI.createPanelUi()}
-          {this.gameController.kickUI.kickUiVisibility && this.gameController.kickUI.createKickUi()}
-          {Boolean(this.gameController.kickUI.unKickUiVisibility) && this.gameController.kickUI.createUnKickUi()}
-          {this.gameController.kickUI.blackScreenVisibility && this.gameController.kickUI.createBlackScreen()}
-          {this.gameController.stageUI.stageUiVisibility && this.gameController.stageUI.createStageUi()}
-          {this.gameController.activitiesUI.chooseActivityUiVisibility &&
-            this.gameController.activitiesUI.createChooseActivityUi()}
-          {this.gameController.createPollUI.createPollUiVisibility && this.gameController.createPollUI.createUi()}
-          {this.gameController.createOptionUI.optionsUiVisibility && this.gameController.createOptionUI.createUi()}
-          {this.gameController.createSurveyUI.isVisible && this.gameController.createSurveyUI.createUI()}
-          {this.gameController.resultsUI.resultsUiVisibility && this.gameController.resultsUI.createUi()}
-          {this.gameController.timerUI.visible && this.gameController.timerUI.createUi()}
-          {this.gameController.closePollUi.isVisible && this.gameController.closePollUi.createUi()}
-          {this.gameController.removeHostUI.removeHostVisibility &&
-            this.gameController.removeHostUI.createRemoveHostModal()}
-          {this.gameController.choosePollUI.choosePollUiVisibility &&
-            this.gameController.choosePollUI.createChoosePollUi()}
-          {this.gameController.createZonePollUI.createZonePollUiVisibility &&
-            this.gameController.createZonePollUI.createUi()}
-          {this.gameController.zonePollQuestionUI.visible && this.gameController.zonePollQuestionUI.createUi()}
-
+          {this.gameController.panelUI.createPanelUi()}
+          {this.gameController.kickUI.createKickUi()}
+          {this.gameController.kickUI.createUnKickUi()}
+          {this.gameController.kickUI.createBlackScreen()}
+          {this.gameController.stageUI.createStageUi()}
+          {this.gameController.activitiesUI.createChooseActivityUi()}
+          {this.gameController.createPollUI.createUi()}
+          {this.gameController.createOptionUI.createUi()}
+          {this.gameController.createSurveyUI.createUI()}
+          {this.gameController.resultsUI.createUi()}
+          {this.gameController.timerUI.createUi()}
+          {this.gameController.closePollUi.createUi()}
+          {this.gameController.removeHostUI.createRemoveHostModal()}
+          {this.gameController.choosePollUI.createChoosePollUi()}
+          {this.gameController.createZonePollUI.createUi()}
+          {this.gameController.zonePollQuestionUI.createUi()}
           {this.gameController.customizationUI.create()}
           {this.gameController.mainMenuUI.create()}
           {this.gameController.workInProgressUI.create()}
