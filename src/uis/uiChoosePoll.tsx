@@ -7,10 +7,7 @@ import { type GameController } from '../controllers/game.controller'
 export class ChoosePollUI {
   public choosePollUiVisibility: boolean = false
   public gameController: GameController
-  public buttonColorHover1: string = '#FFFFFFFF'
-  public buttonColorHover2: string = '#FFFFFFFF'
-  public buttonColorHover3: string = '#FFFFFFFF'
-  public buttonColorHover4: string = '#FFFFFFFF'
+
   public buttonSelected: number = 0
   constructor(gameController: GameController) {
     this.gameController = gameController
@@ -105,8 +102,7 @@ export class ChoosePollUI {
               }}
               uiBackground={{
                 textureMode: 'stretch',
-                texture: { src: 'images/choosepollui/wordP.png' },
-                color: Color4.fromHexString(this.buttonColorHover1)
+                texture: { src: 'images/choosepollui/wordP.png' }
               }}
               onMouseDown={() => {
                 this.selectButton(1)
@@ -121,8 +117,7 @@ export class ChoosePollUI {
               }}
               uiBackground={{
                 textureMode: 'stretch',
-                texture: { src: 'images/choosepollui/zoneP.png' },
-                color: Color4.fromHexString(this.buttonColorHover2)
+                texture: { src: 'images/choosepollui/zoneP.png' }
               }}
               onMouseDown={() => {
                 this.selectButton(2)
@@ -150,8 +145,7 @@ export class ChoosePollUI {
               }}
               uiBackground={{
                 textureMode: 'stretch',
-                texture: { src: 'images/choosepollui/activeP.png' },
-                color: Color4.fromHexString(this.buttonColorHover3)
+                texture: { src: 'images/choosepollui/activeP.png' }
               }}
               onMouseDown={() => {
                 this.selectButton(3)
@@ -166,8 +160,7 @@ export class ChoosePollUI {
               }}
               uiBackground={{
                 textureMode: 'stretch',
-                texture: { src: 'images/choosepollui/emoteP.png' },
-                color: Color4.fromHexString(this.buttonColorHover4)
+                texture: { src: 'images/choosepollui/emoteP.png' }
               }}
               onMouseDown={() => {
                 this.selectButton(4)
