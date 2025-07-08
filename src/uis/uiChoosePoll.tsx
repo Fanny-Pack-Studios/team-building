@@ -182,20 +182,21 @@ export class ChoosePollUI {
     switch (this.buttonSelected) {
       case 1:
         this.choosePollUiVisibility = false
-        this.gameController.createPollUI.createPollUiVisibility = true
+        this.gameController.workInProgressUI.isVisible = true
         break
       case 2:
         this.choosePollUiVisibility = false
         // this.gameController.createZonePollUI.createZonePollUiVisibility = true
+        this.gameController.workInProgressUI.isVisible = true
         break
       case 3:
         this.choosePollUiVisibility = false
-        //  this.gameController.createQuizUI.createQuizUiVisibility = true
-        this.gameController.workInProgressUI.isVisible = true
+        this.gameController.createPollUI.createPollUiVisibility = true
         break
       case 4:
         this.choosePollUiVisibility = false
         // this.gameController.createSurveyUI.createSurveyUiVisibility = true
+        this.gameController.workInProgressUI.isVisible = true
         break
       default:
         break
