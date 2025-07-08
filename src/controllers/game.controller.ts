@@ -18,15 +18,18 @@ import { TimerUI } from '../uis/uiTimer'
 import { ZonePollQuestionUI } from '../uis/uiZonePollQuestion'
 import { type OptionZone } from '../zonePolls/optionZone'
 
-import { MainMenuUi } from '../uis/ui.mainMenu'
-import { HostsController } from './hosts.controller'
-import { UIController } from './ui.controller'
-import { WorkInProgressUI } from '../uis/uiWorkInProgress'
-import { CreateSurveyUI } from '../uis/uiCreateSurvey'
-import { PlayerController } from './player.controller'
+import { type Entity } from '@dcl/sdk/ecs'
+import { createActivitiesEntity } from '../activities/activitiesEntity'
 import { Jail } from '../jail/jail'
-import { ModeratorIconUI } from '../uis/uiModeratorIcon'
+import { SurveyQuestionUI } from '../surveys/surveyQuestionUi'
+import { MainMenuUi } from '../uis/ui.mainMenu'
+import { CreateSurveyUI } from '../uis/uiCreateSurvey'
 import { ModerationPanel } from '../uis/uiModerationPanel'
+import { ModeratorIconUI } from '../uis/uiModeratorIcon'
+import { WorkInProgressUI } from '../uis/uiWorkInProgress'
+import { HostsController } from './hosts.controller'
+import { PlayerController } from './player.controller'
+import { UIController } from './ui.controller'
 
 export class GameController {
   public uiController: UIController
@@ -34,6 +37,7 @@ export class GameController {
   public popupAtendeePanelAndResultbutton: PopupAttendeePanelAndResultsButton
   public playerController: PlayerController
   public jail: Jail
+  public activitiesEntity: Entity
 
   // UIS
 
@@ -64,10 +68,12 @@ export class GameController {
 
   public customizationUI: CustomizationUI
   public workInProgressUI: WorkInProgressUI
+  public surveyQuestionUI: SurveyQuestionUI
 
   constructor() {
     this.playerController = new PlayerController(this)
     this.hostsController = new HostsController(this)
+    this.activitiesEntity = createActivitiesEntity()
     this.uiController = new UIController(this)
     this.popupAtendeePanelAndResultbutton = new PopupAttendeePanelAndResultsButton(this)
     this.stageUI = new StageUI(this)
@@ -77,6 +83,7 @@ export class GameController {
     this.createPollUI = new CreatePollUI(this)
     this.createOptionUI = new OptionsUI(this)
     this.createSurveyUI = new CreateSurveyUI(this)
+    this.surveyQuestionUI = new SurveyQuestionUI(this)
     this.resultsUI = new ResultsUI(this)
     this.timerUI = new TimerUI(this)
     this.closePollUi = new ClosePollUI(this)

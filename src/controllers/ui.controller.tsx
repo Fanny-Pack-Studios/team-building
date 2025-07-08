@@ -28,7 +28,7 @@ export class UIController {
           {this.gameController.activitiesUI.createChooseActivityUi()}
           {this.gameController.createPollUI.createUi()}
           {this.gameController.createOptionUI.createUi()}
-          {this.gameController.createSurveyUI.createUI()}
+          {this.gameController.createSurveyUI.createUi()}
           {this.gameController.resultsUI.createUi()}
           {this.gameController.timerUI.createUi()}
           {this.gameController.closePollUi.createUi()}
@@ -40,6 +40,7 @@ export class UIController {
           {this.gameController.workInProgressUI.create()}
           {this.gameController.newModerationPanel.create()}
           {this.gameController.kickUI.createBlackScreen()}
+          {this.gameController.surveyQuestionUI.createUi()}
           {ui.render()}
         </Canvas>
       </UiEntity>

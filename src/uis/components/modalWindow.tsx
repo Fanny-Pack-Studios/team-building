@@ -6,16 +6,37 @@ import ReactEcs, {
 } from '@dcl/sdk/react-ecs'
 import { merge } from 'ts-deepmerge'
 
+function CloseButton(props: { onClosePressed: () => void }): ReactEcs.JSX.Element {
+  return (
+    <UiEntity
+      uiTransform={{
+        positionType: 'absolute',
+        width: '2vw',
+        height: '2vw',
+        position: { top: '3%', right: '4.5%' }
+      }}
+      uiBackground={{
+        textureMode: 'stretch',
+        texture: { src: 'images/ui/exit.png' }
+      }}
+      onMouseDown={() => {
+        props.onClosePressed()
+      }}
+    ></UiEntity>
+  )
+}
+
 export function ModalWindow(
-  props: EntityPropTypes & { visible: boolean; children?: ReactEcs.JSX.Element }
+  props: EntityPropTypes & { visible: boolean; onClosePressed?: () => void; children?: ReactEcs.JSX.Element }
 ): ReactEcs.JSX.Element {
-  const { visible, children, ...rest } = props
+  const { visible, children, onClosePressed, ...rest } = props
+  const closeable = onClosePressed !== undefined
   const windowProps: EntityPropTypes = merge(
     {
       uiTransform: {
         flexDirection: 'column',
-        width: '30vw',
-        height: '40vw',
+        width: '33vw',
+        height: '80vh',
         padding: '2.5vw 4vw'
       } satisfies UiTransformProps,
       uiBackground: {
@@ -45,7 +66,10 @@ export function ModalWindow(
         display: props.visible ? 'flex' : 'none'
       }}
     >
-      <UiEntity {...windowProps}>{props.children}</UiEntity>
+      <UiEntity {...windowProps}>
+        {closeable && <CloseButton onClosePressed={onClosePressed} />}
+        {props.children}
+      </UiEntity>
     </UiEntity>
   )
 }

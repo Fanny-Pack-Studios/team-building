@@ -3,8 +3,7 @@ import { getPlayer } from '@dcl/sdk/src/players'
 import { generateSurveyId } from '../utils'
 import { type OptionsQuantity } from './rating'
 import { SurveyIcon } from './surveyIcon'
-
-export const surveyRegistry = new Map<string, Entity>()
+import { syncEntity } from '@dcl/sdk/network'
 
 export const SurveyState = engine.defineComponent('surveyState', {
   surveyId: Schemas.String,
@@ -28,7 +27,7 @@ export function createSurveyEntity(
   icon: SurveyIcon = SurveyIcon.STAR,
   optionsQty: OptionsQuantity = 5,
   anonymous: boolean = false
-): Entity {
+): [string, Entity] {
   const entity = engine.addEntity()
   const surveyId = generateSurveyId()
   const player = getPlayer()
@@ -47,7 +46,7 @@ export function createSurveyEntity(
     closed: false
   })
 
-  surveyRegistry.set(surveyId, entity)
+  syncEntity(entity, [SurveyState.componentId])
 
-  return entity
+  return [surveyId, entity]
 }

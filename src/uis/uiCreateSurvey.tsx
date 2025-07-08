@@ -1,16 +1,18 @@
-import ReactEcs, { Button, Dropdown, type EntityPropTypes, Label, UiEntity } from '@dcl/sdk/react-ecs'
+import { Color4 } from '@dcl/sdk/math'
+import ReactEcs, { Dropdown, type EntityPropTypes, Label, UiEntity } from '@dcl/sdk/react-ecs'
+import { merge } from 'ts-deepmerge'
+import { ActivityType, setCurrentActivity } from '../activities/activitiesEntity'
 import { type GameController } from '../controllers/game.controller'
+import { type OptionsQuantity, RatingSelector } from '../surveys/rating'
+import { createSurveyEntity } from '../surveys/surveyEntity'
+import { SurveyIcon } from '../surveys/surveyIcon'
+import { ModalButton } from './components/buttons'
+import { HorizontalLabeledControl, VerticalLabeledControl } from './components/labeledControl'
 import { LabeledInput } from './components/labeledInput'
 import { ModalTitle } from './components/modalTitle'
 import { ModalWindow } from './components/modalWindow'
-import { primaryTheme } from './themes/themes'
-import { HorizontalLabeledControl, VerticalLabeledControl } from './components/labeledControl'
-import { Color4 } from '@dcl/sdk/math'
-import { merge } from 'ts-deepmerge'
-import { SurveyIcon } from '../surveys/surveyIcon'
-import { type OptionsQuantity, RatingSelector } from '../surveys/rating'
 import { Switch } from './components/switch'
-import { createSurveyEntity } from '../surveys/surveyEntity'
+import { primaryTheme } from './themes/themes'
 
 function IconEntity(props: {
   icon: SurveyIcon
@@ -60,13 +62,19 @@ export class CreateSurveyUI {
   private optionsQty: OptionsQuantity = 5
   private questionTitle: string = ''
 
-  public isVisible: boolean = true
+  public isVisible: boolean = false
   constructor(private readonly gameController: GameController) {}
 
-  createUI(): ReactEcs.JSX.Element | null {
+  createUi(): ReactEcs.JSX.Element | null {
     const dropdownOptions = ['5', '4', '3', '2']
     return (
-      <ModalWindow visible={this.isVisible}>
+      <ModalWindow
+        visible={this.isVisible}
+        onClosePressed={() => {
+          this.isVisible = false
+        }}
+        uiTransform={{ justifyContent: 'space-between' }}
+      >
         <ModalTitle value="<b>Create Your Survey</b>" />
         <Label
           uiTransform={{ width: '100%', height: '4vh', margin: { bottom: '3vh' } }}
@@ -138,26 +146,13 @@ export class CreateSurveyUI {
             ></Switch>
           </HorizontalLabeledControl>
         </VerticalLabeledControl>
-        <Button
-          value="<b>Create</b>"
-          color={this.areInputsValid() ? primaryTheme.fontColor : primaryTheme.disabledFontColor}
-          uiTransform={{
-            width: '10vw',
-            height: '3vw',
-            borderRadius: 5,
-            alignSelf: 'center',
-            margin: { top: '2vw' }
-          }}
-          fontSize="1.2vw"
-          uiBackground={
-            this.areInputsValid() ? primaryTheme.primaryButtonBackground : primaryTheme.primaryButtonDisabledBackground
-          }
+        <ModalButton
+          text="Create"
+          isDisabled={!this.areInputsValid()}
           onMouseDown={() => {
-            if (this.areInputsValid()) {
-              this.createSurvey()
-            }
+            this.createSurvey()
           }}
-        ></Button>
+        ></ModalButton>
       </ModalWindow>
     )
   }
@@ -167,8 +162,8 @@ export class CreateSurveyUI {
   }
 
   createSurvey(): void {
-    createSurveyEntity(this.questionTitle, this.selectedIcon, this.optionsQty, this.isAnonymous)
-    this.gameController.uiController.gameController.popupAtendeePanelAndResultbutton.create()
+    const [surveyId] = createSurveyEntity(this.questionTitle, this.selectedIcon, this.optionsQty, this.isAnonymous)
+    setCurrentActivity(this.gameController.activitiesEntity, surveyId, ActivityType.SURVEY)
     this.isVisible = false
   }
 }

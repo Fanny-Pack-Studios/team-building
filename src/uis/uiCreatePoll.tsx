@@ -5,6 +5,7 @@ import { Color4 } from '@dcl/sdk/math'
 import { PollState, createPollEntity, pollRegistry } from '../polls/pollEntity'
 import { type GameController } from '../controllers/game.controller'
 import { getPlayer } from '@dcl/sdk/src/players'
+import { ActivityType, setCurrentActivity } from '../activities/activitiesEntity'
 
 export class CreatePollUI {
   public createPollUiVisibility: boolean = false
@@ -347,7 +348,8 @@ export class CreatePollUI {
       this.gameController.closePollUi.show(pollId)
     }
 
-    this.gameController.uiController.gameController.popupAtendeePanelAndResultbutton.create()
+    setCurrentActivity(this.gameController.activitiesEntity, pollId, ActivityType.POLL)
+
     this.createPollUiVisibility = false
   }
 

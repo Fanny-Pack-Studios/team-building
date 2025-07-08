@@ -10,11 +10,13 @@ import {
 } from '@dcl/sdk/ecs'
 import { Vector3 } from '@dcl/sdk/math'
 import { syncEntity } from '@dcl/sdk/network'
-import { PollState } from '../polls/pollEntity'
-import { PollQuestion } from '../polls/pollQuestionUi'
-import { SyncEntityEnumId } from '../syncEntities'
 import { type GameController } from '../controllers/game.controller'
 import { pushSyncedMessage } from '../messagebus/messagebus'
+import { PollState } from '../polls/pollEntity'
+import { PollQuestion } from '../polls/pollQuestionUi'
+import { SurveyState } from '../surveys/surveyEntity'
+import { SyncEntityEnumId } from '../syncEntities'
+import { ActivitiesState, getCurrentActivityEntity } from './activitiesEntity'
 
 export class PopupAttendeePanelAndResultsButton {
   public attendeePanelEntity = engine.getEntityOrNullByName('AttendeePanel')
@@ -24,6 +26,17 @@ export class PopupAttendeePanelAndResultsButton {
   gameController: GameController
   constructor(gameController: GameController) {
     this.gameController = gameController
+    ActivitiesState.onChange(this.gameController.activitiesEntity, (newState) => {
+      console.log('Activities changed')
+      if (newState?.currentActivityId !== undefined) {
+        console.log('New activity detected!')
+        this.create()
+      }
+    })
+
+    if (ActivitiesState.getOrNull(this.gameController.activitiesEntity)?.currentActivityId !== undefined) {
+      this.create()
+    }
   }
 
   create(): void {
@@ -71,18 +84,32 @@ export class PopupAttendeePanelAndResultsButton {
   }
 
   runCurrentActivityAsAttendee(): void {
-    // TODO: Add code to run the survey as atendee here
-    const allPollEntities = Array.from(engine.getEntitiesWith(PollState))
-    if (allPollEntities.length <= 0) return
+    const currentActivity = getCurrentActivityEntity(this.gameController.activitiesEntity)
 
-    const lastOpenedPoll = allPollEntities[allPollEntities.length - 1]
-    const pollEntity = lastOpenedPoll?.[0]
-    const pollState = PollState.getOrNull(pollEntity)
+    if (currentActivity === undefined) return
 
-    if (pollState == null) {
-      console.log('No PollState found.')
+    if (PollState.has(currentActivity)) {
+      this.runPollAsAtendee(currentActivity)
+    }
+
+    if (SurveyState.has(currentActivity)) {
+      this.runSurveyAsAtendee(currentActivity)
+    }
+  }
+
+  runSurveyAsAtendee(surveyEntity: Entity): void {
+    const surveyState = SurveyState.get(surveyEntity)
+
+    if (surveyState.closed) {
+      console.log('Survey is closed')
       return
     }
+
+    this.gameController.surveyQuestionUI.isVisible = true
+  }
+
+  runPollAsAtendee(pollEntity: Entity): void {
+    const pollState = PollState.get(pollEntity)
 
     if (pollState.closed) {
       console.log('THE POLL IS CLOSED')
