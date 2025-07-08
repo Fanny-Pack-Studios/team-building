@@ -50,7 +50,7 @@
     "portableExperiences": "enabled"
   },
   "worldConfiguration": {
-    "name": "hagane.dcl.eth"
+    "name": "thecodingcave.dcl.eth"
   },
   "requiredPermissions": [
     "ALLOW_TO_TRIGGER_AVATAR_EMOTE",

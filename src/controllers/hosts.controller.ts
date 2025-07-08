@@ -2,17 +2,30 @@ import { engine, type Entity, Schemas } from '@dcl/sdk/ecs'
 import { syncEntity } from '@dcl/sdk/network'
 import { SyncEntityEnumId } from '../syncEntities'
 import { withPlayerInfo } from '../utils'
-
+import { onLeaveScene } from '@dcl/sdk/src/players'
 export const HostComponent = engine.defineComponent('HostComponent', {
   hosts: Schemas.Array(Schemas.String)
 })
 
 export class HostsController {
   public readonly hostEntity: Entity = engine.addEntity()
+  private readonly checkTimer = 0
+  private readonly CHECK_INTERVAL = 5
 
   constructor() {
     HostComponent.create(this.hostEntity)
     syncEntity(this.hostEntity, [HostComponent.componentId], SyncEntityEnumId.HOSTS)
+    onLeaveScene((userId) => {
+      if (userId.length === 0) return
+
+      const lowerId = userId.toLowerCase()
+      const currentHosts = this.getHosts()
+
+      if (currentHosts.includes(lowerId)) {
+        this.removeHost(lowerId)
+        console.log('[HostController] Host removed on leaveScene:', lowerId)
+      }
+    })
   }
 
   isHost(userId: string, hosts: string[] = this.getHosts()): boolean {
