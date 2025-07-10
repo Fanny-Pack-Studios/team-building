@@ -92,7 +92,8 @@ export class NewModerationPanel {
           height: 90 * getScaleFactor(),
           margin: '5px',
           padding: '5px',
-          borderRadius: 6
+          borderRadius: 6,
+          alignItems: 'flex-start'
         }}
         uiBackground={{ color: Color4.White() }}
       >
@@ -104,56 +105,66 @@ export class NewModerationPanel {
         />
         <Label
           value={`Wallet: ${player.wallet}`}
-          fontSize={12 * getScaleFactor()}
+          fontSize={10 * getScaleFactor()}
           color={Color4.Gray()}
-          uiTransform={{ margin: '2px' }}
-        />
-        <Label
-          value={`Ban: ${player.isBanned ? 'YES' : 'NO'} | Host: ${player.isHost ? 'YES' : 'NO'}`}
-          fontSize={9 * getScaleFactor()}
-          color={player.isBanned ? Color4.Red() : Color4.Green()}
           uiTransform={{ margin: '2px' }}
         />
 
         <UiEntity
           uiTransform={{
             flexDirection: 'row',
-            justifyContent: 'flex-start',
+            justifyContent: 'space-between',
+            margin: '2px'
+          }}
+        >
+          <Label
+            value={player.isBanned ? 'BANNED' : 'ACTIVE'}
+            fontSize={9 * getScaleFactor()}
+            color={Color4.White()}
+            uiBackground={{ color: player.isBanned ? Color4.Red() : Color4.Green() }}
+            uiTransform={{ margin: { right: '5px' } }}
+          />
+          <Label
+            value={player.isHost ? 'HOST' : ''}
+            fontSize={9 * getScaleFactor()}
+            color={Color4.White()}
+            uiBackground={{ color: player.isHost ? Color4.Yellow() : Color4.Clear() }}
+          />
+        </UiEntity>
+
+        <UiEntity
+          uiTransform={{
+            width: '100%', // ocupa todo el ancho de la card
+            flexDirection: 'row',
+            justifyContent: 'flex-end', // empuja a la derecha
             alignItems: 'center',
             margin: '2px'
           }}
         >
           <Button
-            value="Ban"
+            value={player.isBanned ? 'Unban' : 'Ban'}
             variant="secondary"
-            uiTransform={{ width: 70 * getScaleFactor(), height: 22 * getScaleFactor(), margin: '2px' }}
-            onMouseDown={() => {
-              this.banPlayer(player)
+            uiTransform={{
+              width: 100 * getScaleFactor(),
+              height: 24 * getScaleFactor()
             }}
+            onMouseDown={() => {
+              player.isBanned ? this.unbanPlayer(player) : this.banPlayer(player)
+            }}
+            uiBackground={{ color: Color4.Clear() }}
           />
+
           <Button
-            value="Unban"
+            value={player.isHost ? 'Remove Host' : 'Make Host'}
             variant="secondary"
-            uiTransform={{ width: 70 * getScaleFactor(), height: 22 * getScaleFactor(), margin: '2px' }}
-            onMouseDown={() => {
-              this.unbanPlayer(player)
+            uiTransform={{
+              width: 100 * getScaleFactor(),
+              height: 24 * getScaleFactor()
             }}
-          />
-          <Button
-            value="Host"
-            variant="secondary"
-            uiTransform={{ width: 70 * getScaleFactor(), height: 22 * getScaleFactor(), margin: '2px' }}
             onMouseDown={() => {
-              this.giveHost(player)
+              player.isHost ? this.removeHost(player) : this.giveHost(player)
             }}
-          />
-          <Button
-            value="No Host"
-            variant="secondary"
-            uiTransform={{ width: 70 * getScaleFactor(), height: 22 * getScaleFactor(), margin: '2px' }}
-            onMouseDown={() => {
-              this.removeHost(player)
-            }}
+            uiBackground={{ color: Color4.Clear() }}
           />
         </UiEntity>
       </UiEntity>
