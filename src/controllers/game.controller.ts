@@ -25,6 +25,7 @@ import { HostsController } from './hosts.controller'
 import { UIController } from './ui.controller'
 import { WorkInProgressUI } from '../uis/uiWorkInProgress'
 import { CreateSurveyUI } from '../uis/uiCreateSurvey'
+import { NewModerationPanel } from '../uis/uiNewModerationPanel'
 
 export class GameController {
   public uiController: UIController
@@ -50,6 +51,7 @@ export class GameController {
   public choosePollUI: ChoosePollUI
   public createZonePollUI: ZonePollUI
   public zonePollQuestionUI: ZonePollQuestionUI
+  public newModerationPanel: NewModerationPanel
 
   // Zones
   public zone1: OptionZone | null
@@ -80,6 +82,7 @@ export class GameController {
     this.choosePollUI = new ChoosePollUI(this)
     this.createZonePollUI = new ZonePollUI(this)
     this.zonePollQuestionUI = new ZonePollQuestionUI(this)
+    this.newModerationPanel = new NewModerationPanel(this)
 
     this.zone1 = null
     this.zone2 = null

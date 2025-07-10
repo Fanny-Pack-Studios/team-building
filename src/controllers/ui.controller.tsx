@@ -42,6 +42,7 @@ export class UIController {
           {this.gameController.customizationUI.create()}
           {this.gameController.mainMenuUI.create()}
           {this.gameController.workInProgressUI.create()}
+          {this.gameController.newModerationPanel.create()}
           {ui.render()}
         </Canvas>
       </UiEntity>
