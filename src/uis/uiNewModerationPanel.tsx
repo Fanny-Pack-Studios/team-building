@@ -11,12 +11,12 @@ type Player = {
 }
 
 const MOCK_PLAYERS: Player[] = [
-  { name: 'Alice', wallet: '0xabc123111111111111111111', isBanned: false, isHost: true },
-  { name: 'Bob', wallet: '0xdef45611111111111111111111', isBanned: true, isHost: false },
-  { name: 'Carol', wallet: '0xabc123111111111111111111', isBanned: false, isHost: false },
-  { name: 'Dave', wallet: '0xabc123111111111111111111', isBanned: true, isHost: true },
-  { name: 'Eve', wallet: '0xabc123111111111111111111', isBanned: false, isHost: false },
-  { name: 'Frank', wallet: '0xabc123111111111111111111', isBanned: true, isHost: false },
+  { name: 'Alice', wallet: '0xabc1231111111111111511111', isBanned: false, isHost: true },
+  { name: 'Bob', wallet: '0xdef456111111111111111311111', isBanned: true, isHost: false },
+  { name: 'Carol', wallet: '0xabc1231111111111141111111', isBanned: false, isHost: false },
+  { name: 'Dave', wallet: '0xabc123111111111111321111111', isBanned: true, isHost: true },
+  { name: 'Eve', wallet: '0xabc1231111111111111111111', isBanned: false, isHost: false },
+  { name: 'Frank', wallet: '0xabc123111111111111231111111', isBanned: true, isHost: false },
   { name: 'Grace', wallet: '0xstu901', isBanned: false, isHost: false },
   { name: 'Hank', wallet: '0xvwx234', isBanned: true, isHost: false },
   { name: 'Ivy', wallet: '0xyza567', isBanned: false, isHost: true }
@@ -253,6 +253,7 @@ export class NewModerationPanel {
 
     return (
       <UiEntity
+        key="moderation-panel-root"
         uiTransform={{
           flexDirection: 'column',
           width: this.gameController.uiController.canvasInfo.width,
@@ -283,7 +284,7 @@ export class NewModerationPanel {
           />
 
           <Input
-            placeholder="Search players..."
+            placeholder={this.searchText === '' ? 'Search players...' : ''}
             value={this.searchText}
             onChange={this.handleSearchInput}
             fontSize={16 * getScaleFactor()}
@@ -296,6 +297,7 @@ export class NewModerationPanel {
           />
 
           <UiEntity
+            key="players-list"
             uiTransform={{
               flexDirection: 'column',
               alignItems: 'center',
@@ -304,9 +306,6 @@ export class NewModerationPanel {
               padding: '5px',
               margin: '5px'
             }}
-            // uiBackground={{
-            //   color: Color4.fromInts(255, 255, 255, 80)
-            // }}
           >
             {this.getCurrentPagePlayers().map((player) => this.createPlayerCard(player))}
           </UiEntity>
