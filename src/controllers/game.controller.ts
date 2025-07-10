@@ -6,7 +6,7 @@ import { HostIndicators } from '../uis/hostIndicators'
 import { CustomizationUI } from '../uis/ui.customization'
 import { ChooseActivityUI } from '../uis/uiActivities'
 import { ChoosePollUI } from '../uis/uiChoosePoll'
-import { ClosePollUI } from '../uis/uiClosePoll'
+import { CloseActivityUI } from '../uis/uiCloseActivity'
 import { CreatePollUI } from '../uis/uiCreatePoll'
 import { ZonePollUI } from '../uis/uiCreateZonePoll'
 import { KickUI } from '../uis/uiKick'
@@ -51,7 +51,7 @@ export class GameController {
   public createSurveyUI: CreateSurveyUI
   public resultsUI: ResultsUI
   public timerUI: TimerUI
-  public closePollUi: ClosePollUI
+  public closePollUi: CloseActivityUI
   public removeHostUI: RemoveHostModal
   public hostIndicators: HostIndicators
   public choosePollUI: ChoosePollUI
@@ -86,7 +86,7 @@ export class GameController {
     this.surveyQuestionUI = new SurveyQuestionUI(this)
     this.resultsUI = new ResultsUI(this)
     this.timerUI = new TimerUI(this)
-    this.closePollUi = new ClosePollUI(this)
+    this.closePollUi = new CloseActivityUI(this)
     this.removeHostUI = new RemoveHostModal(this)
     this.hostIndicators = new HostIndicators(this.hostsController)
     this.choosePollUI = new ChoosePollUI(this)

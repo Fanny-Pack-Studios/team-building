@@ -1,8 +1,17 @@
-import { engine, type Entity, Schemas } from '@dcl/sdk/ecs'
+import {
+  type ComponentDefinition,
+  engine,
+  type Entity,
+  type ISchema,
+  type MapResult,
+  Schemas,
+  type Spec
+} from '@dcl/sdk/ecs'
 import { syncEntity } from '@dcl/sdk/network'
 import { SyncEntityEnumId } from '../syncEntities'
-import { PollState } from '../polls/pollEntity'
-import { SurveyState } from '../surveys/surveyEntity'
+import { closePoll, PollState } from '../polls/pollEntity'
+import { closeSurvey, SurveyState } from '../surveys/surveyEntity'
+import { type ComponentState } from '../utils'
 
 export enum ActivityType {
   NONE,
@@ -10,10 +19,51 @@ export enum ActivityType {
   SURVEY
 }
 
+export const BaseActivityState = {
+  id: Schemas.String,
+  creatorId: Schemas.String,
+  closed: Schemas.Boolean
+}
+
+export type BaseActivityStateType = MapResult<typeof BaseActivityState>
+
+export function VoteBasedActivityState<OptionType, T extends Spec>(
+  optionSchema: ISchema<OptionType>,
+  additionalProperties: T
+): typeof BaseActivityState & {
+  question: ISchema<string>
+  anonymous: ISchema<boolean>
+  userIdsThatVoted: ISchema<string[]>
+  votes: ISchema<
+    Array<
+      MapResult<{
+        userId: ISchema<string | undefined>
+        option: ISchema<OptionType>
+      }>
+    >
+  >
+} & T {
+  return {
+    ...BaseActivityState,
+    question: Schemas.String,
+    anonymous: Schemas.Boolean,
+    userIdsThatVoted: Schemas.Array(Schemas.String),
+    votes: Schemas.Array(
+      Schemas.Map({
+        userId: Schemas.Optional(Schemas.String),
+        option: optionSchema
+      })
+    ),
+    ...additionalProperties
+  }
+}
+
 export const ActivitiesState = engine.defineComponent('activitiesState', {
   currentActivityType: Schemas.EnumNumber(ActivityType, ActivityType.NONE),
   currentActivityId: Schemas.Optional(Schemas.String)
 })
+
+export type ActivitiesStateType = ComponentState<typeof ActivitiesState>
 
 export function createActivitiesEntity(): Entity {
   const entity = engine.addEntity()
@@ -31,19 +81,59 @@ export function setCurrentActivity(activitiesEntity: Entity, activityId: string,
   mutableActivities.currentActivityType = activityType
 }
 
-export function getCurrentActivityEntity(activitiesEntity: Entity): Entity | undefined {
+export type ActivityResult = { entity: Entity; type: ActivityType; state: BaseActivityStateType }
+
+export function getCurrentActivity(activitiesEntity: Entity): ActivityResult | undefined {
   const activities = ActivitiesState.get(activitiesEntity)
   const activityId = activities.currentActivityId
   const activityType = activities.currentActivityType
+
+  function getActivityWithComponent<T extends ComponentDefinition<any>>(
+    component: T,
+    type: ActivityType
+  ): ActivityResult | undefined {
+    const foundEntity = Array.from(engine.getEntitiesWith(component)).find((it) => it[1].id === activityId)
+    return foundEntity !== undefined ? { entity: foundEntity[0], state: foundEntity[1], type } : undefined
+  }
 
   if (activityId !== undefined) {
     switch (activityType) {
       case ActivityType.NONE:
         return undefined
       case ActivityType.POLL:
-        return Array.from(engine.getEntitiesWith(PollState)).find((it) => it[1].pollId === activityId)?.[0]
+        return getActivityWithComponent(PollState, ActivityType.POLL)
       case ActivityType.SURVEY:
-        return Array.from(engine.getEntitiesWith(SurveyState)).find((it) => it[1].surveyId === activityId)?.[0]
+        return getActivityWithComponent(SurveyState, ActivityType.SURVEY)
     }
+  }
+}
+
+export function listenToActivities(
+  activitiesEntity: Entity,
+  onNewActivity: (activity: ActivityResult | undefined) => void,
+  onInitialActivity: (activity: ActivityResult | undefined) => void = onNewActivity
+): void {
+  ActivitiesState.onChange(activitiesEntity, (state) => {
+    if (state !== undefined) {
+      onNewActivity(getCurrentActivity(activitiesEntity))
+    }
+  })
+
+  const currentState = ActivitiesState.getOrNull(activitiesEntity)
+
+  if (currentState !== null) {
+    onInitialActivity(getCurrentActivity(activitiesEntity))
+  }
+}
+
+export function closeActivity(type: ActivityType, entity: Entity): void {
+  // TODO: Once we implement the "Activity Component" this can be done "polymorphically" without needing to know which activity is
+  switch (type) {
+    case ActivityType.POLL:
+      closePoll(entity)
+      break
+    case ActivityType.SURVEY:
+      closeSurvey(entity)
+      break
   }
 }

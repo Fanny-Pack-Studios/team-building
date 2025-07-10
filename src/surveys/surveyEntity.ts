@@ -1,26 +1,20 @@
 import { engine, type Entity, Schemas } from '@dcl/sdk/ecs'
 import { getPlayer } from '@dcl/sdk/src/players'
-import { generateSurveyId } from '../utils'
+import { type ComponentState, generateSurveyId } from '../utils'
 import { type OptionsQuantity } from './rating'
 import { SurveyIcon } from './surveyIcon'
 import { syncEntity } from '@dcl/sdk/network'
+import { VoteBasedActivityState } from '../activities/activitiesEntity'
 
-export const SurveyState = engine.defineComponent('surveyState', {
-  surveyId: Schemas.String,
-  question: Schemas.String,
-  optionsQty: Schemas.Number,
-  icon: Schemas.EnumString(SurveyIcon, SurveyIcon.STAR),
-  anonymous: Schemas.Boolean,
-  userIdsThatVoted: Schemas.Array(Schemas.String),
-  votes: Schemas.Array(
-    Schemas.Map({
-      userId: Schemas.Optional(Schemas.String),
-      option: Schemas.Number
-    })
-  ),
-  creatorId: Schemas.String,
-  closed: Schemas.Boolean
-})
+export const SurveyState = engine.defineComponent(
+  'surveyState',
+  VoteBasedActivityState(Schemas.Number, {
+    optionsQty: Schemas.Number,
+    icon: Schemas.EnumString(SurveyIcon, SurveyIcon.STAR)
+  })
+)
+
+export type SurveyStateType = ComponentState<typeof SurveyState>
 
 export function createSurveyEntity(
   question: string,
@@ -29,13 +23,13 @@ export function createSurveyEntity(
   anonymous: boolean = false
 ): [string, Entity] {
   const entity = engine.addEntity()
-  const surveyId = generateSurveyId()
+  const id = generateSurveyId()
   const player = getPlayer()
 
   const creatorId = player?.userId
 
   SurveyState.create(entity, {
-    surveyId,
+    id,
     question,
     icon,
     anonymous,
@@ -48,5 +42,9 @@ export function createSurveyEntity(
 
   syncEntity(entity, [SurveyState.componentId])
 
-  return [surveyId, entity]
+  return [id, entity]
+}
+
+export function closeSurvey(surveyEntity: Entity): void {
+  SurveyState.getMutable(surveyEntity).closed = true
 }

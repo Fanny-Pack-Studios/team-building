@@ -23,11 +23,11 @@ export class PollQuestion {
 
         if (pollState.anonymous) {
           // If vote was casted in an anonymous poll in the same session -> changes the vote.
-          if (mutablePoll.pollId === lastVotedOption?.pollId) {
+          if (mutablePoll.id === lastVotedOption?.pollId) {
             const voteIndex = mutablePoll.votes.findIndex((vote) => vote.option === lastVotedOption?.votedOption)
             if (voteIndex >= 0) {
               mutablePoll.votes[voteIndex].option = option
-              lastVotedOption = { pollId: mutablePoll.pollId, votedOption: option }
+              lastVotedOption = { pollId: mutablePoll.id, votedOption: option }
             }
             return
           }
@@ -45,19 +45,19 @@ export class PollQuestion {
           // harder to figure out who voted for which option.
           mutablePoll.userIdsThatVoted.push(userId)
           mutablePoll.votes.push({ userId: undefined, option })
-          lastVotedOption = { pollId: mutablePoll.pollId, votedOption: option }
+          lastVotedOption = { pollId: mutablePoll.id, votedOption: option }
         } else {
           // If vote was casted in a public poll -> changes the vote.
           const existingVoteIndex = mutablePoll.votes.findIndex((vote) => vote.userId === userId)
 
           if (existingVoteIndex >= 0) {
             mutablePoll.votes[existingVoteIndex].option = option
-            lastVotedOption = { pollId: mutablePoll.pollId, votedOption: option }
+            lastVotedOption = { pollId: mutablePoll.id, votedOption: option }
           } else {
             // If they hadn't vote already, a new vote is created.
             mutablePoll.userIdsThatVoted.push(userId)
             mutablePoll.votes.push({ userId, option })
-            lastVotedOption = { pollId: mutablePoll.pollId, votedOption: option }
+            lastVotedOption = { pollId: mutablePoll.id, votedOption: option }
           }
         }
       })

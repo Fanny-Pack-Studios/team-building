@@ -2,7 +2,7 @@ import ReactEcs, { Label, UiEntity } from '@dcl/sdk/react-ecs'
 import { type GameController } from '../controllers/game.controller'
 import { ModalWindow } from '../uis/components/modalWindow'
 import { ModalTitle } from '../uis/components/modalTitle'
-import { getCurrentActivityEntity } from '../activities/activitiesEntity'
+import { getCurrentActivity } from '../activities/activitiesEntity'
 import { SurveyState } from './surveyEntity'
 import { withPlayerInfo, type ComponentState } from '../utils'
 import { type OptionsQuantity, type RatingNumber, RatingSelector } from './rating'
@@ -79,16 +79,16 @@ export class SurveyQuestionUI {
 
   createOrUpdateVote(): void {
     withPlayerInfo((player) => {
-      const currentActivity = getCurrentActivityEntity(this.gameController.activitiesEntity)
+      const currentActivity = getCurrentActivity(this.gameController.activitiesEntity)
 
       if (currentActivity === undefined) {
         console.log('Cannot vote. Current activity is undefined')
         return
       }
 
-      const mutableSurvey = SurveyState.getMutable(currentActivity)
+      const mutableSurvey = SurveyState.getMutable(currentActivity.entity)
 
-      if (this.lastVotedOption !== undefined && this.lastVotedOption.surveyId === mutableSurvey.surveyId) {
+      if (this.lastVotedOption !== undefined && this.lastVotedOption.surveyId === mutableSurvey.id) {
         // TODO change vote
       } else {
         mutableSurvey.userIdsThatVoted.push(player.userId)
@@ -100,12 +100,12 @@ export class SurveyQuestionUI {
   }
 
   getSurveyState(): ComponentState<typeof SurveyState> | null {
-    const currentActivity = getCurrentActivityEntity(this.gameController.activitiesEntity)
+    const currentActivity = getCurrentActivity(this.gameController.activitiesEntity)
 
     if (currentActivity === undefined) {
       return null
     }
 
-    return SurveyState.getOrNull(currentActivity)
+    return SurveyState.getOrNull(currentActivity.entity)
   }
 }

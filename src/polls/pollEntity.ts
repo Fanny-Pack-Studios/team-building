@@ -3,22 +3,14 @@ import { syncEntity } from '@dcl/sdk/network'
 import { generatePollId } from '../utils'
 
 import { getPlayer } from '@dcl/sdk/src/players'
+import { VoteBasedActivityState } from '../activities/activitiesEntity'
 
-export const PollState = engine.defineComponent('pollState', {
-  pollId: Schemas.String,
-  question: Schemas.String,
-  options: Schemas.Array(Schemas.String),
-  anonymous: Schemas.Boolean,
-  userIdsThatVoted: Schemas.Array(Schemas.String),
-  votes: Schemas.Array(
-    Schemas.Map({
-      userId: Schemas.Optional(Schemas.String),
-      option: Schemas.String
-    })
-  ),
-  creatorId: Schemas.String,
-  closed: Schemas.Boolean
-})
+export const PollState = engine.defineComponent(
+  'pollState',
+  VoteBasedActivityState(Schemas.String, {
+    options: Schemas.Array(Schemas.String)
+  })
+)
 
 export const pollRegistry = new Map<string, Entity>()
 export function createPollEntity(
@@ -27,12 +19,12 @@ export function createPollEntity(
   isAnonymous: boolean
 ): { entity: Entity; pollId: string } {
   const pollEntity = engine.addEntity()
-  const pollId = generatePollId()
+  const id = generatePollId()
   const player = getPlayer()
   const creatorId = player?.userId
 
   PollState.create(pollEntity, {
-    pollId,
+    id,
     question,
     options,
     anonymous: isAnonymous,
@@ -40,22 +32,20 @@ export function createPollEntity(
     creatorId,
     closed: false
   })
-  pollRegistry.set(pollId, pollEntity)
+  pollRegistry.set(id, pollEntity)
 
   syncEntity(pollEntity, [PollState.componentId])
 
-  return { entity: pollEntity, pollId }
+  return { entity: pollEntity, pollId: id }
 }
-export function closePoll(pollId: string): boolean {
-  const pollEntity = pollRegistry.get(pollId)
-  if (pollEntity == null) return false
 
+export function closePoll(pollEntity: Entity): boolean {
   const pollState = PollState.get(pollEntity)
   const player = getPlayer()
   const userId = player?.userId
 
   if (userId == null || userId !== pollState.creatorId) {
-    console.log(`User ${userId} is not authorized to close poll ${pollId}`)
+    console.log(`User ${userId} is not authorized to close poll ${pollState.id}`)
     return false
   }
 

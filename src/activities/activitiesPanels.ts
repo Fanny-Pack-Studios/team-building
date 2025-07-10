@@ -16,7 +16,7 @@ import { PollState } from '../polls/pollEntity'
 import { PollQuestion } from '../polls/pollQuestionUi'
 import { SurveyState } from '../surveys/surveyEntity'
 import { SyncEntityEnumId } from '../syncEntities'
-import { ActivitiesState, getCurrentActivityEntity } from './activitiesEntity'
+import { ActivitiesState, getCurrentActivity } from './activitiesEntity'
 
 export class PopupAttendeePanelAndResultsButton {
   public attendeePanelEntity = engine.getEntityOrNullByName('AttendeePanel')
@@ -27,9 +27,7 @@ export class PopupAttendeePanelAndResultsButton {
   constructor(gameController: GameController) {
     this.gameController = gameController
     ActivitiesState.onChange(this.gameController.activitiesEntity, (newState) => {
-      console.log('Activities changed')
       if (newState?.currentActivityId !== undefined) {
-        console.log('New activity detected!')
         this.create()
       }
     })
@@ -84,16 +82,18 @@ export class PopupAttendeePanelAndResultsButton {
   }
 
   runCurrentActivityAsAttendee(): void {
-    const currentActivity = getCurrentActivityEntity(this.gameController.activitiesEntity)
+    const currentActivity = getCurrentActivity(this.gameController.activitiesEntity)
 
     if (currentActivity === undefined) return
 
-    if (PollState.has(currentActivity)) {
-      this.runPollAsAtendee(currentActivity)
+    const { entity } = currentActivity
+
+    if (PollState.has(entity)) {
+      this.runPollAsAtendee(entity)
     }
 
-    if (SurveyState.has(currentActivity)) {
-      this.runSurveyAsAtendee(currentActivity)
+    if (SurveyState.has(entity)) {
+      this.runSurveyAsAtendee(entity)
     }
   }
 
