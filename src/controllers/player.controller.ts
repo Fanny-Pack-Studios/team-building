@@ -1,7 +1,7 @@
 // PlayerManager.ts
 
 import { onEnterScene, onLeaveScene } from '@dcl/sdk/players'
-import { type GameController } from '../controllers/game.controller'
+import { type GameController } from './game.controller'
 import { engine, type Entity, Schemas } from '@dcl/sdk/ecs'
 import { syncEntity } from '@dcl/sdk/network'
 export type Player = {
@@ -15,7 +15,7 @@ export const PlayerStateComponent = engine.defineComponent('PlayerStateComponent
   hostList: Schemas.Array(Schemas.String)
 })
 
-export class PlayerManager {
+export class PlayerController {
   public players = new Map<string, Player>()
   public playerState: Entity = engine.addEntity()
   gameController: GameController

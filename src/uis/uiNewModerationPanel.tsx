@@ -2,7 +2,7 @@ import ReactEcs, { Button, Input, Label, UiEntity } from '@dcl/sdk/react-ecs'
 import { Color4 } from '@dcl/sdk/math'
 import { type GameController } from '../controllers/game.controller'
 import { getScaleFactor } from '../canvas/Canvas'
-import { type Player } from '../players/players'
+import { type Player } from '../controllers/player.controller'
 
 export class NewModerationPanel {
   panelVisible = true
@@ -13,13 +13,13 @@ export class NewModerationPanel {
   gameController: GameController
   constructor(gameController: GameController) {
     this.gameController = gameController
-    this.players = this.gameController.playerManager.getAllPlayers()
+    this.players = this.gameController.playerController.getAllPlayers()
   }
 
   getFilteredPlayers(): Player[] {
-    const allPlayers = this.gameController.playerManager.getAllPlayers()
+    const allPlayers = this.gameController.playerController.getAllPlayers()
     if (this.searchText.trim() === '') return allPlayers
-    return allPlayers.filter((p) => p.name.toLowerCase().includes(this.searchText.toLowerCase()))
+    return allPlayers.filter((p: { name: string }) => p.name.toLowerCase().includes(this.searchText.toLowerCase()))
   }
 
   getTotalPages(): number {
@@ -48,25 +48,25 @@ export class NewModerationPanel {
   banPlayer(player: Player): void {
     console.log(`Banning ${player.name}`)
     player.isBanned = true
-    this.gameController.playerManager.setBan(player.wallet, true)
+    this.gameController.playerController.setBan(player.wallet, true)
   }
 
   unbanPlayer(player: Player): void {
     console.log(`Unbanning ${player.name}`)
     player.isBanned = false
-    this.gameController.playerManager.setBan(player.wallet, false)
+    this.gameController.playerController.setBan(player.wallet, false)
   }
 
   giveHost(player: Player): void {
     console.log(`Giving host to ${player.name}`)
     player.isHost = true
-    this.gameController.playerManager.setHost(player.wallet, true)
+    this.gameController.playerController.setHost(player.wallet, true)
   }
 
   removeHost(player: Player): void {
     console.log(`Removing host from ${player.name}`)
     player.isHost = false
-    this.gameController.playerManager.setHost(player.wallet, false)
+    this.gameController.playerController.setHost(player.wallet, false)
   }
 
   createPlayerCard(player: Player): ReactEcs.JSX.Element {
