@@ -19,10 +19,11 @@ export class PlayerManager {
   public players = new Map<string, Player>()
   public playerState: Entity = engine.addEntity()
   gameController: GameController
+
   constructor(gameController: GameController) {
     this.gameController = gameController
     this.registerEventListeners()
-    PlayerStateComponent.create(this.playerState)
+    PlayerStateComponent.create(this.playerState, { banList: [], hostList: [] })
     syncEntity(this.playerState, [PlayerStateComponent.componentId])
   }
 
@@ -47,11 +48,13 @@ export class PlayerManager {
     }
 
     this.players.set(userId, newPlayer)
+    this.updatePlayerStateLists() // actualizar listas
     console.log(`Player entered: ${name} (${userId})`)
   }
 
   private removePlayer(userId: string): void {
     if (this.players.delete(userId)) {
+      this.updatePlayerStateLists() // actualizar listas
       console.log(`Player left: ${userId}`)
     }
   }
@@ -68,6 +71,7 @@ export class PlayerManager {
     const player = this.players.get(userId)
     if (player != null) {
       player.isBanned = banned
+      this.updatePlayerStateLists() // actualizar listas
     }
   }
 
@@ -75,6 +79,24 @@ export class PlayerManager {
     const player = this.players.get(userId)
     if (player != null) {
       player.isHost = isHost
+      this.updatePlayerStateLists() // actualizar listas
     }
+  }
+
+  private updatePlayerStateLists(): void {
+    const banned = Array.from(this.players.values())
+      .filter((p) => p.isBanned)
+      .map((p) => p.wallet)
+
+    const hosts = Array.from(this.players.values())
+      .filter((p) => p.isHost)
+      .map((p) => p.wallet)
+
+    const component = PlayerStateComponent.getMutableOrNull(this.playerState)
+    if (component === null) return
+
+    component.banList = banned
+    component.hostList = hosts
+    console.log('here', component.banList, component.hostList)
   }
 }

@@ -48,21 +48,25 @@ export class NewModerationPanel {
   banPlayer(player: Player): void {
     console.log(`Banning ${player.name}`)
     player.isBanned = true
+    this.gameController.playerManager.setBan(player.wallet, true)
   }
 
   unbanPlayer(player: Player): void {
     console.log(`Unbanning ${player.name}`)
     player.isBanned = false
+    this.gameController.playerManager.setBan(player.wallet, false)
   }
 
   giveHost(player: Player): void {
     console.log(`Giving host to ${player.name}`)
     player.isHost = true
+    this.gameController.playerManager.setHost(player.wallet, true)
   }
 
   removeHost(player: Player): void {
     console.log(`Removing host from ${player.name}`)
     player.isHost = false
+    this.gameController.playerManager.setHost(player.wallet, false)
   }
 
   createPlayerCard(player: Player): ReactEcs.JSX.Element {
