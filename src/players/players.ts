@@ -2,19 +2,28 @@
 
 import { onEnterScene, onLeaveScene } from '@dcl/sdk/players'
 import { type GameController } from '../controllers/game.controller'
+import { engine, type Entity, Schemas } from '@dcl/sdk/ecs'
+import { syncEntity } from '@dcl/sdk/network'
 export type Player = {
   name: string
   wallet: string
   isBanned: boolean
   isHost: boolean
 }
+export const PlayerStateComponent = engine.defineComponent('PlayerStateComponent', {
+  banList: Schemas.Array(Schemas.String),
+  hostList: Schemas.Array(Schemas.String)
+})
+
 export class PlayerManager {
   public players = new Map<string, Player>()
-
+  public playerState: Entity = engine.addEntity()
   gameController: GameController
   constructor(gameController: GameController) {
     this.gameController = gameController
     this.registerEventListeners()
+    PlayerStateComponent.create(this.playerState)
+    syncEntity(this.playerState, [PlayerStateComponent.componentId])
   }
 
   private registerEventListeners(): void {
