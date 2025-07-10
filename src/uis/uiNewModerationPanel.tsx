@@ -11,12 +11,12 @@ type Player = {
 }
 
 const MOCK_PLAYERS: Player[] = [
-  { name: 'Alice', wallet: '0xabc123', isBanned: false, isHost: true },
-  { name: 'Bob', wallet: '0xdef456', isBanned: true, isHost: false },
-  { name: 'Carol', wallet: '0xghi789', isBanned: false, isHost: false },
-  { name: 'Dave', wallet: '0xjkl012', isBanned: true, isHost: true },
-  { name: 'Eve', wallet: '0xmnq345', isBanned: false, isHost: false },
-  { name: 'Frank', wallet: '0xprx678', isBanned: true, isHost: false },
+  { name: 'Alice', wallet: '0xabc123111111111111111111', isBanned: false, isHost: true },
+  { name: 'Bob', wallet: '0xdef45611111111111111111111', isBanned: true, isHost: false },
+  { name: 'Carol', wallet: '0xabc123111111111111111111', isBanned: false, isHost: false },
+  { name: 'Dave', wallet: '0xabc123111111111111111111', isBanned: true, isHost: true },
+  { name: 'Eve', wallet: '0xabc123111111111111111111', isBanned: false, isHost: false },
+  { name: 'Frank', wallet: '0xabc123111111111111111111', isBanned: true, isHost: false },
   { name: 'Grace', wallet: '0xstu901', isBanned: false, isHost: false },
   { name: 'Hank', wallet: '0xvwx234', isBanned: true, isHost: false },
   { name: 'Ivy', wallet: '0xyza567', isBanned: false, isHost: true }
@@ -97,12 +97,118 @@ export class NewModerationPanel {
         }}
         uiBackground={{ color: Color4.White() }}
       >
-        <Label
-          value={`${player.name}`}
-          fontSize={12 * getScaleFactor()}
-          color={Color4.Black()}
-          uiTransform={{ margin: '2px' }}
-        />
+        {/* ROW 1: Name + Buttons on same line */}
+        <UiEntity
+          uiTransform={{
+            flexDirection: 'row',
+            width: '100%',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            margin: '2px'
+          }}
+        >
+          {/* Name label on the left */}
+          <Label
+            value={`${player.name}`}
+            fontSize={12 * getScaleFactor()}
+            color={Color4.Black()}
+            uiTransform={{ margin: '2px' }}
+          />
+
+          {/* Buttons on the right */}
+          <UiEntity
+            uiTransform={{
+              flexDirection: 'row',
+              alignItems: 'center'
+            }}
+          >
+            {/* BAN / UNBAN custom button */}
+            <UiEntity
+              uiTransform={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                width: 100 * getScaleFactor(),
+                height: 24 * getScaleFactor(),
+                margin: '2px',
+                padding: '2px',
+                justifyContent: 'flex-start', // <-- alineación izquierda
+                borderRadius: 4
+              }}
+              uiBackground={{
+                color: Color4.White()
+              }}
+              onMouseDown={() => {
+                player.isBanned ? this.unbanPlayer(player) : this.banPlayer(player)
+              }}
+            >
+              {/* ICON */}
+              <UiEntity
+                uiTransform={{
+                  width: 15 * getScaleFactor(),
+                  height: 15 * getScaleFactor(),
+                  margin: { right: '5px' }
+                }}
+                uiBackground={{
+                  texture: {
+                    src: player.isBanned
+                      ? 'images/moderatormenu/ban_activated.png'
+                      : 'images/moderatormenu/ban_desactivated.png'
+                  }
+                }}
+              />
+              {/* TEXT */}
+              <Label
+                value={player.isBanned ? 'Unban' : 'Ban'}
+                fontSize={10 * getScaleFactor()}
+                color={Color4.Black()}
+              />
+            </UiEntity>
+
+            {/* MAKE / REMOVE HOST custom button */}
+            <UiEntity
+              uiTransform={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                width: 100 * getScaleFactor(),
+                height: 24 * getScaleFactor(),
+                margin: '2px',
+                padding: '2px',
+                justifyContent: 'flex-start', // <-- alineación izquierda
+                borderRadius: 4
+              }}
+              uiBackground={{
+                color: Color4.White()
+              }}
+              onMouseDown={() => {
+                player.isHost ? this.removeHost(player) : this.giveHost(player)
+              }}
+            >
+              {/* ICON */}
+              <UiEntity
+                uiTransform={{
+                  width: 15 * getScaleFactor(),
+                  height: 15 * getScaleFactor(),
+                  margin: { right: '5px' }
+                }}
+                uiBackground={{
+                  texture: {
+                    src: player.isHost
+                      ? 'images/moderatormenu/crown_active.png'
+                      : 'images/moderatormenu/crown_desactivated.png'
+                  }
+                }}
+              />
+              {/* TEXT */}
+              <Label
+                value={player.isHost ? 'Remove Host' : 'Make Host'}
+                fontSize={10 * getScaleFactor()}
+                color={Color4.Black()}
+              />
+            </UiEntity>
+          </UiEntity>
+        </UiEntity>
+
+        {/* ROW 2: Wallet below */}
         <Label
           value={`Wallet: ${player.wallet}`}
           fontSize={10 * getScaleFactor()}
@@ -110,10 +216,11 @@ export class NewModerationPanel {
           uiTransform={{ margin: '2px' }}
         />
 
+        {/* ROW 3: Status labels below */}
         <UiEntity
           uiTransform={{
             flexDirection: 'row',
-            justifyContent: 'space-between',
+            justifyContent: 'flex-start',
             margin: '2px'
           }}
         >
@@ -121,50 +228,18 @@ export class NewModerationPanel {
             value={player.isBanned ? 'BANNED' : 'ACTIVE'}
             fontSize={9 * getScaleFactor()}
             color={Color4.White()}
-            uiBackground={{ color: player.isBanned ? Color4.Red() : Color4.Green() }}
+            uiBackground={{
+              color: player.isBanned ? Color4.Red() : Color4.fromHexString('#06B512')
+            }}
             uiTransform={{ margin: { right: '5px' } }}
           />
           <Label
             value={player.isHost ? 'HOST' : ''}
             fontSize={9 * getScaleFactor()}
             color={Color4.White()}
-            uiBackground={{ color: player.isHost ? Color4.Yellow() : Color4.Clear() }}
-          />
-        </UiEntity>
-
-        <UiEntity
-          uiTransform={{
-            width: '100%', // ocupa todo el ancho de la card
-            flexDirection: 'row',
-            justifyContent: 'flex-end', // empuja a la derecha
-            alignItems: 'center',
-            margin: '2px'
-          }}
-        >
-          <Button
-            value={player.isBanned ? 'Unban' : 'Ban'}
-            variant="secondary"
-            uiTransform={{
-              width: 100 * getScaleFactor(),
-              height: 24 * getScaleFactor()
+            uiBackground={{
+              color: player.isHost ? Color4.fromHexString('#E2C207') : Color4.Clear()
             }}
-            onMouseDown={() => {
-              player.isBanned ? this.unbanPlayer(player) : this.banPlayer(player)
-            }}
-            uiBackground={{ color: Color4.Clear() }}
-          />
-
-          <Button
-            value={player.isHost ? 'Remove Host' : 'Make Host'}
-            variant="secondary"
-            uiTransform={{
-              width: 100 * getScaleFactor(),
-              height: 24 * getScaleFactor()
-            }}
-            onMouseDown={() => {
-              player.isHost ? this.removeHost(player) : this.giveHost(player)
-            }}
-            uiBackground={{ color: Color4.Clear() }}
           />
         </UiEntity>
       </UiEntity>
