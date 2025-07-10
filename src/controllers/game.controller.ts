@@ -26,12 +26,14 @@ import { UIController } from './ui.controller'
 import { WorkInProgressUI } from '../uis/uiWorkInProgress'
 import { CreateSurveyUI } from '../uis/uiCreateSurvey'
 import { NewModerationPanel } from '../uis/uiNewModerationPanel'
+import { PlayerManager } from '../players/players'
 
 export class GameController {
   public uiController: UIController
   public hostsController: HostsController
   public popupAtendeePanelAndResultbutton: PopupAttendeePanelAndResultsButton
   public playersOnScene: PlayersOnScene
+  public playerManager: PlayerManager
 
   // UIS
 
@@ -82,6 +84,7 @@ export class GameController {
     this.choosePollUI = new ChoosePollUI(this)
     this.createZonePollUI = new ZonePollUI(this)
     this.zonePollQuestionUI = new ZonePollQuestionUI(this)
+    this.playerManager = new PlayerManager(this)
     this.newModerationPanel = new NewModerationPanel(this)
 
     this.zone1 = null

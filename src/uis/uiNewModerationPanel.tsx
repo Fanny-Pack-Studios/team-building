@@ -2,41 +2,24 @@ import ReactEcs, { Button, Input, Label, UiEntity } from '@dcl/sdk/react-ecs'
 import { Color4 } from '@dcl/sdk/math'
 import { type GameController } from '../controllers/game.controller'
 import { getScaleFactor } from '../canvas/Canvas'
-
-type Player = {
-  name: string
-  wallet: string
-  isBanned: boolean
-  isHost: boolean
-}
-
-const MOCK_PLAYERS: Player[] = [
-  { name: 'Alice', wallet: '0xabc1231111111111111511111', isBanned: false, isHost: true },
-  { name: 'Bob', wallet: '0xdef456111111111111111311111', isBanned: true, isHost: false },
-  { name: 'Carol', wallet: '0xabc1231111111111141111111', isBanned: false, isHost: false },
-  { name: 'Dave', wallet: '0xabc123111111111111321111111', isBanned: true, isHost: true },
-  { name: 'Eve', wallet: '0xabc1231111111111111111111', isBanned: false, isHost: false },
-  { name: 'Frank', wallet: '0xabc123111111111111231111111', isBanned: true, isHost: false },
-  { name: 'Grace', wallet: '0xstu901', isBanned: false, isHost: false },
-  { name: 'Hank', wallet: '0xvwx234', isBanned: true, isHost: false },
-  { name: 'Ivy', wallet: '0xyza567', isBanned: false, isHost: true }
-]
+import { type Player } from '../players/players'
 
 export class NewModerationPanel {
   panelVisible = true
   searchText = ''
-  players: Player[] = MOCK_PLAYERS
-
+  players: Player[] = []
   readonly itemsPerPage = 4
   currentPage = 0
   gameController: GameController
   constructor(gameController: GameController) {
     this.gameController = gameController
+    this.players = this.gameController.playerManager.getAllPlayers()
   }
 
   getFilteredPlayers(): Player[] {
-    if (this.searchText.trim() === '') return this.players
-    return this.players.filter((p) => p.name.toLowerCase().includes(this.searchText.toLowerCase()))
+    const allPlayers = this.gameController.playerManager.getAllPlayers()
+    if (this.searchText.trim() === '') return allPlayers
+    return allPlayers.filter((p) => p.name.toLowerCase().includes(this.searchText.toLowerCase()))
   }
 
   getTotalPages(): number {
@@ -270,12 +253,30 @@ export class NewModerationPanel {
             alignItems: 'center',
             justifyContent: 'flex-start',
             padding: '10px',
-            borderRadius: 15
+            borderRadius: 15,
+            positionType: 'relative' // permite hijos absolutos
           }}
           uiBackground={{
             color: Color4.fromInts(40, 40, 40, 200)
           }}
         >
+          {/* Exit button arriba derecha */}
+          <UiEntity
+            uiTransform={{
+              width: 17 * getScaleFactor(),
+              height: 17 * getScaleFactor(),
+              positionType: 'absolute',
+              position: { right: '14px', top: '10px' }
+            }}
+            uiBackground={{
+              textureMode: 'stretch',
+              texture: { src: 'images/moderatormenu/exit_white.png' }
+            }}
+            onMouseDown={() => {
+              this.panelVisible = false
+            }}
+          />
+
           <Label
             value="Moderation Panel"
             fontSize={28 * getScaleFactor()}
