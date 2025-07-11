@@ -1,16 +1,8 @@
-import {
-  type ComponentDefinition,
-  engine,
-  type Entity,
-  type ISchema,
-  type MapResult,
-  Schemas,
-  type Spec
-} from '@dcl/sdk/ecs'
+import { type ComponentDefinition, engine, type Entity, Schemas } from '@dcl/sdk/ecs'
 import { syncEntity } from '@dcl/sdk/network'
-import { SyncEntityEnumId } from '../syncEntities'
 import { closePoll, PollState } from '../polls/pollEntity'
 import { closeSurvey, SurveyState } from '../surveys/surveyEntity'
+import { SyncEntityEnumId } from '../syncEntities'
 import { type ComponentState } from '../utils'
 
 export enum ActivityType {
@@ -19,43 +11,10 @@ export enum ActivityType {
   SURVEY
 }
 
-export const BaseActivityState = {
-  id: Schemas.String,
-  creatorId: Schemas.String,
-  closed: Schemas.Boolean
-}
-
-export type BaseActivityStateType = MapResult<typeof BaseActivityState>
-
-export function VoteBasedActivityState<OptionType, T extends Spec>(
-  optionSchema: ISchema<OptionType>,
-  additionalProperties: T
-): typeof BaseActivityState & {
-  question: ISchema<string>
-  anonymous: ISchema<boolean>
-  userIdsThatVoted: ISchema<string[]>
-  votes: ISchema<
-    Array<
-      MapResult<{
-        userId: ISchema<string | undefined>
-        option: ISchema<OptionType>
-      }>
-    >
-  >
-} & T {
-  return {
-    ...BaseActivityState,
-    question: Schemas.String,
-    anonymous: Schemas.Boolean,
-    userIdsThatVoted: Schemas.Array(Schemas.String),
-    votes: Schemas.Array(
-      Schemas.Map({
-        userId: Schemas.Optional(Schemas.String),
-        option: optionSchema
-      })
-    ),
-    ...additionalProperties
-  }
+export type BaseActivityStateType = {
+  id: string
+  creatorId: string
+  closed: boolean
 }
 
 export const ActivitiesState = engine.defineComponent('activitiesState', {

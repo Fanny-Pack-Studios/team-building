@@ -17,6 +17,7 @@ export class SurveyQuestionUI {
   constructor(private readonly gameController: GameController) {}
 
   createUi(): ReactEcs.JSX.Element | null {
+    if (!this.isVisible) return null
     const surveyState = getSurveyState(this.gameController.activitiesEntity)
     if (surveyState === null) return null
 

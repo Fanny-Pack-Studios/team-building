@@ -18,7 +18,7 @@ export class CreateSurveyUI {
   private optionsQty: number = 5
   private questionTitle: string = ''
 
-  public isVisible: boolean = true
+  public isVisible: boolean = false
   constructor(private readonly gameController: GameController) {}
 
   createUi(): ReactEcs.JSX.Element | null {

@@ -3,14 +3,22 @@ import { syncEntity } from '@dcl/sdk/network'
 import { generatePollId } from '../utils'
 
 import { getPlayer } from '@dcl/sdk/src/players'
-import { VoteBasedActivityState } from '../activities/activitiesEntity'
 
-export const PollState = engine.defineComponent(
-  'pollState',
-  VoteBasedActivityState(Schemas.String, {
-    options: Schemas.Array(Schemas.String)
-  })
-)
+export const PollState = engine.defineComponent('pollState', {
+  id: Schemas.String,
+  question: Schemas.String,
+  options: Schemas.Array(Schemas.String),
+  anonymous: Schemas.Boolean,
+  userIdsThatVoted: Schemas.Array(Schemas.String),
+  votes: Schemas.Array(
+    Schemas.Map({
+      userId: Schemas.Optional(Schemas.String),
+      option: Schemas.String
+    })
+  ),
+  creatorId: Schemas.String,
+  closed: Schemas.Boolean
+})
 
 export const pollRegistry = new Map<string, Entity>()
 export function createPollEntity(
