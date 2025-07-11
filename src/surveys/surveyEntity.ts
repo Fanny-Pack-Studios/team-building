@@ -1,10 +1,10 @@
 import { engine, type Entity, Schemas } from '@dcl/sdk/ecs'
+import { syncEntity } from '@dcl/sdk/network'
 import { getPlayer } from '@dcl/sdk/src/players'
+import { getCurrentActivity, VoteBasedActivityState } from '../activities/activitiesEntity'
 import { type ComponentState, generateSurveyId } from '../utils'
 import { type OptionsQuantity } from './rating'
 import { SurveyIcon } from './surveyIcon'
-import { syncEntity } from '@dcl/sdk/network'
-import { VoteBasedActivityState } from '../activities/activitiesEntity'
 
 export const SurveyState = engine.defineComponent(
   'surveyState',
@@ -47,4 +47,14 @@ export function createSurveyEntity(
 
 export function closeSurvey(surveyEntity: Entity): void {
   SurveyState.getMutable(surveyEntity).closed = true
+}
+
+export function getSurveyState(activitiesEntity: Entity): SurveyStateType | null {
+  const currentActivity = getCurrentActivity(activitiesEntity)
+
+  if (currentActivity === undefined) {
+    return null
+  }
+
+  return SurveyState.getOrNull(currentActivity.entity)
 }

@@ -11,8 +11,8 @@ import { CreatePollUI } from '../uis/uiCreatePoll'
 import { ZonePollUI } from '../uis/uiCreateZonePoll'
 import { KickUI } from '../uis/uiKick'
 import { OptionsUI } from '../uis/uiOptions'
+import { ResultsUI as PollResultsUI } from '../uis/uiPollResults'
 import { RemoveHostModal } from '../uis/uiRemoveHost'
-import { ResultsUI } from '../uis/uiResults'
 import { StageUI } from '../uis/uiStage'
 import { TimerUI } from '../uis/uiTimer'
 import { ZonePollQuestionUI } from '../uis/uiZonePollQuestion'
@@ -26,6 +26,7 @@ import { MainMenuUi } from '../uis/ui.mainMenu'
 import { CreateSurveyUI } from '../uis/uiCreateSurvey'
 import { ModerationPanel } from '../uis/uiModerationPanel'
 import { ModeratorIconUI } from '../uis/uiModeratorIcon'
+import { SurveyResultsUI } from '../uis/uiSurveyResults'
 import { WorkInProgressUI } from '../uis/uiWorkInProgress'
 import { HostsController } from './hosts.controller'
 import { PlayerController } from './player.controller'
@@ -49,7 +50,8 @@ export class GameController {
   public createPollUI: CreatePollUI
   public createOptionUI: OptionsUI
   public createSurveyUI: CreateSurveyUI
-  public resultsUI: ResultsUI
+  public surveyResultsUI: SurveyResultsUI
+  public pollResultsUI: PollResultsUI
   public timerUI: TimerUI
   public closePollUi: CloseActivityUI
   public removeHostUI: RemoveHostModal
@@ -84,7 +86,8 @@ export class GameController {
     this.createOptionUI = new OptionsUI(this)
     this.createSurveyUI = new CreateSurveyUI(this)
     this.surveyQuestionUI = new SurveyQuestionUI(this)
-    this.resultsUI = new ResultsUI(this)
+    this.pollResultsUI = new PollResultsUI(this)
+    this.surveyResultsUI = new SurveyResultsUI(this)
     this.timerUI = new TimerUI(this)
     this.closePollUi = new CloseActivityUI(this)
     this.removeHostUI = new RemoveHostModal(this)

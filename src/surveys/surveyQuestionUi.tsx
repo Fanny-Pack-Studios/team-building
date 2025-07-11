@@ -1,12 +1,12 @@
 import ReactEcs, { Label, UiEntity } from '@dcl/sdk/react-ecs'
-import { type GameController } from '../controllers/game.controller'
-import { ModalWindow } from '../uis/components/modalWindow'
-import { ModalTitle } from '../uis/components/modalTitle'
 import { getCurrentActivity } from '../activities/activitiesEntity'
-import { SurveyState } from './surveyEntity'
-import { withPlayerInfo, type ComponentState } from '../utils'
-import { type OptionsQuantity, type RatingNumber, RatingSelector } from './rating'
+import { type GameController } from '../controllers/game.controller'
 import { ModalButton } from '../uis/components/buttons'
+import { ModalTitle } from '../uis/components/modalTitle'
+import { ModalWindow } from '../uis/components/modalWindow'
+import { withPlayerInfo } from '../utils'
+import { RatingSelector, type OptionsQuantity, type RatingNumber } from './rating'
+import { getSurveyState, SurveyState } from './surveyEntity'
 
 export class SurveyQuestionUI {
   public isVisible: boolean = false
@@ -17,7 +17,7 @@ export class SurveyQuestionUI {
   constructor(private readonly gameController: GameController) {}
 
   createUi(): ReactEcs.JSX.Element | null {
-    const surveyState = this.getSurveyState()
+    const surveyState = getSurveyState(this.gameController.activitiesEntity)
     if (surveyState === null) return null
 
     if (surveyState.closed)
@@ -27,6 +27,7 @@ export class SurveyQuestionUI {
           onClosePressed={() => {
             this.isVisible = false
           }}
+          uiTransform={{ justifyContent: 'center', width: '30%', height: '40%' }}
         >
           <ModalTitle value="Survey Closed"></ModalTitle>
           <ModalButton text="OK" onMouseDown={() => (this.isVisible = false)}></ModalButton>
@@ -97,15 +98,5 @@ export class SurveyQuestionUI {
     })
 
     this.isVisible = false
-  }
-
-  getSurveyState(): ComponentState<typeof SurveyState> | null {
-    const currentActivity = getCurrentActivity(this.gameController.activitiesEntity)
-
-    if (currentActivity === undefined) {
-      return null
-    }
-
-    return SurveyState.getOrNull(currentActivity.entity)
   }
 }

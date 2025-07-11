@@ -137,3 +137,11 @@ export const mainTheme: UiTheme = factorScaled({
   })),
   inputBackgroundColor: { color: Color4.fromHexString('#E03A4C') }
 })
+
+export const SurveyResultColors: Color4[] = [
+  Color4.fromHexString('#FFB95BFF'),
+  Color4.fromHexString('#FFA35AFF'),
+  Color4.fromHexString('#FF7458FF'),
+  Color4.fromHexString('#FF5857FF'),
+  Color4.fromHexString('#FF3155FF')
+]

@@ -35,8 +35,8 @@ export function ModalWindow(
     {
       uiTransform: {
         flexDirection: 'column',
-        width: '33vw',
-        height: '80vh',
+        width: '30%',
+        height: '65%',
         padding: '2.5vw 4vw'
       } satisfies UiTransformProps,
       uiBackground: {

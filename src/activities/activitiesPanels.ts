@@ -16,7 +16,7 @@ import { PollState } from '../polls/pollEntity'
 import { PollQuestion } from '../polls/pollQuestionUi'
 import { SurveyState } from '../surveys/surveyEntity'
 import { SyncEntityEnumId } from '../syncEntities'
-import { ActivitiesState, getCurrentActivity } from './activitiesEntity'
+import { ActivitiesState, ActivityType, getCurrentActivity } from './activitiesEntity'
 
 export class PopupAttendeePanelAndResultsButton {
   public attendeePanelEntity = engine.getEntityOrNullByName('AttendeePanel')
@@ -98,13 +98,6 @@ export class PopupAttendeePanelAndResultsButton {
   }
 
   runSurveyAsAtendee(surveyEntity: Entity): void {
-    const surveyState = SurveyState.get(surveyEntity)
-
-    if (surveyState.closed) {
-      console.log('Survey is closed')
-      return
-    }
-
     this.gameController.surveyQuestionUI.isVisible = true
   }
 
@@ -146,12 +139,25 @@ export class PopupAttendeePanelAndResultsButton {
   }
 
   showResultsFromCurrentActivity(): void {
-    const allPollEntities = Array.from(engine.getEntitiesWith(PollState))
-    if (allPollEntities.length <= 0) return
+    const currentActivity = getCurrentActivity(this.gameController.activitiesEntity)
+    if (currentActivity !== undefined) {
+      switch (currentActivity.type) {
+        case ActivityType.POLL:
+          this.showPollResults(currentActivity.entity)
+          break
+        case ActivityType.SURVEY:
+          this.showSurveyResults(currentActivity.entity)
+          break
+      }
+    }
+  }
 
-    const lastOpenedPoll = allPollEntities[allPollEntities.length - 1]
-    const entity = lastOpenedPoll?.[0]
-    const pollState = PollState.getOrNull(entity)
+  showSurveyResults(entity: Entity): void {
+    this.gameController.surveyResultsUI.isVisible = true
+  }
+
+  showPollResults(pollEntity: Entity): void {
+    const pollState = PollState.getOrNull(pollEntity)
 
     if (pollState == null) {
       console.log('No PollState found for last entity.')
@@ -171,13 +177,13 @@ export class PopupAttendeePanelAndResultsButton {
       return { option, count, percentage }
     })
 
-    this.gameController.resultsUI.setData({
+    this.gameController.pollResultsUI.setData({
       question: pollState.question,
       anonymous: pollState.anonymous,
       results,
       votes: pollState.votes.map((vote) => ({ option: vote.option, userId: vote.userId }))
     })
 
-    this.gameController.resultsUI.openUI()
+    this.gameController.pollResultsUI.openUI()
   }
 }

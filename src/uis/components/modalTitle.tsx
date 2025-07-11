@@ -8,7 +8,8 @@ export function ModalTitle(props: UiLabelProps & EntityPropTypes): ReactEcs.JSX.
     {
       uiTransform: {
         width: '100%',
-        height: '3vw'
+        height: '3vw',
+        justifyContent: 'center'
       },
       font: 'sans-serif',
       color: Color4.White(),
