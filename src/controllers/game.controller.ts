@@ -23,10 +23,10 @@ import { HostsController } from './hosts.controller'
 import { UIController } from './ui.controller'
 import { WorkInProgressUI } from '../uis/uiWorkInProgress'
 import { CreateSurveyUI } from '../uis/uiCreateSurvey'
-import { NewModerationPanel } from '../uis/uiNewModerationPanel'
 import { PlayerController } from './player.controller'
 import { Jail } from '../jail/jail'
 import { ModeratorIconUI } from '../uis/uiModeratorIcon'
+import { ModerationPanel } from '../uis/uiModerationPanel'
 
 export class GameController {
   public uiController: UIController
@@ -53,7 +53,7 @@ export class GameController {
   public choosePollUI: ChoosePollUI
   public createZonePollUI: ZonePollUI
   public zonePollQuestionUI: ZonePollQuestionUI
-  public newModerationPanel: NewModerationPanel
+  public newModerationPanel: ModerationPanel
 
   // Zones
   public zone1: OptionZone | null
@@ -85,7 +85,7 @@ export class GameController {
     this.createZonePollUI = new ZonePollUI(this)
     this.zonePollQuestionUI = new ZonePollQuestionUI(this)
     this.playerController = new PlayerController(this)
-    this.newModerationPanel = new NewModerationPanel(this)
+    this.newModerationPanel = new ModerationPanel(this)
 
     this.zone1 = null
     this.zone2 = null

@@ -4,7 +4,7 @@ import { type GameController } from '../controllers/game.controller'
 import { getScaleFactor } from '../canvas/Canvas'
 import { type Player } from '../controllers/player.controller'
 
-export class NewModerationPanel {
+export class ModerationPanel {
   panelVisible = false
   searchText = ''
   players: Player[] = []
