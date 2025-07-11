@@ -64,6 +64,16 @@ export class PlayerController {
   }
 
   getAllPlayers(): Player[] {
+    const state = PlayerStateComponent.get(this.playerState)
+    const bannedSet = new Set(state.banList)
+    const hostSet = new Set(state.hostList)
+
+    // Actualizo flags en memoria en cada consulta
+    for (const player of this.players.values()) {
+      player.isBanned = bannedSet.has(player.wallet)
+      player.isHost = hostSet.has(player.wallet)
+    }
+
     return Array.from(this.players.values())
   }
 
