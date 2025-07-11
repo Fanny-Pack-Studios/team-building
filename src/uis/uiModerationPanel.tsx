@@ -47,33 +47,32 @@ export class ModerationPanel {
 
   banPlayer(player: Player): void {
     console.log(`Banning ${player.name}`)
-    player.isBanned = true
     this.gameController.playerController.setBan(player.wallet, true)
     this.gameController.kickUI.addPlayerToBanList(player.wallet)
   }
 
   unbanPlayer(player: Player): void {
     console.log(`Unbanning ${player.name}`)
-    player.isBanned = false
     this.gameController.playerController.setBan(player.wallet, false)
     this.gameController.kickUI.removePlayerFromBanList(player.wallet)
   }
 
   giveHost(player: Player): void {
     console.log(`Giving host to ${player.name}`)
-    player.isHost = true
     this.gameController.playerController.setHost(player.wallet, true)
     this.gameController.stageUI.addAsHost(player.wallet)
   }
 
   removeHost(player: Player): void {
     console.log(`Removing host from ${player.name}`)
-    player.isHost = false
     this.gameController.playerController.setHost(player.wallet, false)
     this.gameController.hostsController.removeHost(player.wallet)
   }
 
   createPlayerCard(player: Player): ReactEcs.JSX.Element {
+    const isBanned = this.gameController.playerController.isPlayerBanned(player.wallet)
+    const isHost = this.gameController.playerController.isPlayerHost(player.wallet)
+
     return (
       <UiEntity
         key={player.wallet}
@@ -98,7 +97,6 @@ export class ModerationPanel {
             margin: '2px'
           }}
         >
-          {/* Name label on the left */}
           <Label
             value={`${player.name}`}
             fontSize={12 * getScaleFactor()}
@@ -106,14 +104,13 @@ export class ModerationPanel {
             uiTransform={{ margin: '2px' }}
           />
 
-          {/* Buttons on the right */}
           <UiEntity
             uiTransform={{
               flexDirection: 'row',
               alignItems: 'center'
             }}
           >
-            {/* BAN / UNBAN custom button */}
+            {/* BAN / UNBAN button */}
             <UiEntity
               uiTransform={{
                 flexDirection: 'row',
@@ -122,17 +119,16 @@ export class ModerationPanel {
                 height: 24 * getScaleFactor(),
                 margin: '2px',
                 padding: '2px',
-                justifyContent: 'flex-start', // <-- alineación izquierda
+                justifyContent: 'flex-start',
                 borderRadius: 4
               }}
               uiBackground={{
                 color: Color4.White()
               }}
               onMouseDown={() => {
-                player.isBanned ? this.unbanPlayer(player) : this.banPlayer(player)
+                isBanned ? this.unbanPlayer(player) : this.banPlayer(player)
               }}
             >
-              {/* ICON */}
               <UiEntity
                 uiTransform={{
                   width: 15 * getScaleFactor(),
@@ -141,21 +137,16 @@ export class ModerationPanel {
                 }}
                 uiBackground={{
                   texture: {
-                    src: player.isBanned
+                    src: isBanned
                       ? 'images/moderatormenu/ban_activated.png'
                       : 'images/moderatormenu/ban_desactivated.png'
                   }
                 }}
               />
-              {/* TEXT */}
-              <Label
-                value={player.isBanned ? 'Unban' : 'Ban'}
-                fontSize={10 * getScaleFactor()}
-                color={Color4.Black()}
-              />
+              <Label value={isBanned ? 'Unban' : 'Ban'} fontSize={10 * getScaleFactor()} color={Color4.Black()} />
             </UiEntity>
 
-            {/* MAKE / REMOVE HOST custom button */}
+            {/* MAKE / REMOVE HOST button */}
             <UiEntity
               uiTransform={{
                 flexDirection: 'row',
@@ -164,17 +155,16 @@ export class ModerationPanel {
                 height: 24 * getScaleFactor(),
                 margin: '2px',
                 padding: '2px',
-                justifyContent: 'flex-start', // <-- alineación izquierda
+                justifyContent: 'flex-start',
                 borderRadius: 4
               }}
               uiBackground={{
                 color: Color4.White()
               }}
               onMouseDown={() => {
-                player.isHost ? this.removeHost(player) : this.giveHost(player)
+                isHost ? this.removeHost(player) : this.giveHost(player)
               }}
             >
-              {/* ICON */}
               <UiEntity
                 uiTransform={{
                   width: 15 * getScaleFactor(),
@@ -183,15 +173,14 @@ export class ModerationPanel {
                 }}
                 uiBackground={{
                   texture: {
-                    src: player.isHost
+                    src: isHost
                       ? 'images/moderatormenu/crown_active.png'
                       : 'images/moderatormenu/crown_desactivated.png'
                   }
                 }}
               />
-              {/* TEXT */}
               <Label
-                value={player.isHost ? 'Remove Host' : 'Make Host'}
+                value={isHost ? 'Remove Host' : 'Make Host'}
                 fontSize={10 * getScaleFactor()}
                 color={Color4.Black()}
               />
@@ -216,20 +205,20 @@ export class ModerationPanel {
           }}
         >
           <Label
-            value={player.isBanned ? 'BANNED' : 'ACTIVE'}
+            value={isBanned ? 'BANNED' : 'ACTIVE'}
             fontSize={9 * getScaleFactor()}
             color={Color4.White()}
             uiBackground={{
-              color: player.isBanned ? Color4.Red() : Color4.fromHexString('#06B512')
+              color: isBanned ? Color4.Red() : Color4.fromHexString('#06B512')
             }}
             uiTransform={{ margin: { right: '5px' } }}
           />
           <Label
-            value={player.isHost ? 'HOST' : ''}
+            value={isHost ? 'HOST' : ''}
             fontSize={9 * getScaleFactor()}
             color={Color4.White()}
             uiBackground={{
-              color: player.isHost ? Color4.fromHexString('#E2C207') : Color4.Clear()
+              color: isHost ? Color4.fromHexString('#E2C207') : Color4.Clear()
             }}
           />
         </UiEntity>

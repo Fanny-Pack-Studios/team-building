@@ -5,12 +5,12 @@ import { type GameController } from './game.controller'
 import { engine, type Entity, Schemas } from '@dcl/sdk/ecs'
 import { syncEntity } from '@dcl/sdk/network'
 import { SyncEntityEnumId } from '../syncEntities'
+
 export type Player = {
   name: string
   wallet: string
-  isBanned: boolean
-  isHost: boolean
 }
+
 export const PlayerStateComponent = engine.defineComponent('PlayerStateComponent', {
   banList: Schemas.Array(Schemas.String),
   hostList: Schemas.Array(Schemas.String)
@@ -20,6 +20,7 @@ export class PlayerController {
   public players = new Map<string, Player>()
   public playerState: Entity = engine.addEntity()
   gameController: GameController
+
   constructor(gameController: GameController) {
     this.gameController = gameController
     this.registerEventListeners()
@@ -42,19 +43,17 @@ export class PlayerController {
 
     const newPlayer: Player = {
       name,
-      wallet: userId,
-      isBanned: false,
-      isHost: false
+      wallet: userId
     }
 
     this.players.set(userId, newPlayer)
-    this.updatePlayerStateLists() // actualizar listas
     console.log(`Player entered: ${name} (${userId})`)
   }
 
   private removePlayer(userId: string): void {
     if (this.players.delete(userId)) {
-      this.updatePlayerStateLists() // actualizar listas
+      this.removeFromBanList(userId)
+      this.removeFromHostList(userId)
       console.log(`Player left: ${userId}`)
     }
   }
@@ -64,49 +63,66 @@ export class PlayerController {
   }
 
   getAllPlayers(): Player[] {
-    const state = PlayerStateComponent.get(this.playerState)
-    const bannedSet = new Set(state.banList)
-    const hostSet = new Set(state.hostList)
-
-    // Actualizo flags en memoria en cada consulta
-    for (const player of this.players.values()) {
-      player.isBanned = bannedSet.has(player.wallet)
-      player.isHost = hostSet.has(player.wallet)
-    }
-
     return Array.from(this.players.values())
   }
 
+  // === Ban/Host list operations ===
+
+  isPlayerBanned(userId: string): boolean {
+    const state = PlayerStateComponent.get(this.playerState)
+    return state.banList.includes(userId)
+  }
+
+  isPlayerHost(userId: string): boolean {
+    const state = PlayerStateComponent.get(this.playerState)
+    return state.hostList.includes(userId)
+  }
+
   setBan(userId: string, banned: boolean): void {
-    const player = this.players.get(userId)
-    if (player != null) {
-      player.isBanned = banned
-      this.updatePlayerStateLists() // actualizar listas
+    if (banned) {
+      this.addToBanList(userId)
+    } else {
+      this.removeFromBanList(userId)
     }
   }
 
   setHost(userId: string, isHost: boolean): void {
-    const player = this.players.get(userId)
-    if (player != null) {
-      player.isHost = isHost
-      this.updatePlayerStateLists() // actualizar listas
+    if (isHost) {
+      this.addToHostList(userId)
+    } else {
+      this.removeFromHostList(userId)
     }
   }
 
-  private updatePlayerStateLists(): void {
-    const banned = Array.from(this.players.values())
-      .filter((p) => p.isBanned)
-      .map((p) => p.wallet)
-
-    const hosts = Array.from(this.players.values())
-      .filter((p) => p.isHost)
-      .map((p) => p.wallet)
-
+  private addToBanList(userId: string): void {
     const component = PlayerStateComponent.getMutableOrNull(this.playerState)
     if (component === null) return
+    if (!component.banList.includes(userId)) {
+      component.banList.push(userId)
+      console.log(`Added to ban list: ${userId}`)
+    }
+  }
 
-    component.banList = banned
-    component.hostList = hosts
-    console.log('here', component.banList, component.hostList)
+  private removeFromBanList(userId: string): void {
+    const component = PlayerStateComponent.getMutableOrNull(this.playerState)
+    if (component === null) return
+    component.banList = component.banList.filter((id) => id !== userId)
+    console.log(`Removed from ban list: ${userId}`)
+  }
+
+  private addToHostList(userId: string): void {
+    const component = PlayerStateComponent.getMutableOrNull(this.playerState)
+    if (component === null) return
+    if (!component.hostList.includes(userId)) {
+      component.hostList.push(userId)
+      console.log(`Added to host list: ${userId}`)
+    }
+  }
+
+  private removeFromHostList(userId: string): void {
+    const component = PlayerStateComponent.getMutableOrNull(this.playerState)
+    if (component === null) return
+    component.hostList = component.hostList.filter((id) => id !== userId)
+    console.log(`Removed from host list: ${userId}`)
   }
 }
