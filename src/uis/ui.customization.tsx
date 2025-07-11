@@ -1,10 +1,12 @@
 import { engine, MainCamera, Transform, VirtualCamera } from '@dcl/sdk/ecs'
 import { Color4, Vector3, Color3 } from '@dcl/sdk/math'
 import ReactEcs, { Button, type EntityPropTypes, Input, Label, UiEntity } from '@dcl/sdk/react-ecs'
-import { getMutableCustomizationState } from '../auditorium/customization'
-import { HorizontalLabeledControl as LabeledControl } from './components/labeledControl'
+import { Customization } from '../auditorium/customization'
 import { ValidatedInput } from './components/validatedInput'
 import { primaryTheme } from './themes/themes'
+import { Column, Row } from './components/flexOrganizers'
+import { HorizontalLabeledControl } from './components/labeledControl'
+import { getScaleFactor } from '../canvas/Canvas'
 
 export class CustomizationUI {
   public _isVisible: boolean = false
@@ -29,6 +31,8 @@ export class CustomizationUI {
   }
 }
 
+const theme = primaryTheme
+
 export function AuditoriumCustomizationElement(props: {
   isVisible: boolean
   onClose: () => void
@@ -36,45 +40,75 @@ export function AuditoriumCustomizationElement(props: {
   return (
     <UiEntity
       uiTransform={{
-        width: '30%',
-        height: '50%',
+        width: 400 * getScaleFactor(),
+        height: 600 * getScaleFactor(),
         positionType: 'absolute',
-        position: { top: '10%', left: '60%' },
+        position: { top: 50 * getScaleFactor(), right: 150 * getScaleFactor() },
         display: props.isVisible ? 'flex' : 'none',
         flexDirection: 'column',
-        alignItems: 'flex-end',
-        justifyContent: 'space-between'
+        alignItems: 'center',
+        justifyContent: 'space-around'
       }}
+      uiBackground={theme.uiBackground}
     >
-      <ImageUrlInput
-        onApply={(imageUrl) => {
-          getMutableCustomizationState().textureSrc = imageUrl
-        }}
-      />
       <ColorPicker
+        uiTransform={{ height: '60%' }}
         onColorSelect={(color) => {
-          getMutableCustomizationState().accentColor = Color4.fromColor3(color)
+          Customization.setCustomizationAccentColor(color)
         }}
       />
-      <Button
-        value="Finish"
-        uiTransform={{
-          ...primaryTheme.primaryButtonTransform,
-          width: `auto`,
-          padding: '3%',
-          height: `${primaryTheme.fontSize * 3.0}px`,
-          margin: { right: '5%' }
+      <ImageUrlInput
+        uiTransform={{ height: '10%', width: '90%' }}
+        onApply={(imageUrl) => {
+          Customization.setCustomizationTexture(imageUrl)
         }}
-        fontSize={primaryTheme.fontSize}
-        uiBackground={primaryTheme.primaryButtonBackground}
-        onMouseDown={props.onClose}
-      ></Button>
+      />
+      <Row
+        uiTransform={{
+          height: 100 * getScaleFactor(),
+          justifyContent: 'space-around',
+          width: '70%',
+          alignSelf: 'center',
+          padding: { bottom: '5%' }
+        }}
+      >
+        <Button
+          value="Reset to Default"
+          uiTransform={{
+            ...theme.primaryButtonTransform,
+            alignSelf: 'flex-start'
+          }}
+          fontSize={theme.buttonFontSize}
+          uiBackground={theme.primaryButtonBackground}
+          onMouseDown={() => {
+            Customization.revertToDefault()
+          }}
+        ></Button>
+        <Button
+          value="Finish"
+          uiTransform={{
+            ...theme.primaryButtonTransform,
+            alignSelf: 'flex-start'
+          }}
+          fontSize={theme.buttonFontSize}
+          uiBackground={theme.primaryButtonBackground}
+          onMouseDown={props.onClose}
+        ></Button>
+      </Row>
     </UiEntity>
   )
 }
 
 const ColorPicker = (props: EntityPropTypes & { onColorSelect?: (color: Color3) => void }): ReactEcs.JSX.Element => {
   const [selectedColor, setSelectedColor] = ReactEcs.useState<Color3>(Color3.Red())
+  const { uiTransform, ...rest } = props
+  ReactEcs.useEffect(() => {
+    Customization.onChange((component) => {
+      if (component?.accentColor !== undefined) {
+        setSelectedColor(component.accentColor)
+      }
+    })
+  }, [])
 
   const colors = [
     Color4.Red(),
@@ -88,164 +122,202 @@ const ColorPicker = (props: EntityPropTypes & { onColorSelect?: (color: Color3) 
   ]
 
   return (
-    <UiEntity
+    <Column
       uiTransform={{
-        width: '25vw',
-        height: '30.5vh',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        ...primaryTheme.uiTransform,
-        padding: {
-          top: '2vh',
-          bottom: '5vh'
-        }
+        justifyContent: 'space-around',
+        ...theme.uiTransform,
+        ...uiTransform
       }}
-      uiBackground={primaryTheme.uiBackground}
+      {...rest}
     >
-      <UiEntity uiTransform={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+      <Row uiTransform={{ height: '30%' }}>
         <Label
           value="Accent Color"
-          color={primaryTheme.fontColor}
-          fontSize={primaryTheme.fontSize}
-          uiTransform={{ width: 'auto', height: 'auto' }}
+          color={theme.fontColor}
+          fontSize={theme.fontSize}
+          uiTransform={{ width: 'auto', alignSelf: 'flex-start' }}
         />
-      </UiEntity>
-      <UiEntity uiTransform={{ display: 'flex', flexDirection: 'row' }}>
         <UiEntity
           uiTransform={{
-            width: '17.5vw',
-            height: '100%',
             display: 'flex',
-            padding: { bottom: '1vh' },
             flexDirection: 'row',
-            justifyContent: 'space-around',
-            alignItems: 'center'
+            alignItems: 'flex-start'
           }}
         >
-          {colors.map((color, index) => {
-            const isSameColor =
-              selectedColor.r === color.r && selectedColor.g === color.g && selectedColor.b === color.b
-
-            return (
-              <Button
-                key={`color-${index}`}
-                value=""
-                uiTransform={{
-                  width: '2vw',
-                  height: '2vw',
-                  margin: '0.2vw',
-                  borderRadius: 5,
-                  borderWidth: isSameColor ? 3 : 1,
-                  borderColor: isSameColor ? Color4.Black() : Color4.White()
-                }}
-                uiBackground={{ color }}
-                onMouseDown={() => {
-                  setSelectedColor(color)
-                  if (props.onColorSelect !== undefined) props.onColorSelect(color)
-                }}
-              />
-            )
-          })}
+          <Column uiTransform={{ height: 'auto' }}>
+            <Row>
+              {colors.slice(0, 4).map((color, index) => {
+                return (
+                  <ColorButton
+                    key={`color-${index}`}
+                    color={color}
+                    selectedColor={selectedColor}
+                    onMouseDown={() => {
+                      setSelectedColor(color)
+                      if (props.onColorSelect !== undefined) props.onColorSelect(color)
+                    }}
+                  />
+                )
+              })}
+            </Row>
+            <Row>
+              {colors.slice(4).map((color, index) => {
+                return (
+                  <ColorButton
+                    key={`color-${index + 4}`}
+                    color={color}
+                    selectedColor={selectedColor}
+                    onMouseDown={() => {
+                      setSelectedColor(color)
+                      if (props.onColorSelect !== undefined) props.onColorSelect(color)
+                    }}
+                  />
+                )
+              })}
+            </Row>
+          </Column>
         </UiEntity>
-      </UiEntity>
-      <LabeledControl
-        uiTransform={{ width: '100%', height: 'auto', padding: { top: '1%', bottom: '1%' } }}
-        labelProps={{ value: 'Hex', fontSize: primaryTheme.fontSize, color: primaryTheme.fontColor }}
-      >
-        <ValidatedInput
-          maxLength={7}
-          uiTransform={{ width: '10vw' }}
-          onChange={(value) => {
-            let inputHex = value.toUpperCase()
-            if (!inputHex.startsWith('#')) {
-              inputHex = `#${inputHex}`
-            }
-            const newColor = Color3.fromHexString(inputHex)
-            if (Color3.toHexString(newColor) === inputHex) {
+      </Row>
+
+      <Column uiTransform={{ justifyContent: 'space-between', alignItems: 'center', height: '60%' }}>
+        <HorizontalLabeledControl
+          uiTransform={{ width: '100%', height: 150 * getScaleFactor() }}
+          labelProps={{ value: 'Hex', fontSize: theme.fontSize, color: theme.fontColor }}
+        >
+          <Row
+            uiTransform={{ width: '45%', justifyContent: 'space-between' }}
+            uiBackground={theme.secondaryBackgrounds[0]}
+          >
+            <ValidatedInput
+              maxLength={7}
+              onChange={(value) => {
+                let inputHex = value.toUpperCase()
+                if (!inputHex.startsWith('#')) {
+                  inputHex = `#${inputHex}`
+                }
+                const newColor = Color3.fromHexString(inputHex)
+                if (Color3.toHexString(newColor) === inputHex) {
+                  setSelectedColor(newColor)
+                  if (props.onColorSelect !== undefined) props.onColorSelect(newColor)
+                }
+              }}
+              value={Color3.toHexString(selectedColor)}
+              fontSize={theme.fontSize}
+              color={theme.fontColor}
+            ></ValidatedInput>
+            <UiEntity
+              uiTransform={{
+                alignSelf: 'center',
+                width: '25%',
+                height: '80%',
+                margin: { right: '5%' },
+                borderRadius: 5
+              }}
+              uiBackground={{ color: Color4.fromColor3(selectedColor) }}
+            ></UiEntity>
+          </Row>
+        </HorizontalLabeledControl>
+        <HorizontalLabeledControl
+          uiTransform={{ width: '100%', height: 150 * getScaleFactor() }}
+          labelProps={{ value: 'Red', fontSize: theme.fontSize, color: theme.fontColor }}
+        >
+          <ValidatedInput
+            uiTransform={{ width: '45%' }}
+            regex={/^[0-9]+$/}
+            maxLength={3}
+            defaultValue="0"
+            onChange={(value) => {
+              const newColor = Color3.fromInts(
+                parseInt(value),
+                Math.round(255 * selectedColor.g),
+                Math.round(255 * selectedColor.b)
+              )
               setSelectedColor(newColor)
               if (props.onColorSelect !== undefined) props.onColorSelect(newColor)
-            }
-          }}
-          value={Color3.toHexString(selectedColor)}
-          fontSize={primaryTheme.fontSize / 1.15}
-          color={primaryTheme.fontColor}
-        ></ValidatedInput>
-        <UiEntity
-          uiTransform={{ position: { left: '5%' }, width: '10%', height: '100%', borderRadius: 5 }}
-          uiBackground={{ color: Color4.fromColor3(selectedColor) }}
-        ></UiEntity>
-      </LabeledControl>
-      <LabeledControl
-        uiTransform={{ width: '100%', height: 'auto' }}
-        labelProps={{ value: 'Red', fontSize: primaryTheme.fontSize, color: primaryTheme.fontColor }}
-      >
-        <ValidatedInput
-          uiTransform={{ width: '5vw' }}
-          regex={/^[0-9]+$/}
-          maxLength={3}
-          defaultValue="0"
-          onChange={(value) => {
-            const newColor = Color3.fromInts(
-              parseInt(value),
-              Math.round(255 * selectedColor.g),
-              Math.round(255 * selectedColor.b)
-            )
-            setSelectedColor(newColor)
-            if (props.onColorSelect !== undefined) props.onColorSelect(newColor)
-          }}
-          value={Math.round(255 * selectedColor.r).toString()}
-          fontSize={primaryTheme.fontSize / 1.15}
-          color={primaryTheme.fontColor}
-        ></ValidatedInput>
-      </LabeledControl>
-      <LabeledControl
-        uiTransform={{ width: '100%', height: 'auto' }}
-        labelProps={{ value: 'Green', fontSize: primaryTheme.fontSize, color: primaryTheme.fontColor }}
-      >
-        <ValidatedInput
-          uiTransform={{ width: '5vw' }}
-          regex={/^[0-9]+$/}
-          maxLength={3}
-          defaultValue="0"
-          onChange={(value) => {
-            const newColor = Color3.fromInts(
-              Math.round(255 * selectedColor.r),
-              parseInt(value),
-              Math.round(255 * selectedColor.b)
-            )
-            setSelectedColor(newColor)
-            if (props.onColorSelect !== undefined) props.onColorSelect(newColor)
-          }}
-          value={Math.round(255 * selectedColor.g).toString()}
-          fontSize={primaryTheme.fontSize / 1.15}
-          color={primaryTheme.fontColor}
-        ></ValidatedInput>
-      </LabeledControl>
-      <LabeledControl
-        uiTransform={{ width: '100%', height: 'auto' }}
-        labelProps={{ value: 'Blue', fontSize: primaryTheme.fontSize, color: primaryTheme.fontColor }}
-      >
-        <ValidatedInput
-          uiTransform={{ width: '5vw' }}
-          regex={/^[0-9]+$/}
-          maxLength={3}
-          defaultValue="0"
-          onChange={(value) => {
-            const newColor = Color3.fromInts(
-              Math.round(255 * selectedColor.r),
-              Math.round(255 * selectedColor.g),
-              parseInt(value)
-            )
-            setSelectedColor(newColor)
-            if (props.onColorSelect !== undefined) props.onColorSelect(newColor)
-          }}
-          value={Math.round(255 * selectedColor.b).toString()}
-          fontSize={primaryTheme.fontSize / 1.15}
-          color={primaryTheme.fontColor}
-        ></ValidatedInput>
-      </LabeledControl>
-    </UiEntity>
+            }}
+            value={Math.round(255 * selectedColor.r).toString()}
+            fontSize={theme.fontSize}
+            color={theme.fontColor}
+            uiBackground={theme.secondaryBackgrounds[1]}
+          ></ValidatedInput>
+        </HorizontalLabeledControl>
+        <HorizontalLabeledControl
+          uiTransform={{ width: '100%', height: 150 * getScaleFactor() }}
+          labelProps={{ value: 'Green', fontSize: theme.fontSize, color: theme.fontColor }}
+        >
+          <ValidatedInput
+            uiTransform={{ width: '45%' }}
+            regex={/^[0-9]+$/}
+            maxLength={3}
+            defaultValue="0"
+            onChange={(value) => {
+              const newColor = Color3.fromInts(
+                Math.round(255 * selectedColor.r),
+                parseInt(value),
+                Math.round(255 * selectedColor.b)
+              )
+              setSelectedColor(newColor)
+              if (props.onColorSelect !== undefined) props.onColorSelect(newColor)
+            }}
+            value={Math.round(255 * selectedColor.g).toString()}
+            fontSize={theme.fontSize}
+            color={theme.fontColor}
+            uiBackground={theme.secondaryBackgrounds[2]}
+          ></ValidatedInput>
+        </HorizontalLabeledControl>
+        <HorizontalLabeledControl
+          uiTransform={{ width: '100%', height: 150 * getScaleFactor() }}
+          labelProps={{ value: 'Blue', fontSize: theme.fontSize, color: theme.fontColor }}
+        >
+          <ValidatedInput
+            uiTransform={{ width: '45%' }}
+            regex={/^[0-9]+$/}
+            maxLength={3}
+            defaultValue="0"
+            onChange={(value) => {
+              const newColor = Color3.fromInts(
+                Math.round(255 * selectedColor.r),
+                Math.round(255 * selectedColor.g),
+                parseInt(value)
+              )
+              setSelectedColor(newColor)
+              if (props.onColorSelect !== undefined) props.onColorSelect(newColor)
+            }}
+            value={Math.round(255 * selectedColor.b).toString()}
+            fontSize={theme.fontSize / 1.15}
+            color={theme.fontColor}
+            uiBackground={theme.secondaryBackgrounds[3]}
+          ></ValidatedInput>
+        </HorizontalLabeledControl>
+      </Column>
+    </Column>
+  )
+}
+
+const ColorButton = (
+  props: {
+    color: Color4
+    selectedColor: Color3
+  } & EntityPropTypes
+): ReactEcs.JSX.Element => {
+  ReactEcs.useEffect(() => {}, [props.selectedColor])
+  const { color, selectedColor, ...rest } = props
+  const isSameColor = color.r === selectedColor.r && color.g === selectedColor.g && color.b === selectedColor.b
+
+  return (
+    <Button
+      value=""
+      uiTransform={{
+        width: 30 * getScaleFactor(),
+        height: 30 * getScaleFactor(),
+        margin: 2 * getScaleFactor(),
+        borderRadius: 5,
+        borderWidth: isSameColor ? 3 : 1,
+        borderColor: isSameColor ? Color4.fromHexString('#FEB45A') : Color4.Black()
+      }}
+      uiBackground={{ color }}
+      {...rest}
+    />
   )
 }
 
@@ -253,50 +325,56 @@ export const ImageUrlInput = (
   props: EntityPropTypes & { onApply?: (imageUrl: string) => void }
 ): ReactEcs.JSX.Element => {
   const [imageUrl, setImageUrl] = ReactEcs.useState('')
-  const fontSize = 20
+  const { uiTransform, ...rest } = props
+
+  ReactEcs.useEffect(() => {
+    Customization.onChange((component) => {
+      if (component?.textureSrc !== undefined) {
+        setImageUrl(component.textureSrc)
+      }
+    })
+  }, [])
 
   return (
-    <UiEntity
+    <Row
       uiTransform={{
-        width: '25vw',
-        height: '15vh',
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        ...primaryTheme.uiTransform
+        ...uiTransform
       }}
-      uiBackground={primaryTheme.uiBackground}
-      {...props}
+      {...rest}
     >
       <Label
         value="Logo"
-        color={primaryTheme.fontColor}
-        fontSize={fontSize}
-        uiTransform={{ width: '7.5vw', height: '100%' }}
+        color={theme.fontColor}
+        fontSize={theme.fontSize}
+        uiTransform={{ width: 100 * getScaleFactor() }}
       />
       <Input
+        uiTransform={{ width: '85%' }}
         onChange={(value) => {
           setImageUrl(value)
         }}
-        fontSize={fontSize / 1.15}
+        value={imageUrl}
+        fontSize={theme.fontSize / 1.15}
         placeholder={'Paste image url here'}
-        color={primaryTheme.fontColor}
-        uiTransform={{ width: '100%', height: '50%' }}
+        color={theme.fontColor}
+        placeholderColor={Color4.White()}
+        uiBackground={theme.inputBackgroundColor}
       ></Input>
       <Button
         value="Apply"
         uiTransform={{
-          width: '10vw',
-          height: '50%',
-          borderRadius: { topRight: '10px', bottomRight: '10px' }
+          width: '30%',
+          borderRadius: { topRight: 20 * getScaleFactor(), bottomRight: 20 * getScaleFactor() },
+          height: 'auto',
+          padding: { left: '1%' }
         }}
-        fontSize={fontSize}
-        uiBackground={primaryTheme.primaryButtonBackground}
+        fontSize={theme.buttonFontSize}
+        uiBackground={theme.primaryButtonBackground}
         onMouseDown={() => {
           if (props.onApply !== undefined) props.onApply(imageUrl)
         }}
       ></Button>
-    </UiEntity>
+    </Row>
   )
 }
 

@@ -4,24 +4,32 @@ import ReactEcs, {
   type UiTransformProps,
   UiEntity,
   Label,
-  type EntityPropTypes
+  type EntityPropTypes,
+  type UiBackgroundProps
 } from '@dcl/sdk/react-ecs'
 import { primaryTheme } from '../themes/themes'
 import { merge } from 'ts-deepmerge'
+import { getScaleFactor } from '../../canvas/Canvas'
+
+const theme = primaryTheme
 
 export const HorizontalLabeledControl = (props: {
   labelProps?: UiLabelProps
   uiTransform?: UiTransformProps
+  uiBackground?: UiBackgroundProps
   children?: ReactEcs.JSX.Element
 }): ReactEcs.JSX.Element => {
   return (
-    <UiEntity uiTransform={{ display: 'flex', flexDirection: 'row', ...props.uiTransform }}>
+    <UiEntity
+      uiTransform={{ display: 'flex', flexDirection: 'row', ...props.uiTransform }}
+      uiBackground={props.uiBackground}
+    >
       <Label
         value={props.labelProps?.value ?? ''}
         color={Color4.Black()}
-        fontSize={20}
-        uiTransform={{ width: '7.5vw', height: '100%' }}
+        fontSize={theme.fontSize}
         {...props.labelProps}
+        uiTransform={{ width: 100 * getScaleFactor(), height: '100%' }}
       />
       {props.children}
     </UiEntity>
@@ -41,7 +49,7 @@ export function VerticalLabeledControl(props: {
       },
       fontSize: '1.2vw',
       font: 'sans-serif',
-      color: primaryTheme.fontColor,
+      color: theme.fontColor,
       textAlign: 'middle-left'
     } satisfies EntityPropTypes & Omit<UiLabelProps, 'value'>,
     props.labelProps
