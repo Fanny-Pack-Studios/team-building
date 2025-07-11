@@ -2,8 +2,8 @@ import { Color4 } from '@dcl/sdk/math'
 import ReactEcs, { UiEntity } from '@dcl/sdk/react-ecs'
 import {
   type ActivityResult,
-  ActivityType,
   closeActivity,
+  getActivityName,
   getCurrentActivity,
   listenToActivities
 } from '../activities/activitiesEntity'
@@ -48,17 +48,6 @@ export class CloseActivityUI {
     })
   }
 
-  getActivityName(type: ActivityType): string {
-    switch (type) {
-      case ActivityType.POLL:
-        return 'Poll'
-      case ActivityType.SURVEY:
-        return 'Survey'
-      default:
-        return 'Activity'
-    }
-  }
-
   createUi(): ReactEcs.JSX.Element | null {
     if (!this.isVisible) return null
 
@@ -91,7 +80,7 @@ export class CloseActivityUI {
             alignItems: 'center'
           }}
           uiText={{
-            value: `Close ${this.getActivityName(activity.type)}`,
+            value: `Close ${getActivityName(activity.type)}`,
             fontSize: 18,
             color: Color4.White(),
             textAlign: 'middle-center'
