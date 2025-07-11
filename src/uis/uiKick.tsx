@@ -3,7 +3,7 @@ import { movePlayerTo } from '~system/RestrictedActions'
 import ReactEcs, { Label, UiEntity } from '@dcl/sdk/react-ecs'
 import { Color4, Vector3 } from '@dcl/sdk/math'
 import { getPlayer } from '@dcl/sdk/src/players'
-import { engine, InputAction, inputSystem, PointerEventType } from '@dcl/sdk/ecs'
+import { engine } from '@dcl/sdk/ecs'
 import { type GameController } from '../controllers/game.controller'
 import { PlayerStateComponent } from '../controllers/player.controller'
 import { JAIL_CENTER } from '../jail/jail'
@@ -22,12 +22,6 @@ export class KickUI {
     this.gameController = gameController
     engine.addSystem(() => {
       this.updateKickStatus()
-    })
-    engine.addSystem(() => {
-      const cmd = inputSystem.getInputCommand(InputAction.IA_ACTION_3, PointerEventType.PET_DOWN)
-      if (cmd != null) {
-        this.openKickUI()
-      }
     })
   }
 
@@ -103,10 +97,5 @@ export class KickUI {
         />
       </UiEntity>
     )
-  }
-
-  checkPlayerNameOnArray = (playerNumber: number): void => {
-    console.log('here', playerNumber)
-    this.playerSelected = this.gameController.playersOnScene.displayPlayers[playerNumber - 1]
   }
 }
