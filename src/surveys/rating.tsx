@@ -11,7 +11,7 @@ function IconEntity(props: {
   onSelected: (ratingNumber: RatingNumber) => void
 }): ReactEcs.JSX.Element {
   const highlighted = props.currentRating >= props.ratingValue
-  const imageName: string = highlighted ? `${props.icon}_selected` : props.icon
+  const hOffset = highlighted ? 0.5 : 0
 
   return (
     <UiEntity uiTransform={{ flexDirection: 'column', width: 'auto', height: 'auto', alignItems: 'center' }}>
@@ -22,8 +22,9 @@ function IconEntity(props: {
           props.onSelected(props.ratingValue)
         }}
         uiBackground={{
-          texture: { src: `images/createSurveyUi/${imageName}.png` },
-          textureMode: 'stretch'
+          texture: { src: `images/createSurveyUi/stars.png` },
+          textureMode: 'stretch',
+          uvs: [0 + hOffset, 0, 0 + hOffset, 1, 0.5 + hOffset, 1, 0.5 + hOffset, 0]
         }}
       ></UiEntity>
     </UiEntity>
