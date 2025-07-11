@@ -28,7 +28,7 @@ export class ModeratorIconUI {
       (Math.min(this.gameController.uiController.canvasInfo.width, this.gameController.uiController.canvasInfo.height) /
         1080) *
       1.2
-
+    if (!this.panelUiVisibility) return null
     return (
       <UiEntity
         uiTransform={{

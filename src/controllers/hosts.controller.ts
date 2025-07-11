@@ -2,6 +2,7 @@ import { engine, type Entity, Schemas } from '@dcl/sdk/ecs'
 import { syncEntity } from '@dcl/sdk/network'
 import { SyncEntityEnumId } from '../syncEntities'
 import { withPlayerInfo } from '../utils'
+import { type GameController } from './game.controller'
 
 export const HostComponent = engine.defineComponent('HostComponent', {
   hosts: Schemas.Array(Schemas.String)
@@ -9,8 +10,9 @@ export const HostComponent = engine.defineComponent('HostComponent', {
 
 export class HostsController {
   public readonly hostEntity: Entity = engine.addEntity()
-
-  constructor() {
+  gameController: GameController
+  constructor(gameController: GameController) {
+    this.gameController = gameController
     HostComponent.create(this.hostEntity)
     syncEntity(this.hostEntity, [HostComponent.componentId], SyncEntityEnumId.HOSTS)
   }
@@ -29,6 +31,7 @@ export class HostsController {
 
   addHost(playerIdOrName: string): void {
     HostComponent.getMutable(this.hostEntity).hosts.push(playerIdOrName.toLowerCase())
+    this.gameController.playerController.setHost(playerIdOrName.toLowerCase(), true)
   }
 
   onChange(cb: (newHosts: string[] | undefined) => void): void {

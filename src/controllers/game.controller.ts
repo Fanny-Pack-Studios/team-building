@@ -66,7 +66,7 @@ export class GameController {
   public workInProgressUI: WorkInProgressUI
 
   constructor() {
-    this.hostsController = new HostsController()
+    this.hostsController = new HostsController(this)
     this.uiController = new UIController(this)
     this.popupAtendeePanelAndResultbutton = new PopupAttendeePanelAndResultsButton(this)
     this.stageUI = new StageUI(this)
