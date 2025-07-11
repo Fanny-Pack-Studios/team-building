@@ -5,5 +5,5 @@ export enum SyncEntityEnumId {
   INTERACTABLE = 4,
   SHOW_RESULTS_BUTTON = 5,
   CUSTOMIZATION_STATE = 6,
-    
+  PLAYER_STATES = 7
 }

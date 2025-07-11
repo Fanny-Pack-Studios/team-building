@@ -21,13 +21,10 @@ export class UIController {
   render(): ReactEcs.JSX.Element | null {
     if (this.canvasInfo === null) return null
     return (
+      // Black Screen UI MUST be always the last one
       <UiEntity>
         <Canvas>
-          {this.gameController.panelUI.createPanelUi()}
-          {this.gameController.kickUI.createKickUi()}
-          {this.gameController.kickUI.createUnKickUi()}
-          {this.gameController.kickUI.createBlackScreen()}
-          {this.gameController.stageUI.createStageUi()}
+          {this.gameController.iconPanelUI.createPanelUi()}
           {this.gameController.activitiesUI.createChooseActivityUi()}
           {this.gameController.createPollUI.createUi()}
           {this.gameController.createOptionUI.createUi()}
@@ -35,23 +32,35 @@ export class UIController {
           {this.gameController.resultsUI.createUi()}
           {this.gameController.timerUI.createUi()}
           {this.gameController.closePollUi.createUi()}
-          {this.gameController.removeHostUI.createRemoveHostModal()}
           {this.gameController.choosePollUI.createChoosePollUi()}
           {this.gameController.createZonePollUI.createUi()}
           {this.gameController.zonePollQuestionUI.createUi()}
           {this.gameController.customizationUI.create()}
           {this.gameController.mainMenuUI.create()}
           {this.gameController.workInProgressUI.create()}
+          {this.gameController.newModerationPanel.create()}
+          {this.gameController.kickUI.createBlackScreen()}
           {ui.render()}
         </Canvas>
       </UiEntity>
     )
   }
 
-  closeAllModerationUIs(): void {
-    this.gameController.kickUI.kickUiVisibility = false
-    this.gameController.kickUI.unKickUiVisibility = false
-    this.gameController.stageUI.stageUiVisibility = false
-    this.gameController.removeHostUI.removeHostVisibility = false
+  closeAllUis(): void {
+    this.gameController.activitiesUI.chooseActivityUiVisibility = false
+    this.gameController.createPollUI.createPollUiVisibility = false
+    this.gameController.createOptionUI.optionsUiVisibility = false
+    this.gameController.createSurveyUI.isVisible = false
+    this.gameController.resultsUI.resultsUiVisibility = false
+    this.gameController.timerUI.visible = false
+    this.gameController.closePollUi.isVisible = false
+    this.gameController.choosePollUI.choosePollUiVisibility = false
+    this.gameController.createZonePollUI.createZonePollUiVisibility = false
+    this.gameController.zonePollQuestionUI.visible = false
+    this.gameController.customizationUI.isVisible = false
+    this.gameController.mainMenuUI.isVisible = false
+    this.gameController.workInProgressUI.isVisible = false
+    this.gameController.newModerationPanel.panelVisible = false
+    this.gameController.kickUI.blackScreenVisibility = false
   }
 }
