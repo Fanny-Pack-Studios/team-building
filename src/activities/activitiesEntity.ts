@@ -96,3 +96,14 @@ export function closeActivity(type: ActivityType, entity: Entity): void {
       break
   }
 }
+
+export function getActivityName(type: ActivityType): string {
+  switch (type) {
+    case ActivityType.POLL:
+      return 'Poll'
+    case ActivityType.SURVEY:
+      return 'Survey'
+    default:
+      return 'Activity'
+  }
+}
