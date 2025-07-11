@@ -11,7 +11,6 @@ import { ClosePollUI } from '../uis/uiClosePoll'
 import { CreatePollUI } from '../uis/uiCreatePoll'
 import { ZonePollUI } from '../uis/uiCreateZonePoll'
 import { KickUI } from '../uis/uiKick'
-import { ModeratorPanelUI } from '../uis/uiModeratorPanel'
 import { OptionsUI } from '../uis/uiOptions'
 import { RemoveHostModal } from '../uis/uiRemoveHost'
 import { ResultsUI } from '../uis/uiResults'
@@ -28,6 +27,7 @@ import { CreateSurveyUI } from '../uis/uiCreateSurvey'
 import { NewModerationPanel } from '../uis/uiNewModerationPanel'
 import { PlayerController } from './player.controller'
 import { Jail } from '../jail/jail'
+import { ModeratorIconUI } from '../uis/uiModeratorIcon'
 
 export class GameController {
   public uiController: UIController
@@ -41,7 +41,7 @@ export class GameController {
 
   public mainMenuUI: MainMenuUi
   public stageUI: StageUI
-  public panelUI: ModeratorPanelUI
+  public iconPanelUI: ModeratorIconUI
   public kickUI: KickUI
   public activitiesUI: ChooseActivityUI
   public createPollUI: CreatePollUI
@@ -72,7 +72,7 @@ export class GameController {
     this.uiController = new UIController(this)
     this.popupAtendeePanelAndResultbutton = new PopupAttendeePanelAndResultsButton(this)
     this.stageUI = new StageUI(this)
-    this.panelUI = new ModeratorPanelUI(this)
+    this.iconPanelUI = new ModeratorIconUI(this)
     this.kickUI = new KickUI(this)
     this.activitiesUI = new ChooseActivityUI(this)
     this.createPollUI = new CreatePollUI(this)

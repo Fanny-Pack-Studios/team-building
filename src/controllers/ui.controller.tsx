@@ -24,7 +24,7 @@ export class UIController {
       // Black Screen UI MUST be always the last one
       <UiEntity>
         <Canvas>
-          {this.gameController.panelUI.createPanelUi()}
+          {this.gameController.iconPanelUI.createPanelUi()}
           {this.gameController.activitiesUI.createChooseActivityUi()}
           {this.gameController.createPollUI.createUi()}
           {this.gameController.createOptionUI.createUi()}
@@ -32,7 +32,6 @@ export class UIController {
           {this.gameController.resultsUI.createUi()}
           {this.gameController.timerUI.createUi()}
           {this.gameController.closePollUi.createUi()}
-          {this.gameController.removeHostUI.createRemoveHostModal()}
           {this.gameController.choosePollUI.createChoosePollUi()}
           {this.gameController.createZonePollUI.createUi()}
           {this.gameController.zonePollQuestionUI.createUi()}

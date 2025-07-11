@@ -1,7 +1,7 @@
 import ReactEcs, { UiEntity } from '@dcl/sdk/react-ecs'
 import { type GameController } from '../controllers/game.controller'
 import { withPlayerInfo } from '../utils'
-export class ModeratorPanelUI {
+export class ModeratorIconUI {
   public panelUiVisibility: boolean = false
   private readonly icon: string = 'images/moderatormenu/moderator_tool_icon.png'
   private isHost: boolean = false
