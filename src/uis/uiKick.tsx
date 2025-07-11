@@ -8,8 +8,6 @@ import { type GameController } from '../controllers/game.controller'
 import { PlayerStateComponent } from '../controllers/player.controller'
 import { JAIL_CENTER } from '../jail/jail'
 
-export type KickUiType = 'kick' | 'unKick' | 'blackScreen'
-
 export class KickUI {
   public blackScreenVisibility: boolean = false
   public gameController: GameController

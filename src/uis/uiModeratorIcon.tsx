@@ -68,6 +68,7 @@ export class ModeratorIconUI {
   }
 
   openModeratorPanel(): void {
+    this.gameController.uiController.closeAllUis()
     this.gameController.newModerationPanel.panelVisible = true
   }
 }

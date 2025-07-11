@@ -45,4 +45,22 @@ export class UIController {
       </UiEntity>
     )
   }
+
+  closeAllUis(): void {
+    this.gameController.activitiesUI.chooseActivityUiVisibility = false
+    this.gameController.createPollUI.createPollUiVisibility = false
+    this.gameController.createOptionUI.optionsUiVisibility = false
+    this.gameController.createSurveyUI.isVisible = false
+    this.gameController.resultsUI.resultsUiVisibility = false
+    this.gameController.timerUI.visible = false
+    this.gameController.closePollUi.isVisible = false
+    this.gameController.choosePollUI.choosePollUiVisibility = false
+    this.gameController.createZonePollUI.createZonePollUiVisibility = false
+    this.gameController.zonePollQuestionUI.visible = false
+    this.gameController.customizationUI.isVisible = false
+    this.gameController.mainMenuUI.isVisible = false
+    this.gameController.workInProgressUI.isVisible = false
+    this.gameController.newModerationPanel.panelVisible = false
+    this.gameController.kickUI.blackScreenVisibility = false
+  }
 }
