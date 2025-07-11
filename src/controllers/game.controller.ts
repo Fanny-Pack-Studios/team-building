@@ -2,7 +2,6 @@ import { PopupAttendeePanelAndResultsButton } from '../activities/activitiesPane
 import { setupCustomization } from '../auditorium/customization'
 import { setupPodium } from '../auditorium/podium'
 import { setupMessageBus } from '../messagebus/messagebus'
-import { PlayersOnScene } from '../players/playersOnScene'
 import { HostIndicators } from '../uis/hostIndicators'
 import { CustomizationUI } from '../uis/ui.customization'
 import { ChooseActivityUI } from '../uis/uiActivities'
@@ -33,7 +32,6 @@ export class GameController {
   public uiController: UIController
   public hostsController: HostsController
   public popupAtendeePanelAndResultbutton: PopupAttendeePanelAndResultsButton
-  public playersOnScene: PlayersOnScene
   public playerController: PlayerController
   public jail: Jail
 
@@ -93,7 +91,6 @@ export class GameController {
     this.zone2 = null
     this.zone3 = null
     this.zone4 = null
-    this.playersOnScene = new PlayersOnScene(this)
     this.removeHostUI = new RemoveHostModal(this)
     this.hostIndicators = new HostIndicators(this.hostsController)
     this.customizationUI = new CustomizationUI()
