@@ -6,9 +6,10 @@ import { ValidatedInput } from './components/validatedInput'
 import { primaryTheme } from './themes/themes'
 import { Column, Row } from './components/flexOrganizers'
 import { HorizontalLabeledControl } from './components/labeledControl'
+import { getScaleFactor } from '../canvas/Canvas'
 
 export class CustomizationUI {
-  public _isVisible: boolean = true
+  public _isVisible: boolean = false
   public get isVisible(): boolean {
     return this._isVisible
   }
@@ -38,11 +39,11 @@ export function AuditoriumCustomizationElement(props: {
 }): ReactEcs.JSX.Element {
   return (
     <UiEntity
-      uiTransform={{  
-        width: '22.5%',
-        height: '60%',
+      uiTransform={{
+        width: 400 * getScaleFactor(),
+        height: 600 * getScaleFactor(),
         positionType: 'absolute',
-        position: { top: '10%', left: '60%' },
+        position: { top: 50 * getScaleFactor(), right: 150 * getScaleFactor() },
         display: props.isVisible ? 'flex' : 'none',
         flexDirection: 'column',
         alignItems: 'center',
@@ -62,14 +63,22 @@ export function AuditoriumCustomizationElement(props: {
           Customization.setCustomizationTexture(imageUrl)
         }}
       />
-      <Row uiTransform={{ height: '10%', justifyContent: 'space-around', width: '70%', alignSelf: 'center' }}>
+      <Row
+        uiTransform={{
+          height: 100 * getScaleFactor(),
+          justifyContent: 'space-around',
+          width: '70%',
+          alignSelf: 'center',
+          padding: { bottom: '5%' }
+        }}
+      >
         <Button
           value="Reset to Default"
           uiTransform={{
             ...theme.primaryButtonTransform,
             alignSelf: 'flex-start'
           }}
-          fontSize={theme.fontSize}
+          fontSize={theme.buttonFontSize}
           uiBackground={theme.primaryButtonBackground}
           onMouseDown={() => {
             Customization.revertToDefault()
@@ -79,9 +88,9 @@ export function AuditoriumCustomizationElement(props: {
           value="Finish"
           uiTransform={{
             ...theme.primaryButtonTransform,
-            alignSelf: 'flex-start',
+            alignSelf: 'flex-start'
           }}
-          fontSize={theme.fontSize}
+          fontSize={theme.buttonFontSize}
           uiBackground={theme.primaryButtonBackground}
           onMouseDown={props.onClose}
         ></Button>
@@ -172,7 +181,7 @@ const ColorPicker = (props: EntityPropTypes & { onColorSelect?: (color: Color3) 
 
       <Column uiTransform={{ justifyContent: 'space-between', alignItems: 'center', height: '60%' }}>
         <HorizontalLabeledControl
-          uiTransform={{ width: '100%' }}
+          uiTransform={{ width: '100%', height: 150 * getScaleFactor() }}
           labelProps={{ value: 'Hex', fontSize: theme.fontSize, color: theme.fontColor }}
         >
           <Row
@@ -193,7 +202,7 @@ const ColorPicker = (props: EntityPropTypes & { onColorSelect?: (color: Color3) 
                 }
               }}
               value={Color3.toHexString(selectedColor)}
-              fontSize={theme.fontSize / 1.15}
+              fontSize={theme.fontSize}
               color={theme.fontColor}
             ></ValidatedInput>
             <UiEntity
@@ -209,7 +218,7 @@ const ColorPicker = (props: EntityPropTypes & { onColorSelect?: (color: Color3) 
           </Row>
         </HorizontalLabeledControl>
         <HorizontalLabeledControl
-          uiTransform={{ width: '100%', height: 'auto' }}
+          uiTransform={{ width: '100%', height: 150 * getScaleFactor() }}
           labelProps={{ value: 'Red', fontSize: theme.fontSize, color: theme.fontColor }}
         >
           <ValidatedInput
@@ -227,13 +236,13 @@ const ColorPicker = (props: EntityPropTypes & { onColorSelect?: (color: Color3) 
               if (props.onColorSelect !== undefined) props.onColorSelect(newColor)
             }}
             value={Math.round(255 * selectedColor.r).toString()}
-            fontSize={theme.fontSize / 1.15}
+            fontSize={theme.fontSize}
             color={theme.fontColor}
             uiBackground={theme.secondaryBackgrounds[1]}
           ></ValidatedInput>
         </HorizontalLabeledControl>
         <HorizontalLabeledControl
-          uiTransform={{ width: '100%', height: 'auto' }}
+          uiTransform={{ width: '100%', height: 150 * getScaleFactor() }}
           labelProps={{ value: 'Green', fontSize: theme.fontSize, color: theme.fontColor }}
         >
           <ValidatedInput
@@ -251,13 +260,13 @@ const ColorPicker = (props: EntityPropTypes & { onColorSelect?: (color: Color3) 
               if (props.onColorSelect !== undefined) props.onColorSelect(newColor)
             }}
             value={Math.round(255 * selectedColor.g).toString()}
-            fontSize={theme.fontSize / 1.15}
+            fontSize={theme.fontSize}
             color={theme.fontColor}
             uiBackground={theme.secondaryBackgrounds[2]}
           ></ValidatedInput>
         </HorizontalLabeledControl>
         <HorizontalLabeledControl
-          uiTransform={{ width: '100%', height: 'auto' }}
+          uiTransform={{ width: '100%', height: 150 * getScaleFactor() }}
           labelProps={{ value: 'Blue', fontSize: theme.fontSize, color: theme.fontColor }}
         >
           <ValidatedInput
@@ -299,9 +308,9 @@ const ColorButton = (
     <Button
       value=""
       uiTransform={{
-        width: '2vw',
-        height: '2vw',
-        margin: '0.2vw',
+        width: 30 * getScaleFactor(),
+        height: 30 * getScaleFactor(),
+        margin: 2 * getScaleFactor(),
         borderRadius: 5,
         borderWidth: isSameColor ? 3 : 1,
         borderColor: isSameColor ? Color4.fromHexString('#FEB45A') : Color4.Black()
@@ -316,7 +325,6 @@ export const ImageUrlInput = (
   props: EntityPropTypes & { onApply?: (imageUrl: string) => void }
 ): ReactEcs.JSX.Element => {
   const [imageUrl, setImageUrl] = ReactEcs.useState('')
-  const fontSize = 20
   const { uiTransform, ...rest } = props
 
   ReactEcs.useEffect(() => {
@@ -334,14 +342,19 @@ export const ImageUrlInput = (
       }}
       {...rest}
     >
-      <Label value="Logo" color={theme.fontColor} fontSize={fontSize} uiTransform={{ width: '7.5vw' }} />
+      <Label
+        value="Logo"
+        color={theme.fontColor}
+        fontSize={theme.fontSize}
+        uiTransform={{ width: 100 * getScaleFactor() }}
+      />
       <Input
         uiTransform={{ width: '85%' }}
         onChange={(value) => {
           setImageUrl(value)
         }}
         value={imageUrl}
-        fontSize={fontSize / 1.15}
+        fontSize={theme.fontSize / 1.15}
         placeholder={'Paste image url here'}
         color={theme.fontColor}
         placeholderColor={Color4.White()}
@@ -351,11 +364,11 @@ export const ImageUrlInput = (
         value="Apply"
         uiTransform={{
           width: '30%',
-          borderRadius: { topRight: '10px', bottomRight: '10px' },
+          borderRadius: { topRight: 20 * getScaleFactor(), bottomRight: 20 * getScaleFactor() },
           height: 'auto',
-          padding: { left: '3px' }
+          padding: { left: '1%' }
         }}
-        fontSize={fontSize}
+        fontSize={theme.buttonFontSize}
         uiBackground={theme.primaryButtonBackground}
         onMouseDown={() => {
           if (props.onApply !== undefined) props.onApply(imageUrl)
