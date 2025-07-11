@@ -4,6 +4,7 @@ import { onEnterScene, onLeaveScene } from '@dcl/sdk/players'
 import { type GameController } from './game.controller'
 import { engine, type Entity, Schemas } from '@dcl/sdk/ecs'
 import { syncEntity } from '@dcl/sdk/network'
+import { SyncEntityEnumId } from '../syncEntities'
 export type Player = {
   name: string
   wallet: string
@@ -19,12 +20,11 @@ export class PlayerController {
   public players = new Map<string, Player>()
   public playerState: Entity = engine.addEntity()
   gameController: GameController
-
   constructor(gameController: GameController) {
     this.gameController = gameController
     this.registerEventListeners()
     PlayerStateComponent.create(this.playerState, { banList: [], hostList: [] })
-    syncEntity(this.playerState, [PlayerStateComponent.componentId])
+    syncEntity(this.playerState, [PlayerStateComponent.componentId], SyncEntityEnumId.PLAYER_STATES)
   }
 
   private registerEventListeners(): void {

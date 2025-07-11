@@ -24,8 +24,6 @@ export class UIController {
       <UiEntity>
         <Canvas>
           {this.gameController.panelUI.createPanelUi()}
-          {this.gameController.kickUI.createKickUi()}
-          {this.gameController.kickUI.createUnKickUi()}
           {this.gameController.kickUI.createBlackScreen()}
           {this.gameController.stageUI.createStageUi()}
           {this.gameController.activitiesUI.createChooseActivityUi()}
@@ -47,12 +45,5 @@ export class UIController {
         </Canvas>
       </UiEntity>
     )
-  }
-
-  closeAllModerationUIs(): void {
-    this.gameController.kickUI.kickUiVisibility = false
-    this.gameController.kickUI.unKickUiVisibility = false
-    this.gameController.stageUI.stageUiVisibility = false
-    this.gameController.removeHostUI.removeHostVisibility = false
   }
 }

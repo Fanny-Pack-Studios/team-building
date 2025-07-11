@@ -27,6 +27,7 @@ import { WorkInProgressUI } from '../uis/uiWorkInProgress'
 import { CreateSurveyUI } from '../uis/uiCreateSurvey'
 import { NewModerationPanel } from '../uis/uiNewModerationPanel'
 import { PlayerController } from './player.controller'
+import { Jail } from '../jail/jail'
 
 export class GameController {
   public uiController: UIController
@@ -34,6 +35,7 @@ export class GameController {
   public popupAtendeePanelAndResultbutton: PopupAttendeePanelAndResultsButton
   public playersOnScene: PlayersOnScene
   public playerController: PlayerController
+  public jail: Jail
 
   // UIS
 
@@ -97,6 +99,8 @@ export class GameController {
     this.customizationUI = new CustomizationUI()
     this.mainMenuUI = new MainMenuUi(this)
     this.workInProgressUI = new WorkInProgressUI(this)
+
+    this.jail = new Jail(this)
   }
 
   start(): void {

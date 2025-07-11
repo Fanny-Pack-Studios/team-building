@@ -1,33 +1,12 @@
 import { movePlayerTo } from '~system/RestrictedActions'
 
-import ReactEcs, { Button, Dropdown, Label, UiEntity } from '@dcl/sdk/react-ecs'
+import ReactEcs, { Label, UiEntity } from '@dcl/sdk/react-ecs'
 import { Color4, Vector3 } from '@dcl/sdk/math'
 import { getPlayer } from '@dcl/sdk/src/players'
-import {
-  AvatarModifierArea,
-  AvatarModifierType,
-  engine,
-  InputAction,
-  inputSystem,
-  MeshCollider,
-  MeshRenderer,
-  PointerEventType,
-  Schemas,
-  Transform
-} from '@dcl/sdk/ecs'
-import { syncEntity } from '@dcl/sdk/network'
-import { SyncEntityEnumId } from '../syncEntities'
-import { getScaleFactor } from '../canvas/Canvas'
+import { engine, InputAction, inputSystem, PointerEventType } from '@dcl/sdk/ecs'
 import { type GameController } from '../controllers/game.controller'
-
-const JAIL_CENTER = Vector3.create(10.07, 10, 10.58) // Ajustá según tu escena
-
-// Change to true to make jail visible for debug purposes
-const IS_JAIL_VISIBLE: boolean = false
-
-export const BannedComponent = engine.defineComponent('BannedComponent', {
-  list: Schemas.Array(Schemas.String)
-})
+import { PlayerStateComponent } from '../controllers/player.controller'
+import { JAIL_CENTER } from '../jail/jail'
 
 export type KickUiType = 'kick' | 'unKick' | 'blackScreen'
 
@@ -36,19 +15,11 @@ export class KickUI {
   public kickUiVisibility: boolean = false
   public unKickUiVisibility: boolean = false
   public gameController: GameController
-  public bannedEntity = engine.addEntity()
-  public collidersJailStructureN = engine.addEntity()
-  public collidersJailStructureW = engine.addEntity()
-  public collidersJailStructureE = engine.addEntity()
-  public collidersJailStructureS = engine.addEntity()
-  public collidersJailStructureFloor = engine.addEntity()
-  public hideAvatarsArea = engine.addEntity()
+
   public wasKicked: boolean = false
   playerSelected: string = ''
   constructor(gameController: GameController) {
     this.gameController = gameController
-    BannedComponent.create(this.bannedEntity)
-    syncEntity(this.bannedEntity, [BannedComponent.componentId], SyncEntityEnumId.KICK)
     engine.addSystem(() => {
       this.updateKickStatus()
     })
@@ -58,71 +29,6 @@ export class KickUI {
         this.openKickUI()
       }
     })
-    this.createCollidersJail()
-    AvatarModifierArea.create(this.hideAvatarsArea, {
-      area: Vector3.create(1, 1, 1),
-      modifiers: [AvatarModifierType.AMT_HIDE_AVATARS],
-      excludeIds: []
-    })
-  }
-
-  createCollidersJail(): void {
-    // Size
-    const boxWidth = 2
-    const boxLength = 2
-    const wallHeight = 5
-    const wallThickness = 0.2
-
-    const center = JAIL_CENTER
-
-    // North
-    Transform.create(this.collidersJailStructureN, {
-      position: Vector3.create(center.x, center.y + wallHeight / 2, center.z - boxLength / 2),
-      scale: Vector3.create(boxWidth, wallHeight, wallThickness)
-    })
-
-    // South
-    Transform.create(this.collidersJailStructureS, {
-      position: Vector3.create(center.x, center.y + wallHeight / 2, center.z + boxLength / 2),
-      scale: Vector3.create(boxWidth, wallHeight, wallThickness)
-    })
-
-    // East
-    Transform.create(this.collidersJailStructureE, {
-      position: Vector3.create(center.x + boxWidth / 2, center.y + wallHeight / 2, center.z),
-      scale: Vector3.create(wallThickness, wallHeight, boxLength)
-    })
-
-    // West
-    Transform.create(this.collidersJailStructureW, {
-      position: Vector3.create(center.x - boxWidth / 2, center.y + wallHeight / 2, center.z),
-      scale: Vector3.create(wallThickness, wallHeight, boxLength)
-    })
-
-    // Floor
-    const floorHeight = 0.01
-    Transform.create(this.collidersJailStructureFloor, {
-      position: Vector3.create(center.x, center.y - floorHeight / 2, center.z),
-      scale: Vector3.create(boxWidth, floorHeight, boxLength)
-    })
-
-    // Hide Players Area
-    Transform.create(this.hideAvatarsArea, {
-      position: Vector3.create(center.x, center.y, center.z)
-    })
-
-    if (IS_JAIL_VISIBLE) {
-      MeshRenderer.setBox(this.collidersJailStructureN)
-      MeshRenderer.setBox(this.collidersJailStructureS)
-      MeshRenderer.setBox(this.collidersJailStructureW)
-      MeshRenderer.setBox(this.collidersJailStructureE)
-      MeshRenderer.setBox(this.collidersJailStructureFloor)
-    }
-    MeshCollider.setBox(this.collidersJailStructureN)
-    MeshCollider.setBox(this.collidersJailStructureS)
-    MeshCollider.setBox(this.collidersJailStructureW)
-    MeshCollider.setBox(this.collidersJailStructureE)
-    MeshCollider.setBox(this.collidersJailStructureFloor)
   }
 
   openKickUI(): void {
@@ -133,7 +39,7 @@ export class KickUI {
     const player = getPlayer()
     if (player == null) return
 
-    const bannedList = BannedComponent.get(this.bannedEntity).list
+    const bannedList = PlayerStateComponent.get(this.gameController.playerController.playerState).banList
     const isBanned = bannedList.includes(player.userId.toLowerCase()) || bannedList.includes(player.name.toLowerCase())
 
     if (isBanned && !this.wasKicked) {
@@ -152,21 +58,15 @@ export class KickUI {
     }
   }
 
-  removePlayerFromBanList(taggedID: string): void {
-    const userID = this.gameController.playersOnScene.getUserIdFromDisplayName(taggedID)
+  removePlayerFromBanList(userID: string): void {
     if (userID === undefined) return
-
-    const banned = BannedComponent.getMutable(this.bannedEntity)
-    banned.list = banned.list.filter((id) => id.toLowerCase() !== userID.toLowerCase())
-
-    console.log('banned list', BannedComponent.get(this.bannedEntity).list)
+    const banned = PlayerStateComponent.getMutable(this.gameController.playerController.playerState)
+    banned.banList = banned.banList.filter((id) => id.toLowerCase() !== userID.toLowerCase())
   }
 
-  addPlayerToBanList(taggedID: string): void {
-    const userID = this.gameController.playersOnScene.getUserIdFromDisplayName(taggedID)
+  addPlayerToBanList(userID: string): void {
     if (userID === undefined) return
-    BannedComponent.getMutable(this.bannedEntity).list.push(userID.toLowerCase())
-    console.log('banned list', BannedComponent.get(this.bannedEntity).list)
+    PlayerStateComponent.getMutable(this.gameController.playerController.playerState).banList.push(userID.toLowerCase())
     this.updateKickStatus()
   }
 
@@ -203,253 +103,6 @@ export class KickUI {
         />
       </UiEntity>
     )
-  }
-
-  createUnKickUi(): ReactEcs.JSX.Element | null {
-    if (this.gameController.uiController.canvasInfo === null) return null
-    return (
-      <UiEntity
-        uiTransform={{
-          flexDirection: 'column',
-          width: this.gameController.uiController.canvasInfo.width,
-          height: this.gameController.uiController.canvasInfo.height,
-          justifyContent: 'center',
-          alignItems: 'center',
-          display: this.unKickUiVisibility ? 'flex' : 'none'
-        }}
-      >
-        <UiEntity
-          uiTransform={{
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            positionType: 'absolute',
-            width: 550 * getScaleFactor(), // Use scale factor to make it responsive
-            height: 300 * getScaleFactor(), // Use scale factor to make it responsive
-            borderRadius: 15
-          }}
-          uiBackground={{ color: Color4.White() }}
-        >
-          <UiEntity
-            uiTransform={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'center',
-              positionType: 'absolute',
-              width: 22 * getScaleFactor(),
-              height: 22 * getScaleFactor(),
-              position: { top: '3%', right: '2%' }
-            }}
-            uiBackground={{
-              textureMode: 'stretch',
-              texture: { src: 'images/moderatormenu/exit.png' }
-            }}
-            onMouseDown={() => {
-              this.unKickUiVisibility = false
-            }}
-          ></UiEntity>
-          <Label
-            value="Select Player to Unban"
-            fontSize={24 * getScaleFactor()}
-            color={Color4.Black()}
-            uiTransform={{
-              width: 300 * getScaleFactor(),
-              height: 60 * getScaleFactor(),
-              alignContent: 'center',
-              margin: '20px 20px 20px 20px'
-            }}
-          />
-          <UiEntity
-            uiTransform={{
-              flexDirection: 'row', // Set to 'row' to align children (Input, Label) side by side
-              width: 400 * getScaleFactor(),
-              height: 50 * getScaleFactor(),
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}
-          >
-            <Dropdown
-              emptyLabel="Select Player"
-              options={this.gameController.playersOnScene.getTaggedNamesFromWallets(
-                BannedComponent.get(this.bannedEntity).list
-              )}
-              uiTransform={{
-                width: 300 * getScaleFactor(),
-                height: 40 * getScaleFactor()
-              }}
-              fontSize={16 * getScaleFactor()}
-              onChange={this.checkPlayerNameOnArray}
-            />
-          </UiEntity>
-
-          <Label
-            value="Do you want to proceed?"
-            fontSize={24 * getScaleFactor()}
-            color={Color4.Black()}
-            uiTransform={{
-              width: 350 * getScaleFactor(),
-              height: 60 * getScaleFactor(),
-              alignContent: 'center',
-              margin: '5px 5px 5px 5px'
-            }}
-          />
-
-          <UiEntity
-            uiTransform={{
-              flexDirection: 'row', // Set to 'row' to align children side by side
-              width: 450 * getScaleFactor(),
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}
-          >
-            <Button
-              value="PROCEED"
-              variant="primary"
-              fontSize={18 * getScaleFactor()}
-              uiTransform={{
-                width: 200 * getScaleFactor(),
-                height: 40 * getScaleFactor(),
-                margin: '15px',
-                borderRadius: 10
-              }}
-              onMouseDown={() => {
-                console.log('OPENING LINK')
-                this.unKickUiVisibility = false
-                this.removePlayerFromBanList(this.playerSelected)
-              }}
-            />
-          </UiEntity>
-        </UiEntity>
-      </UiEntity>
-    )
-  }
-
-  createKickUi(): ReactEcs.JSX.Element | null {
-    if (this.gameController.uiController.canvasInfo === null) return null
-    return (
-      <UiEntity
-        uiTransform={{
-          flexDirection: 'column',
-          width: this.gameController.uiController.canvasInfo.width,
-          height: this.gameController.uiController.canvasInfo.height,
-          justifyContent: 'center',
-          alignItems: 'center',
-          display: this.kickUiVisibility ? 'flex' : 'none'
-        }}
-      >
-        <UiEntity
-          uiTransform={{
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            positionType: 'absolute',
-            width: 550 * getScaleFactor(), // Use scale factor to make it responsive
-            height: 300 * getScaleFactor(), // Use scale factor to make it responsive
-            borderRadius: 15
-          }}
-          uiBackground={{ color: Color4.White() }}
-        >
-          <UiEntity
-            uiTransform={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'center',
-              positionType: 'absolute',
-              width: 22 * getScaleFactor(),
-              height: 22 * getScaleFactor(),
-              position: { top: '3%', right: '2%' }
-            }}
-            uiBackground={{
-              textureMode: 'stretch',
-              texture: { src: 'images/moderatormenu/exit.png' }
-            }}
-            onMouseDown={() => {
-              this.kickUiVisibility = false
-            }}
-          ></UiEntity>
-          <Label
-            value="Select Player to Ban"
-            fontSize={24 * getScaleFactor()}
-            color={Color4.Black()}
-            uiTransform={{
-              width: 300 * getScaleFactor(),
-              height: 60 * getScaleFactor(),
-              alignContent: 'center',
-              margin: '20px 20px 20px 20px'
-            }}
-          />
-          <UiEntity
-            uiTransform={{
-              flexDirection: 'row', // Set to 'row' to align children (Input, Label) side by side
-              width: 400 * getScaleFactor(),
-              height: 50 * getScaleFactor(),
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}
-          >
-            <Dropdown
-              options={['Select Player', ...this.gameController.playersOnScene.displayPlayers]}
-              uiTransform={{
-                width: 300 * getScaleFactor(),
-                height: 40 * getScaleFactor()
-              }}
-              fontSize={16 * getScaleFactor()}
-              onChange={this.checkPlayerNameOnArray}
-            />
-          </UiEntity>
-
-          <Label
-            value="Do you want to proceed?"
-            fontSize={24 * getScaleFactor()}
-            color={Color4.Black()}
-            uiTransform={{
-              width: 350 * getScaleFactor(),
-              height: 60 * getScaleFactor(),
-              alignContent: 'center',
-              margin: '5px 5px 5px 5px'
-            }}
-          />
-
-          <UiEntity
-            uiTransform={{
-              flexDirection: 'row', // Set to 'row' to align children side by side
-              width: 450 * getScaleFactor(),
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}
-          >
-            <Button
-              value="PROCEED"
-              variant="primary"
-              fontSize={18 * getScaleFactor()}
-              uiTransform={{
-                width: 200 * getScaleFactor(),
-                height: 40 * getScaleFactor(),
-                margin: '15px',
-                borderRadius: 10
-              }}
-              onMouseDown={() => {
-                console.log('OPENING LINK')
-                this.kickUiVisibility = false
-                this.addPlayerToBanList(this.playerSelected)
-              }}
-            />
-          </UiEntity>
-        </UiEntity>
-      </UiEntity>
-    )
-  }
-
-  toggleVisibility(ui: KickUiType): void {
-    this.gameController.uiController.closeAllModerationUIs()
-    switch (ui) {
-      case 'kick':
-        this.kickUiVisibility = !this.kickUiVisibility
-        break
-      case 'unKick':
-        this.unKickUiVisibility = !this.unKickUiVisibility
-        break
-    }
   }
 
   checkPlayerNameOnArray = (playerNumber: number): void => {
