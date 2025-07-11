@@ -1,8 +1,9 @@
-import { Color4, Color3 } from '@dcl/sdk/math'
-import type { UiTransformProps, UiBackgroundProps, UiFontType } from '@dcl/sdk/react-ecs'
+import { Color3, Color4 } from '@dcl/sdk/math'
+import type { UiBackgroundProps, UiFontType, UiTransformProps } from '@dcl/sdk/react-ecs'
 import { getScaleFactor } from '../../canvas/Canvas'
 
 export const accentColor: Color4 = Color4.fromColor3(Color3.fromInts(225, 65, 75))
+export const secondaryColor: Color4 = Color4.fromHexString('#6B637AFF')
 
 export type UiTheme = {
   uiTransform: UiTransformProps
@@ -19,6 +20,8 @@ export type UiTheme = {
   // to use in options/buttons/inputs/etc when there are several of them:
   secondaryBackgrounds: UiBackgroundProps[]
   inputBackgroundColor: UiBackgroundProps
+  secondaryButtonBackground: UiBackgroundProps
+  secondaryButtonDisabledBackground: UiBackgroundProps
 }
 
 function factorScaled(theme: UiTheme): UiTheme {
@@ -58,6 +61,12 @@ export const primaryTheme: UiTheme = factorScaled({
   inputBackgroundColor: { color: Color4.fromHexString('#6A627A') },
   primaryButtonDisabledBackground: {
     color: Color4.multiply(accentColor, Color4.Gray())
+  },
+  secondaryButtonBackground: {
+    color: secondaryColor
+  },
+  secondaryButtonDisabledBackground: {
+    color: Color4.multiply(secondaryColor, Color4.Gray())
   },
   uiTransform: {
     padding: {
@@ -99,6 +108,12 @@ export const mainTheme: UiTheme = factorScaled({
   primaryButtonDisabledBackground: {
     color: Color4.multiply(primaryButtonColor, Color4.Gray())
   },
+  secondaryButtonBackground: {
+    color: secondaryColor
+  },
+  secondaryButtonDisabledBackground: {
+    color: Color4.multiply(secondaryColor, Color4.Gray())
+  },
   uiTransform: {
     padding: {
       top: '5%',
@@ -122,3 +137,11 @@ export const mainTheme: UiTheme = factorScaled({
   })),
   inputBackgroundColor: { color: Color4.fromHexString('#E03A4C') }
 })
+
+export const SurveyResultColors: Color4[] = [
+  Color4.fromHexString('#FFB95BFF'),
+  Color4.fromHexString('#FFA35AFF'),
+  Color4.fromHexString('#FF7458FF'),
+  Color4.fromHexString('#FF5857FF'),
+  Color4.fromHexString('#FF3155FF')
+]

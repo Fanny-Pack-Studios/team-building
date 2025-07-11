@@ -1,10 +1,10 @@
 import ReactEcs, { Input, Label, UiEntity } from '@dcl/sdk/react-ecs'
 
-import { getScaleFactor } from '../canvas/Canvas'
 import { Color4 } from '@dcl/sdk/math'
-import { PollState, createPollEntity, pollRegistry } from '../polls/pollEntity'
+import { ActivityType, setCurrentActivity } from '../activities/activitiesEntity'
+import { getScaleFactor } from '../canvas/Canvas'
 import { type GameController } from '../controllers/game.controller'
-import { getPlayer } from '@dcl/sdk/src/players'
+import { createPollEntity, pollRegistry } from '../polls/pollEntity'
 
 export class CreatePollUI {
   public createPollUiVisibility: boolean = false
@@ -339,15 +339,8 @@ export class CreatePollUI {
     const pollEntity = pollRegistry.get(pollId)
     if (pollEntity == null) return
 
-    const pollState = PollState.get(pollEntity)
-    const player = getPlayer()
-    const userId = player?.userId
+    setCurrentActivity(this.gameController.activitiesEntity, pollId, ActivityType.POLL)
 
-    if (userId != null && userId === pollState.creatorId && !pollState.closed) {
-      this.gameController.closePollUi.show(pollId)
-    }
-
-    this.gameController.uiController.gameController.popupAtendeePanelAndResultbutton.create()
     this.createPollUiVisibility = false
   }
 

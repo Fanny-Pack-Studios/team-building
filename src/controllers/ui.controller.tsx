@@ -28,8 +28,8 @@ export class UIController {
           {this.gameController.activitiesUI.createChooseActivityUi()}
           {this.gameController.createPollUI.createUi()}
           {this.gameController.createOptionUI.createUi()}
-          {this.gameController.createSurveyUI.createUI()}
-          {this.gameController.resultsUI.createUi()}
+          {this.gameController.createSurveyUI.createUi()}
+          {this.gameController.pollResultsUI.createUi()}
           {this.gameController.timerUI.createUi()}
           {this.gameController.closePollUi.createUi()}
           {this.gameController.choosePollUI.createChoosePollUi()}
@@ -40,6 +40,8 @@ export class UIController {
           {this.gameController.workInProgressUI.create()}
           {this.gameController.newModerationPanel.create()}
           {this.gameController.kickUI.createBlackScreen()}
+          {this.gameController.surveyQuestionUI.createUi()}
+          {this.gameController.surveyResultsUI.createUi()}
           {ui.render()}
         </Canvas>
       </UiEntity>
@@ -51,7 +53,7 @@ export class UIController {
     this.gameController.createPollUI.createPollUiVisibility = false
     this.gameController.createOptionUI.optionsUiVisibility = false
     this.gameController.createSurveyUI.isVisible = false
-    this.gameController.resultsUI.resultsUiVisibility = false
+    this.gameController.pollResultsUI.resultsUiVisibility = false
     this.gameController.timerUI.visible = false
     this.gameController.closePollUi.isVisible = false
     this.gameController.choosePollUI.choosePollUiVisibility = false
