@@ -53,7 +53,7 @@ export class UIController {
     this.gameController.createPollUI.createPollUiVisibility = false
     this.gameController.createOptionUI.optionsUiVisibility = false
     this.gameController.createSurveyUI.isVisible = false
-    this.gameController.resultsUI.resultsUiVisibility = false
+    this.gameController.pollResultsUI.resultsUiVisibility = false
     this.gameController.timerUI.visible = false
     this.gameController.closePollUi.isVisible = false
     this.gameController.choosePollUI.choosePollUiVisibility = false

@@ -33,7 +33,7 @@ export function generateId(prefix: string): string {
   return `${prefix}_${timestamp}_${random}`
 }
 
-type PlayerInfo = NonNullable<ReturnType<typeof getPlayer>>
+export type PlayerInfo = NonNullable<ReturnType<typeof getPlayer>>
 
 export async function waitForPlayerInfo(timeout: number = 10): Promise<PlayerInfo> {
   const playerInfo = getPlayer()

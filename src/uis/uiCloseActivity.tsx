@@ -8,8 +8,7 @@ import {
   listenToActivities
 } from '../activities/activitiesEntity'
 import { type GameController } from '../controllers/game.controller'
-import { type PlayerInfo } from '../players/playersOnScene'
-import { withPlayerInfo } from '../utils'
+import { type PlayerInfo, withPlayerInfo } from '../utils'
 
 export class CloseActivityUI {
   public isVisible: boolean = false
