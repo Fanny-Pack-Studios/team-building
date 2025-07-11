@@ -12,7 +12,7 @@ export class SurveyQuestionUI {
   public isVisible: boolean = false
   private currentRating: RatingNumber = 1
 
-  private readonly lastVotedOption?: { rating: RatingNumber; surveyId: string } // TODO
+  private lastVotedOption?: { rating: RatingNumber; surveyId: string }
 
   constructor(private readonly gameController: GameController) {}
 
@@ -89,11 +89,26 @@ export class SurveyQuestionUI {
 
       const mutableSurvey = SurveyState.getMutable(currentActivity.entity)
 
-      if (this.lastVotedOption !== undefined && this.lastVotedOption.surveyId === mutableSurvey.id) {
-        // TODO change vote
+      const existingVote = mutableSurvey.votes.find(
+        (vote) =>
+          (mutableSurvey.anonymous && vote.option === this.lastVotedOption?.rating) || vote.userId === player.userId
+      )
+
+      if (existingVote !== undefined) {
+        existingVote.option = this.currentRating
+
+        this.lastVotedOption = { rating: this.currentRating, surveyId: mutableSurvey.id }
       } else {
+        // If vote was casted in an anonymous poll in a different session (like closing and opening explorer)
+        // -> cannot change the vote and cannot vote again
+        if (mutableSurvey.userIdsThatVoted.includes(player.userId)) {
+          return
+        }
+
         mutableSurvey.userIdsThatVoted.push(player.userId)
         mutableSurvey.votes.push({ userId: player.userId, option: this.currentRating })
+
+        this.lastVotedOption = { rating: this.currentRating, surveyId: mutableSurvey.id }
       }
     })
 
