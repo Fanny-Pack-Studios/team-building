@@ -3,7 +3,6 @@ import { syncEntity } from '@dcl/sdk/network'
 import { getPlayer } from '@dcl/sdk/src/players'
 import { getCurrentActivity, VoteBasedActivityState } from '../activities/activitiesEntity'
 import { type ComponentState, generateSurveyId } from '../utils'
-import { type OptionsQuantity } from './rating'
 import { SurveyIcon } from './surveyIcon'
 
 export const SurveyState = engine.defineComponent(
@@ -19,7 +18,7 @@ export type SurveyStateType = ComponentState<typeof SurveyState>
 export function createSurveyEntity(
   question: string,
   icon: SurveyIcon = SurveyIcon.STAR,
-  optionsQty: OptionsQuantity = 5,
+  optionsQty: number = 5,
   anonymous: boolean = false
 ): [string, Entity] {
   const entity = engine.addEntity()

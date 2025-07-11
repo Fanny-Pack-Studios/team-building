@@ -5,7 +5,7 @@ import { ModalButton } from '../uis/components/buttons'
 import { ModalTitle } from '../uis/components/modalTitle'
 import { ModalWindow } from '../uis/components/modalWindow'
 import { withPlayerInfo } from '../utils'
-import { RatingSelector, type OptionsQuantity, type RatingNumber } from './rating'
+import { RatingSelector, type RatingNumber } from './rating'
 import { getSurveyState, SurveyState } from './surveyEntity'
 
 export class SurveyQuestionUI {
@@ -60,7 +60,7 @@ export class SurveyQuestionUI {
           />
           <RatingSelector
             icon={surveyState.icon}
-            qty={surveyState.optionsQty as OptionsQuantity}
+            qty={surveyState.optionsQty}
             initialRating={this.currentRating}
             onChange={(newRating) => {
               this.currentRating = newRating

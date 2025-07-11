@@ -1,8 +1,7 @@
 import ReactEcs, { Label, UiEntity } from '@dcl/sdk/react-ecs'
 import { type SurveyIcon } from './surveyIcon'
 
-export type RatingNumber = 0 | 1 | 2 | 3 | 4 | 5
-export type OptionsQuantity = 2 | 3 | 4 | 5
+export type RatingNumber = number
 
 function IconEntity(props: {
   icon: SurveyIcon
@@ -14,7 +13,7 @@ function IconEntity(props: {
   const hOffset = highlighted ? 0.5 : 0
 
   return (
-    <UiEntity uiTransform={{ flexDirection: 'column', width: 'auto', height: 'auto', alignItems: 'center' }}>
+    <UiEntity uiTransform={{ flexDirection: 'column', width: 'auto', height: '7vw', alignItems: 'center' }}>
       <Label value={props.ratingValue.toString()} textAlign="middle-center" fontSize="1vw"></Label>
       <UiEntity
         uiTransform={{ width: '4vw', height: '4vw' }}
@@ -33,7 +32,7 @@ function IconEntity(props: {
 
 export function RatingSelector(props: {
   icon: SurveyIcon
-  qty: OptionsQuantity
+  qty: number
   onChange?: (newRating: RatingNumber) => void
   initialRating?: RatingNumber
 }): ReactEcs.JSX.Element {
@@ -43,7 +42,7 @@ export function RatingSelector(props: {
     elements.push(
       <IconEntity
         icon={props.icon}
-        ratingValue={(i + 1) as RatingNumber}
+        ratingValue={i + 1}
         currentRating={currentValue}
         onSelected={(ratingNumber) => {
           setCurrentValue(ratingNumber)
