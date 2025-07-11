@@ -48,13 +48,11 @@ export class ModerationPanel {
   banPlayer(player: Player): void {
     console.log(`Banning ${player.name}`)
     this.gameController.playerController.setBan(player.wallet, true)
-    this.gameController.kickUI.addPlayerToBanList(player.wallet)
   }
 
   unbanPlayer(player: Player): void {
     console.log(`Unbanning ${player.name}`)
     this.gameController.playerController.setBan(player.wallet, false)
-    this.gameController.kickUI.removePlayerFromBanList(player.wallet)
   }
 
   giveHost(player: Player): void {

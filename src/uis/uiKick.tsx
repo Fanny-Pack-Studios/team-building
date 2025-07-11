@@ -43,18 +43,6 @@ export class KickUI {
     }
   }
 
-  removePlayerFromBanList(userID: string): void {
-    if (userID === undefined) return
-    const banned = PlayerStateComponent.getMutable(this.gameController.playerController.playerState)
-    banned.banList = banned.banList.filter((id) => id.toLowerCase() !== userID.toLowerCase())
-  }
-
-  addPlayerToBanList(userID: string): void {
-    if (userID === undefined) return
-    PlayerStateComponent.getMutable(this.gameController.playerController.playerState).banList.push(userID.toLowerCase())
-    this.updateKickStatus()
-  }
-
   createBlackScreen(): ReactEcs.JSX.Element | null {
     if (this.gameController.uiController.canvasInfo === null) return null
     return (

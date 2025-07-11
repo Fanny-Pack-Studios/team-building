@@ -84,6 +84,7 @@ export class PlayerController {
     } else {
       this.removeFromBanList(userId)
     }
+    this.gameController.kickUI.updateKickStatus()
   }
 
   setHost(userId: string, isHost: boolean): void {
