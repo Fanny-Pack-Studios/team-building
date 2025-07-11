@@ -3,10 +3,6 @@ import { withPlayerInfo } from '../utils'
 import { type GameController } from './game.controller'
 import { PlayerStateComponent } from './player.controller'
 
-// export const PlayerStateComponent = engine.defineComponent('PlayerStateComponent', {
-//   hosts: Schemas.Array(Schemas.String)
-// })
-
 export class HostsController {
   public readonly hostEntity: Entity = engine.addEntity()
   gameController: GameController
