@@ -16,7 +16,7 @@ import { PollState } from '../polls/pollEntity'
 import { PollQuestion } from '../polls/pollQuestionUi'
 import { SurveyState } from '../surveys/surveyEntity'
 import { SyncEntityEnumId } from '../syncEntities'
-import { ActivitiesState, ActivityType, getCurrentActivity } from './activitiesEntity'
+import { ActivityType, getCurrentActivity, listenToActivities } from './activitiesEntity'
 
 export class PopupAttendeePanelAndResultsButton {
   public attendeePanelEntity = engine.getEntityOrNullByName('AttendeePanel')
@@ -26,15 +26,12 @@ export class PopupAttendeePanelAndResultsButton {
   gameController: GameController
   constructor(gameController: GameController) {
     this.gameController = gameController
-    ActivitiesState.onChange(this.gameController.activitiesEntity, (newState) => {
-      if (newState?.currentActivityId !== undefined) {
+
+    listenToActivities(this.gameController.activitiesEntity, (activity) => {
+      if (activity !== undefined) {
         this.create()
       }
     })
-
-    if (ActivitiesState.getOrNull(this.gameController.activitiesEntity)?.currentActivityId !== undefined) {
-      this.create()
-    }
   }
 
   create(): void {
