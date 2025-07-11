@@ -21,11 +21,10 @@ export class UIController {
   render(): ReactEcs.JSX.Element | null {
     if (this.canvasInfo === null) return null
     return (
+      // Black Screen UI MUST be always the last one
       <UiEntity>
         <Canvas>
           {this.gameController.panelUI.createPanelUi()}
-          {this.gameController.kickUI.createBlackScreen()}
-          {this.gameController.stageUI.createStageUi()}
           {this.gameController.activitiesUI.createChooseActivityUi()}
           {this.gameController.createPollUI.createUi()}
           {this.gameController.createOptionUI.createUi()}
@@ -41,6 +40,7 @@ export class UIController {
           {this.gameController.mainMenuUI.create()}
           {this.gameController.workInProgressUI.create()}
           {this.gameController.newModerationPanel.create()}
+          {this.gameController.kickUI.createBlackScreen()}
           {ui.render()}
         </Canvas>
       </UiEntity>

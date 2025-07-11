@@ -5,7 +5,7 @@ import { getScaleFactor } from '../canvas/Canvas'
 import { type Player } from '../controllers/player.controller'
 
 export class NewModerationPanel {
-  panelVisible = true
+  panelVisible = false
   searchText = ''
   players: Player[] = []
   readonly itemsPerPage = 4
@@ -63,12 +63,14 @@ export class NewModerationPanel {
     console.log(`Giving host to ${player.name}`)
     player.isHost = true
     this.gameController.playerController.setHost(player.wallet, true)
+    this.gameController.stageUI.addAsHost(player.wallet)
   }
 
   removeHost(player: Player): void {
     console.log(`Removing host from ${player.name}`)
     player.isHost = false
     this.gameController.playerController.setHost(player.wallet, false)
+    this.gameController.hostsController.removeHost(player.wallet)
   }
 
   createPlayerCard(player: Player): ReactEcs.JSX.Element {

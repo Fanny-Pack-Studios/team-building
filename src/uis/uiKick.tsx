@@ -12,21 +12,13 @@ export type KickUiType = 'kick' | 'unKick' | 'blackScreen'
 
 export class KickUI {
   public blackScreenVisibility: boolean = false
-  public kickUiVisibility: boolean = false
-  public unKickUiVisibility: boolean = false
   public gameController: GameController
-
   public wasKicked: boolean = false
-  playerSelected: string = ''
   constructor(gameController: GameController) {
     this.gameController = gameController
     engine.addSystem(() => {
       this.updateKickStatus()
     })
-  }
-
-  openKickUI(): void {
-    this.kickUiVisibility = true
   }
 
   updateKickStatus(): void {
