@@ -14,16 +14,6 @@ export function setupPodium(gameController: GameController): void {
 
   updatePodiumActions()
 
-  pointerEventsSystem.onPointerDown(
-    {
-      entity: podium,
-      opts: { button: InputAction.IA_PRIMARY, hoverText: 'Interact' }
-    },
-    () => {
-      gameController.mainMenuUI.isVisible = true
-    }
-  )
-
   function updatePodiumActions(): void {
     withPlayerInfo((player) => {
       if (gameController.hostsController.isHost(player.userId)) {
@@ -52,7 +42,7 @@ export function setupPodium(gameController: GameController): void {
     pointerEventsSystem.onPointerDown(
       {
         entity: podium,
-        opts: { button: InputAction.IA_PRIMARY, hoverText: text }
+        opts: { button: InputAction.IA_POINTER, hoverText: text }
       },
       callback
     )
