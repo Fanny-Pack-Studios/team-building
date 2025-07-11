@@ -1,20 +1,17 @@
-import { engine, type Entity, Schemas } from '@dcl/sdk/ecs'
-import { syncEntity } from '@dcl/sdk/network'
-import { SyncEntityEnumId } from '../syncEntities'
+import { engine, type Entity } from '@dcl/sdk/ecs'
 import { withPlayerInfo } from '../utils'
 import { type GameController } from './game.controller'
+import { PlayerStateComponent } from './player.controller'
 
-export const HostComponent = engine.defineComponent('HostComponent', {
-  hosts: Schemas.Array(Schemas.String)
-})
+// export const PlayerStateComponent = engine.defineComponent('PlayerStateComponent', {
+//   hosts: Schemas.Array(Schemas.String)
+// })
 
 export class HostsController {
   public readonly hostEntity: Entity = engine.addEntity()
   gameController: GameController
   constructor(gameController: GameController) {
     this.gameController = gameController
-    HostComponent.create(this.hostEntity)
-    syncEntity(this.hostEntity, [HostComponent.componentId], SyncEntityEnumId.HOSTS)
   }
 
   isHost(userId: string, hosts: string[] = this.getHosts()): boolean {
@@ -22,7 +19,7 @@ export class HostsController {
   }
 
   getHosts(): string[] {
-    return HostComponent.get(this.hostEntity).hosts
+    return PlayerStateComponent.get(this.gameController.playerController.playerState).hostList
   }
 
   noHostExists(): boolean {
@@ -30,13 +27,15 @@ export class HostsController {
   }
 
   addHost(playerIdOrName: string): void {
-    HostComponent.getMutable(this.hostEntity).hosts.push(playerIdOrName.toLowerCase())
+    PlayerStateComponent.getMutable(this.gameController.playerController.playerState).hostList.push(
+      playerIdOrName.toLowerCase()
+    )
     this.gameController.playerController.setHost(playerIdOrName.toLowerCase(), true)
   }
 
   onChange(cb: (newHosts: string[] | undefined) => void): void {
-    HostComponent.onChange(this.hostEntity, (newState) => {
-      cb(newState?.hosts)
+    PlayerStateComponent.onChange(this.gameController.playerController.playerState, (newState) => {
+      cb(newState?.hostList)
     })
   }
 
@@ -49,7 +48,7 @@ export class HostsController {
   }
 
   removeHost(host: string): void {
-    const mutableHosts = HostComponent.getMutable(this.hostEntity).hosts
+    const mutableHosts = PlayerStateComponent.getMutable(this.gameController.playerController.playerState).hostList
     const index = mutableHosts.indexOf(host)
     if (index !== -1) {
       mutableHosts.splice(index, 1)

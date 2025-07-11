@@ -66,6 +66,7 @@ export class GameController {
   public workInProgressUI: WorkInProgressUI
 
   constructor() {
+    this.playerController = new PlayerController(this)
     this.hostsController = new HostsController(this)
     this.uiController = new UIController(this)
     this.popupAtendeePanelAndResultbutton = new PopupAttendeePanelAndResultsButton(this)
@@ -84,7 +85,7 @@ export class GameController {
     this.choosePollUI = new ChoosePollUI(this)
     this.createZonePollUI = new ZonePollUI(this)
     this.zonePollQuestionUI = new ZonePollQuestionUI(this)
-    this.playerController = new PlayerController(this)
+
     this.newModerationPanel = new ModerationPanel(this)
 
     this.zone1 = null
