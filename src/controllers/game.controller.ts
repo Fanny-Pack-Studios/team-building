@@ -25,6 +25,8 @@ import { HostsController } from './hosts.controller'
 import { UIController } from './ui.controller'
 import { WorkInProgressUI } from '../uis/uiWorkInProgress'
 import { CreateSurveyUI } from '../uis/uiCreateSurvey'
+import { type Entity } from '@dcl/sdk/ecs'
+import { ZonePollSystem } from '../zonePolls/zonPollSystem'
 
 export class GameController {
   public uiController: UIController
@@ -50,6 +52,7 @@ export class GameController {
   public choosePollUI: ChoosePollUI
   public createZonePollUI: ZonePollUI
   public zonePollQuestionUI: ZonePollQuestionUI
+  public zonePollSystem: ZonePollSystem
 
   // Zones
   public zone1: OptionZone | null
@@ -60,6 +63,7 @@ export class GameController {
 
   public customizationUI: CustomizationUI
   public workInProgressUI: WorkInProgressUI
+  zonePollDataEntity: Entity | null = null
 
   constructor() {
     this.hostsController = new HostsController()
@@ -80,6 +84,7 @@ export class GameController {
     this.choosePollUI = new ChoosePollUI(this)
     this.createZonePollUI = new ZonePollUI(this)
     this.zonePollQuestionUI = new ZonePollQuestionUI(this)
+    this.zonePollSystem = new ZonePollSystem(this)
 
     this.zone1 = null
     this.zone2 = null
@@ -96,6 +101,7 @@ export class GameController {
   start(): void {
     setupCustomization()
     setupMessageBus(this)
+    this.zonePollSystem.start()
     this.popupAtendeePanelAndResultbutton.setupAttendeePanelAndResultsButton()
     setupPodium(this)
   }

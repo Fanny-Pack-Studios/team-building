@@ -6,12 +6,12 @@ import { type GameController } from '../controllers/game.controller'
 let lastMessageConsumed = Date.now()
 export const messageBusEntity = engine.addEntity()
 
-// This is the section that should be modified if you want to add new messages
-
 const messageContentAlternatives = {
   // messageType: messageSchema
   showCurrentActivityResults: Schemas.Map({}),
-  showZonePollUi: Schemas.Map({})
+  createZonePollUi: Schemas.Map({
+    dataEntityId: Schemas.Int
+  })
 }
 
 function handleMessage(message: Message, gameController: GameController): void {
@@ -19,8 +19,9 @@ function handleMessage(message: Message, gameController: GameController): void {
     case 'showCurrentActivityResults':
       gameController.popupAtendeePanelAndResultbutton.showResultsFromCurrentActivity()
       break
-    case 'showZonePollUi':
-      gameController.createZonePollUI.create()
+    case 'createZonePollUi': {
+      break
+    }
   }
 }
 
@@ -45,7 +46,7 @@ export function pushSyncedMessage(messageType: MessageType, messageContent: Mess
     content: {
       $case: messageType,
       value: messageContent
-    },
+    } as any,
     timestamp: Date.now()
   })
 }
