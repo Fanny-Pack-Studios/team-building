@@ -1,7 +1,8 @@
+import { type Color4 } from '@dcl/sdk/math'
 import ReactEcs, { Button, type UiBackgroundProps, type UiButtonProps } from '@dcl/sdk/react-ecs'
 import { merge } from 'ts-deepmerge'
+import { getScaleFactor } from '../../canvas/Canvas'
 import { primaryTheme } from '../themes/themes'
-import { type Color4 } from '@dcl/sdk/math'
 
 export enum ButtonStyle {
   PRIMARY,
@@ -34,12 +35,17 @@ export function ModalButton(props: {
         uiTransform: {
           width: 'auto',
           height: 'auto',
-          padding: '1vw 1.5vw',
-          borderRadius: 5,
+          padding: {
+            bottom: 12 * getScaleFactor(),
+            top: 12 * getScaleFactor(),
+            left: 18 * getScaleFactor(),
+            right: 18 * getScaleFactor()
+          },
+          borderRadius: 5 * getScaleFactor(),
           alignSelf: 'center',
-          margin: '2vw'
+          margin: 25 * getScaleFactor()
         },
-        fontSize: '1.2vw',
+        fontSize: primaryTheme.buttonFontSize,
         uiBackground: getBackground(style, disabled)
       } satisfies Partial<UiButtonProps>,
       props.buttonProps ?? {},

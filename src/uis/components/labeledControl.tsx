@@ -1,15 +1,15 @@
 import { Color4 } from '@dcl/sdk/math'
 import ReactEcs, {
-  type UiLabelProps,
-  type UiTransformProps,
-  UiEntity,
   Label,
+  UiEntity,
   type EntityPropTypes,
-  type UiBackgroundProps
+  type UiBackgroundProps,
+  type UiLabelProps,
+  type UiTransformProps
 } from '@dcl/sdk/react-ecs'
-import { primaryTheme } from '../themes/themes'
 import { merge } from 'ts-deepmerge'
 import { getScaleFactor } from '../../canvas/Canvas'
+import { primaryTheme } from '../themes/themes'
 
 const theme = primaryTheme
 
@@ -44,10 +44,10 @@ export function VerticalLabeledControl(props: {
     {
       uiTransform: {
         width: '100%',
-        height: '2vh',
-        margin: { bottom: '1vh' }
+        height: 20 * getScaleFactor(),
+        margin: { bottom: 10 * getScaleFactor() }
       },
-      fontSize: '1.2vw',
+      fontSize: theme.smallFontSize,
       font: 'sans-serif',
       color: theme.fontColor,
       textAlign: 'middle-left'

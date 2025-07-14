@@ -1,14 +1,19 @@
 import ReactEcs, { Button, Label, type UiButtonProps, UiEntity } from '@dcl/sdk/react-ecs'
 import { merge } from 'ts-deepmerge'
+import { getScaleFactor } from '../../canvas/Canvas'
 import { primaryTheme } from '../themes/themes'
+
+function elementsSize(): number {
+  return 40 * getScaleFactor()
+}
 
 function RoundButton(props: UiButtonProps & { isDisabled?: boolean }): ReactEcs.JSX.Element {
   const finalProps = merge(
     {
-      fontSize: '1.5vw',
+      fontSize: 30 * getScaleFactor(),
       uiTransform: {
-        width: '3vw',
-        height: '3vw',
+        width: elementsSize(),
+        height: elementsSize(),
         borderRadius: 100
       },
       uiBackground:
@@ -43,7 +48,11 @@ export function NumberPicker(props: {
         }}
         isDisabled={currentValue <= props.min}
       />
-      <Label value={currentValue.toString()} fontSize="1.5vw" uiTransform={{ height: '3vw', width: '3vw' }}></Label>
+      <Label
+        value={currentValue.toString()}
+        fontSize={20 * getScaleFactor()}
+        uiTransform={{ height: elementsSize(), width: elementsSize() }}
+      ></Label>
       <RoundButton
         value="<b>+</b>"
         onMouseDown={() => {

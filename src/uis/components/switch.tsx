@@ -1,5 +1,6 @@
 import ReactEcs, { type EntityPropTypes, UiEntity } from '@dcl/sdk/react-ecs'
 import { merge } from 'ts-deepmerge'
+import { getScaleFactor } from '../../canvas/Canvas'
 
 export function Switch(
   props: {
@@ -14,8 +15,8 @@ export function Switch(
     {
       uiTransform: {
         flexDirection: 'row',
-        width: '5vw',
-        height: '3vw',
+        width: 60 * getScaleFactor(),
+        height: 36 * getScaleFactor(),
         margin: { bottom: -15 }
       },
       uiBackground: {
