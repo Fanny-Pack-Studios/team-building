@@ -95,7 +95,7 @@
             "position": {
               "x": 8,
               "y": 0,
-              "z": 8.25
+              "z": 8
             },
             "scale": {
               "x": 1,
@@ -114,13 +114,13 @@
         "514": {
           "json": {
             "position": {
-              "x": 7.5,
-              "y": 7.25,
-              "z": 12.75
+              "x": 8,
+              "y": 3.799999952316284,
+              "z": 13.300000190734863
             },
             "scale": {
-              "x": 13.800000190734863,
-              "y": 6,
+              "x": 5.5,
+              "y": 3,
               "z": 1
             },
             "rotation": {
@@ -156,9 +156,14 @@
         "516": {
           "json": {
             "position": {
+              "x": -6.0484771728515625,
+              "y": 2,
+              "z": 11.279850006103516
+            },
+            "scale": {
               "x": 1,
-              "y": -1,
-              "z": 11.25
+              "y": 1,
+              "z": 1
             },
             "rotation": {
               "x": 0,
@@ -166,99 +171,10 @@
               "z": 0,
               "w": 1
             },
-            "scale": {
-              "x": 1,
-              "y": 1,
-              "z": 1
-            },
             "parent": 0
           }
         },
         "517": {
-          "json": {
-            "position": {
-              "x": -5,
-              "y": 2.25,
-              "z": 5.249998569488525
-            },
-            "rotation": {
-              "x": 0,
-              "y": -0.2826078236103058,
-              "z": 0,
-              "w": 0.9592355489730835
-            },
-            "scale": {
-              "x": 1.9999998807907104,
-              "y": 4,
-              "z": 0.09999997168779373
-            },
-            "parent": 521
-          }
-        },
-        "518": {
-          "json": {
-            "position": {
-              "x": -5,
-              "y": 2.25,
-              "z": 5.199999809265137
-            },
-            "rotation": {
-              "x": 0,
-              "y": 0.258819043636322,
-              "z": 0,
-              "w": -0.9659258127212524
-            },
-            "scale": {
-              "x": 1.5,
-              "y": 1.5,
-              "z": 0.10000000149011612
-            },
-            "parent": 521
-          }
-        },
-        "519": {
-          "json": {
-            "position": {
-              "x": 5,
-              "y": 2.25,
-              "z": 5.25
-            },
-            "rotation": {
-              "x": 0,
-              "y": 0.28894826769828796,
-              "z": 0,
-              "w": 0.9573447108268738
-            },
-            "scale": {
-              "x": 2,
-              "y": 4,
-              "z": 0.10000000149011612
-            },
-            "parent": 521
-          }
-        },
-        "520": {
-          "json": {
-            "position": {
-              "x": 4.949999809265137,
-              "y": 2.25,
-              "z": 5.230000019073486
-            },
-            "rotation": {
-              "x": 0,
-              "y": 0.28894826769828796,
-              "z": 0,
-              "w": 0.9573447108268738
-            },
-            "scale": {
-              "x": 1.5,
-              "y": 1.5,
-              "z": 0.10000000149011612
-            },
-            "parent": 521
-          }
-        },
-        "521": {
           "json": {
             "position": {
               "x": 8,
@@ -279,12 +195,12 @@
             "parent": 0
           }
         },
-        "522": {
+        "518": {
           "json": {
             "position": {
               "x": 8,
               "y": 0,
-              "z": 7.5
+              "z": 8
             },
             "scale": {
               "x": 1,
@@ -296,6 +212,90 @@
               "y": 0,
               "z": 0,
               "w": 1
+            },
+            "parent": 0
+          }
+        },
+        "519": {
+          "json": {
+            "position": {
+              "x": 8,
+              "y": 0,
+              "z": 8
+            },
+            "scale": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "parent": 0
+          }
+        },
+        "520": {
+          "json": {
+            "position": {
+              "x": 8,
+              "y": 0,
+              "z": 8
+            },
+            "scale": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "parent": 0
+          }
+        },
+        "521": {
+          "json": {
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "scale": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "parent": 0
+          }
+        },
+        "522": {
+          "json": {
+            "position": {
+              "x": 8,
+              "y": 0,
+              "z": 13.25
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "scale": {
+              "x": 1,
+              "y": 1,
+              "z": 1
             },
             "parent": 0
           }
@@ -387,30 +387,93 @@
         "527": {
           "json": {
             "position": {
-              "x": 0,
-              "y": 0,
+              "x": -4.400000095367432,
+              "y": 2.25,
               "z": 0
             },
             "rotation": {
               "x": 0,
-              "y": 0,
+              "y": 0.30070579051971436,
               "z": 0,
-              "w": 1
+              "w": -0.9537169337272644
+            },
+            "scale": {
+              "x": 2.0999999046325684,
+              "y": 4,
+              "z": 1.5
+            },
+            "parent": 522
+          }
+        },
+        "528": {
+          "json": {
+            "position": {
+              "x": 4.400000095367432,
+              "y": 2.25,
+              "z": 0
+            },
+            "rotation": {
+              "x": 0.6743797063827515,
+              "y": -0.21263110637664795,
+              "z": -0.21263110637664795,
+              "w": -0.6743797063827515
+            },
+            "scale": {
+              "x": 1.5,
+              "y": 0.009999999776482582,
+              "z": 1.5
+            },
+            "parent": 522
+          }
+        },
+        "529": {
+          "json": {
+            "position": {
+              "x": -4.400000095367432,
+              "y": 2.25,
+              "z": 0
+            },
+            "rotation": {
+              "x": -0.6743797063827515,
+              "y": -0.21263110637664795,
+              "z": -0.21263110637664795,
+              "w": 0.6743797063827515
+            },
+            "scale": {
+              "x": 1.5,
+              "y": 0.009999999776482582,
+              "z": 1.5
+            },
+            "parent": 522
+          }
+        },
+        "531": {
+          "json": {
+            "position": {
+              "x": 8,
+              "y": 0,
+              "z": 8
             },
             "scale": {
               "x": 1,
               "y": 1,
               "z": 1
             },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
             "parent": 0
           }
         },
-        "536": {
+        "532": {
           "json": {
             "position": {
               "x": 0,
-              "y": 0.2981259226799011,
-              "z": 2.6299996376037598
+              "y": 0.550000011920929,
+              "z": -2.5
             },
             "rotation": {
               "x": 0,
@@ -419,11 +482,74 @@
               "w": 1
             },
             "scale": {
-              "x": 1.5,
+              "x": 2.200000047683716,
               "y": 0.10000000149011612,
+              "z": 2.200000047683716
+            },
+            "parent": 522
+          }
+        },
+        "533": {
+          "json": {
+            "position": {
+              "x": 4.400000095367432,
+              "y": 2.25,
+              "z": 0
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0.30070579051971436,
+              "z": 0,
+              "w": 0.9537169337272644
+            },
+            "scale": {
+              "x": 2.0999999046325684,
+              "y": 4,
               "z": 1.5
             },
-            "parent": 521
+            "parent": 522
+          }
+        },
+        "534": {
+          "json": {
+            "position": {
+              "x": 0,
+              "y": -2,
+              "z": -2.5999999046325684
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "scale": {
+              "x": 6,
+              "y": 5,
+              "z": 6
+            },
+            "parent": 522
+          }
+        },
+        "535": {
+          "json": {
+            "position": {
+              "x": 0,
+              "y": 0.6499999761581421,
+              "z": -4.75
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "scale": {
+              "x": 1.3200000524520874,
+              "y": 0.009999999776482582,
+              "z": 1.2999999523162842
+            },
+            "parent": 522
           }
         }
       }
@@ -509,12 +635,30 @@
         },
         "517": {
           "json": {
-            "states": []
+            "states": [
+              {
+                "clip": "voting_door03_open",
+                "playing": false,
+                "weight": 1,
+                "speed": 1,
+                "loop": false,
+                "shouldReset": false
+              }
+            ]
           }
         },
         "518": {
           "json": {
-            "states": []
+            "states": [
+              {
+                "clip": "voting_door04_open",
+                "playing": false,
+                "weight": 1,
+                "speed": 1,
+                "loop": false,
+                "shouldReset": false
+              }
+            ]
           }
         },
         "519": {
@@ -524,7 +668,16 @@
         },
         "520": {
           "json": {
-            "states": []
+            "states": [
+              {
+                "clip": "voting_door01_open",
+                "playing": false,
+                "weight": 1,
+                "speed": 1,
+                "loop": false,
+                "shouldReset": false
+              }
+            ]
           }
         },
         "521": {
@@ -562,7 +715,46 @@
             "states": []
           }
         },
-        "536": {
+        "528": {
+          "json": {
+            "states": []
+          }
+        },
+        "529": {
+          "json": {
+            "states": []
+          }
+        },
+        "531": {
+          "json": {
+            "states": [
+              {
+                "clip": "voting_door02_open",
+                "playing": false,
+                "weight": 1,
+                "speed": 1,
+                "loop": false,
+                "shouldReset": false
+              }
+            ]
+          }
+        },
+        "532": {
+          "json": {
+            "states": []
+          }
+        },
+        "533": {
+          "json": {
+            "states": []
+          }
+        },
+        "534": {
+          "json": {
+            "states": []
+          }
+        },
+        "535": {
           "json": {
             "states": []
           }
@@ -580,9 +772,9 @@
       "data": {
         "513": {
           "json": {
-            "src": "assets/models/estrado.glb",
-            "visibleMeshesCollisionMask": 1,
-            "invisibleMeshesCollisionMask": 2
+            "src": "assets/models/estrado.gltf",
+            "visibleMeshesCollisionMask": 3,
+            "invisibleMeshesCollisionMask": 3
           }
         },
         "515": {
@@ -599,18 +791,32 @@
             "invisibleMeshesCollisionMask": 0
           }
         },
-        "521": {
+        "517": {
           "json": {
-            "src": "assets/models/podium_V2.glb",
-            "visibleMeshesCollisionMask": 3,
-            "invisibleMeshesCollisionMask": 2
+            "src": "assets/models/voting_door03.gltf",
+            "visibleMeshesCollisionMask": 0,
+            "invisibleMeshesCollisionMask": 3
           }
         },
-        "522": {
+        "518": {
           "json": {
-            "src": "assets/models/voting_zone.glb",
-            "visibleMeshesCollisionMask": 1,
-            "invisibleMeshesCollisionMask": 2
+            "src": "assets/models/voting_door04.gltf",
+            "visibleMeshesCollisionMask": 0,
+            "invisibleMeshesCollisionMask": 3
+          }
+        },
+        "519": {
+          "json": {
+            "src": "assets/models/stage.gltf",
+            "visibleMeshesCollisionMask": 0,
+            "invisibleMeshesCollisionMask": 3
+          }
+        },
+        "520": {
+          "json": {
+            "src": "assets/models/voting_door01.gltf",
+            "visibleMeshesCollisionMask": 0,
+            "invisibleMeshesCollisionMask": 3
           }
         },
         "524": {
@@ -625,6 +831,13 @@
             "src": "assets/asset-packs/ring_-_green_light/Ring_Green_Light.glb",
             "visibleMeshesCollisionMask": 1,
             "invisibleMeshesCollisionMask": 2
+          }
+        },
+        "531": {
+          "json": {
+            "src": "assets/models/voting_door02.gltf",
+            "visibleMeshesCollisionMask": 0,
+            "invisibleMeshesCollisionMask": 3
           }
         }
       }
@@ -658,7 +871,10 @@
             }
           }
         },
-        "517": {
+        "527": {
+          "json": {}
+        },
+        "529": {
           "json": {
             "material": {
               "$case": "pbr",
@@ -669,7 +885,15 @@
                     "texture": {
                       "src": "",
                       "wrapMode": 0,
-                      "filterMode": 0
+                      "filterMode": 0,
+                      "offset": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "tiling": {
+                        "x": 1,
+                        "y": 1
+                      }
                     }
                   }
                 },
@@ -681,7 +905,15 @@
                     "texture": {
                       "src": "",
                       "wrapMode": 0,
-                      "filterMode": 0
+                      "filterMode": 0,
+                      "offset": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "tiling": {
+                        "x": 1,
+                        "y": 1
+                      }
                     }
                   }
                 },
@@ -691,7 +923,15 @@
                     "texture": {
                       "src": "",
                       "wrapMode": 0,
-                      "filterMode": 0
+                      "filterMode": 0,
+                      "offset": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "tiling": {
+                        "x": 1,
+                        "y": 1
+                      }
                     }
                   }
                 },
@@ -701,14 +941,22 @@
                     "texture": {
                       "src": "",
                       "wrapMode": 0,
-                      "filterMode": 0
+                      "filterMode": 0,
+                      "offset": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "tiling": {
+                        "x": 1,
+                        "y": 1
+                      }
                     }
                   }
                 },
                 "albedoColor": {
-                  "r": 0,
-                  "g": 0,
-                  "b": 0,
+                  "r": 1,
+                  "g": 1,
+                  "b": 1,
                   "a": 1
                 },
                 "emissiveColor": {
@@ -731,7 +979,7 @@
             }
           }
         },
-        "518": {
+        "533": {
           "json": {
             "material": {
               "$case": "pbr",
@@ -742,80 +990,15 @@
                     "texture": {
                       "src": "",
                       "wrapMode": 0,
-                      "filterMode": 0
-                    }
-                  }
-                },
-                "alphaTest": 0.5,
-                "castShadows": false,
-                "alphaTexture": {
-                  "tex": {
-                    "$case": "texture",
-                    "texture": {
-                      "src": "",
-                      "wrapMode": 0,
-                      "filterMode": 0
-                    }
-                  }
-                },
-                "emissiveTexture": {
-                  "tex": {
-                    "$case": "texture",
-                    "texture": {
-                      "src": "",
-                      "wrapMode": 0,
-                      "filterMode": 0
-                    }
-                  }
-                },
-                "bumpTexture": {
-                  "tex": {
-                    "$case": "texture",
-                    "texture": {
-                      "src": "",
-                      "wrapMode": 0,
-                      "filterMode": 0
-                    }
-                  }
-                },
-                "albedoColor": {
-                  "r": 0,
-                  "g": 0,
-                  "b": 0,
-                  "a": 1
-                },
-                "emissiveColor": {
-                  "r": 1,
-                  "g": 1,
-                  "b": 1
-                },
-                "reflectivityColor": {
-                  "r": 1,
-                  "g": 1,
-                  "b": 1
-                },
-                "transparencyMode": 4,
-                "metallic": 0.5,
-                "roughness": 0.5,
-                "specularIntensity": 1,
-                "emissiveIntensity": 0,
-                "directIntensity": 1
-              }
-            }
-          }
-        },
-        "519": {
-          "json": {
-            "material": {
-              "$case": "pbr",
-              "pbr": {
-                "texture": {
-                  "tex": {
-                    "$case": "texture",
-                    "texture": {
-                      "src": "",
-                      "wrapMode": 0,
-                      "filterMode": 0
+                      "filterMode": 0,
+                      "offset": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "tiling": {
+                        "x": 1,
+                        "y": 1
+                      }
                     }
                   }
                 },
@@ -827,7 +1010,15 @@
                     "texture": {
                       "src": "",
                       "wrapMode": 0,
-                      "filterMode": 0
+                      "filterMode": 0,
+                      "offset": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "tiling": {
+                        "x": 1,
+                        "y": 1
+                      }
                     }
                   }
                 },
@@ -837,7 +1028,15 @@
                     "texture": {
                       "src": "",
                       "wrapMode": 0,
-                      "filterMode": 0
+                      "filterMode": 0,
+                      "offset": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "tiling": {
+                        "x": 1,
+                        "y": 1
+                      }
                     }
                   }
                 },
@@ -847,14 +1046,22 @@
                     "texture": {
                       "src": "",
                       "wrapMode": 0,
-                      "filterMode": 0
+                      "filterMode": 0,
+                      "offset": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "tiling": {
+                        "x": 1,
+                        "y": 1
+                      }
                     }
                   }
                 },
                 "albedoColor": {
-                  "r": 0,
-                  "g": 0,
-                  "b": 0,
+                  "r": 1,
+                  "g": 1,
+                  "b": 1,
                   "a": 1
                 },
                 "emissiveColor": {
@@ -877,7 +1084,7 @@
             }
           }
         },
-        "520": {
+        "534": {
           "json": {
             "material": {
               "$case": "pbr",
@@ -888,19 +1095,35 @@
                     "texture": {
                       "src": "",
                       "wrapMode": 0,
-                      "filterMode": 0
+                      "filterMode": 0,
+                      "offset": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "tiling": {
+                        "x": 1,
+                        "y": 1
+                      }
                     }
                   }
                 },
                 "alphaTest": 0.5,
-                "castShadows": false,
+                "castShadows": true,
                 "alphaTexture": {
                   "tex": {
                     "$case": "texture",
                     "texture": {
                       "src": "",
                       "wrapMode": 0,
-                      "filterMode": 0
+                      "filterMode": 0,
+                      "offset": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "tiling": {
+                        "x": 1,
+                        "y": 1
+                      }
                     }
                   }
                 },
@@ -910,7 +1133,15 @@
                     "texture": {
                       "src": "",
                       "wrapMode": 0,
-                      "filterMode": 0
+                      "filterMode": 0,
+                      "offset": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "tiling": {
+                        "x": 1,
+                        "y": 1
+                      }
                     }
                   }
                 },
@@ -920,14 +1151,127 @@
                     "texture": {
                       "src": "",
                       "wrapMode": 0,
-                      "filterMode": 0
+                      "filterMode": 0,
+                      "offset": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "tiling": {
+                        "x": 1,
+                        "y": 1
+                      }
                     }
                   }
                 },
                 "albedoColor": {
-                  "r": 0,
-                  "g": 0,
-                  "b": 0,
+                  "r": 1,
+                  "g": 1,
+                  "b": 1,
+                  "a": 1
+                },
+                "emissiveColor": {
+                  "r": 1,
+                  "g": 1,
+                  "b": 1
+                },
+                "reflectivityColor": {
+                  "r": 1,
+                  "g": 1,
+                  "b": 1
+                },
+                "transparencyMode": 4,
+                "metallic": 0.5,
+                "roughness": 0.5,
+                "specularIntensity": 1,
+                "emissiveIntensity": 0,
+                "directIntensity": 1
+              }
+            }
+          }
+        },
+        "535": {
+          "json": {
+            "material": {
+              "$case": "pbr",
+              "pbr": {
+                "texture": {
+                  "tex": {
+                    "$case": "texture",
+                    "texture": {
+                      "src": "",
+                      "wrapMode": 0,
+                      "filterMode": 0,
+                      "offset": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "tiling": {
+                        "x": 1,
+                        "y": 1
+                      }
+                    }
+                  }
+                },
+                "alphaTest": 0.5,
+                "castShadows": true,
+                "alphaTexture": {
+                  "tex": {
+                    "$case": "texture",
+                    "texture": {
+                      "src": "",
+                      "wrapMode": 0,
+                      "filterMode": 0,
+                      "offset": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "tiling": {
+                        "x": 1,
+                        "y": 1
+                      }
+                    }
+                  }
+                },
+                "emissiveTexture": {
+                  "tex": {
+                    "$case": "texture",
+                    "texture": {
+                      "src": "",
+                      "wrapMode": 0,
+                      "filterMode": 0,
+                      "offset": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "tiling": {
+                        "x": 1,
+                        "y": 1
+                      }
+                    }
+                  }
+                },
+                "bumpTexture": {
+                  "tex": {
+                    "$case": "texture",
+                    "texture": {
+                      "src": "",
+                      "wrapMode": 0,
+                      "filterMode": 0,
+                      "offset": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "tiling": {
+                        "x": 1,
+                        "y": 1
+                      }
+                    }
+                  }
+                },
+                "albedoColor": {
+                  "r": 1,
+                  "g": 1,
+                  "b": 1,
                   "a": 1
                 },
                 "emissiveColor": {
@@ -1003,7 +1347,7 @@
             }
           }
         },
-        "517": {
+        "527": {
           "json": {
             "mesh": {
               "$case": "plane",
@@ -1013,7 +1357,40 @@
             }
           }
         },
-        "518": {
+        "528": {
+          "json": {
+            "mesh": {
+              "$case": "cylinder",
+              "cylinder": {
+                "radiusTop": 0.5,
+                "radiusBottom": 0.5
+              }
+            }
+          }
+        },
+        "529": {
+          "json": {
+            "mesh": {
+              "$case": "cylinder",
+              "cylinder": {
+                "radiusTop": 0.5,
+                "radiusBottom": 0.5
+              }
+            }
+          }
+        },
+        "532": {
+          "json": {
+            "mesh": {
+              "$case": "cylinder",
+              "cylinder": {
+                "radiusTop": 0.5,
+                "radiusBottom": 0.5
+              }
+            }
+          }
+        },
+        "533": {
           "json": {
             "mesh": {
               "$case": "plane",
@@ -1023,27 +1400,18 @@
             }
           }
         },
-        "519": {
+        "534": {
           "json": {
             "mesh": {
-              "$case": "plane",
-              "plane": {
-                "uvs": []
+              "$case": "cylinder",
+              "cylinder": {
+                "radiusTop": 0.5,
+                "radiusBottom": 0.5
               }
             }
           }
         },
-        "520": {
-          "json": {
-            "mesh": {
-              "$case": "plane",
-              "plane": {
-                "uvs": []
-              }
-            }
-          }
-        },
-        "536": {
+        "535": {
           "json": {
             "mesh": {
               "$case": "cylinder",
@@ -1091,32 +1459,32 @@
         },
         "517": {
           "json": {
-            "value": "BannerBackground"
+            "value": "VotingDoor3"
           }
         },
         "518": {
           "json": {
-            "value": "BannerLogo"
+            "value": "VotingDoor4"
           }
         },
         "519": {
           "json": {
-            "value": "BannerBackground_2"
+            "value": "stage.gltf"
           }
         },
         "520": {
           "json": {
-            "value": "BannerLogo_2"
+            "value": "VotingDoor1"
           }
         },
         "521": {
           "json": {
-            "value": "Stage"
+            "value": "AuditoriumCamera"
           }
         },
         "522": {
           "json": {
-            "value": "voting_zone.glb"
+            "value": "Stage"
           }
         },
         "523": {
@@ -1141,12 +1509,42 @@
         },
         "527": {
           "json": {
-            "value": "AuditoriumCamera"
+            "value": "BannerBackground"
           }
         },
-        "536": {
+        "528": {
+          "json": {
+            "value": "BannerLogo_2"
+          }
+        },
+        "529": {
+          "json": {
+            "value": "BannerLogo"
+          }
+        },
+        "531": {
+          "json": {
+            "value": "VotingDoor2"
+          }
+        },
+        "532": {
           "json": {
             "value": "Logo"
+          }
+        },
+        "533": {
+          "json": {
+            "value": "BannerBackground_2"
+          }
+        },
+        "534": {
+          "json": {
+            "value": "AccentColorStage"
+          }
+        },
+        "535": {
+          "json": {
+            "value": "AccentColorStage_BelowPodium"
           }
         }
       }
@@ -1231,7 +1629,7 @@
         "serializationType": "map"
       },
       "data": {
-        "536": {
+        "518": {
           "json": {
             "gizmo": 0
           }
@@ -1623,13 +2021,17 @@
                 "children": [
                   514,
                   516,
-                  513,
-                  521,
-                  522,
                   523,
+                  522,
                   526,
                   515,
-                  527
+                  519,
+                  520,
+                  531,
+                  517,
+                  518,
+                  513,
+                  521
                 ]
               },
               {
@@ -1646,25 +2048,6 @@
               },
               {
                 "entity": 516,
-                "children": []
-              },
-              {
-                "entity": 513,
-                "children": []
-              },
-              {
-                "entity": 521,
-                "open": true,
-                "children": [
-                  517,
-                  518,
-                  519,
-                  520,
-                  536
-                ]
-              },
-              {
-                "entity": 522,
                 "children": []
               },
               {
@@ -1693,15 +2076,6 @@
                 "children": []
               },
               {
-                "entity": 517,
-                "open": true,
-                "children": []
-              },
-              {
-                "entity": 518,
-                "children": []
-              },
-              {
                 "entity": 519,
                 "children": []
               },
@@ -1710,11 +2084,64 @@
                 "children": []
               },
               {
+                "entity": 531,
+                "children": []
+              },
+              {
+                "entity": 513,
+                "children": []
+              },
+              {
+                "entity": 517,
+                "children": []
+              },
+              {
+                "entity": 518,
+                "children": []
+              },
+              {
+                "entity": 521,
+                "children": []
+              },
+              {
+                "entity": 522,
+                "open": true,
+                "children": [
+                  527,
+                  529,
+                  528,
+                  533,
+                  532,
+                  534,
+                  535
+                ]
+              },
+              {
                 "entity": 527,
                 "children": []
               },
               {
-                "entity": 536,
+                "entity": 528,
+                "children": []
+              },
+              {
+                "entity": 529,
+                "children": []
+              },
+              {
+                "entity": 532,
+                "children": []
+              },
+              {
+                "entity": 533,
+                "children": []
+              },
+              {
+                "entity": 534,
+                "children": []
+              },
+              {
+                "entity": 535,
                 "children": []
               }
             ]
@@ -2331,28 +2758,26 @@
         "527": {
           "json": {}
         },
-        "536": {
+        "528": {
           "json": {}
-        }
-      }
-    },
-    {
-      "name": "inspector::Hide",
-      "jsonSchema": {
-        "type": "object",
-        "properties": {
-          "value": {
-            "type": "boolean",
-            "serializationType": "boolean"
-          }
         },
-        "serializationType": "map"
-      },
-      "data": {
-        "522": {
-          "json": {
-            "value": true
-          }
+        "529": {
+          "json": {}
+        },
+        "531": {
+          "json": {}
+        },
+        "532": {
+          "json": {}
+        },
+        "533": {
+          "json": {}
+        },
+        "534": {
+          "json": {}
+        },
+        "535": {
+          "json": {}
         }
       }
     },
