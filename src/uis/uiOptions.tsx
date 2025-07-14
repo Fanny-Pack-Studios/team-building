@@ -137,13 +137,13 @@ export class OptionsUI {
               alignItems: 'center',
               justifyContent: 'center',
               positionType: 'relative',
-              width: 78 * getScaleFactor(),
-              height: 42 * getScaleFactor(),
-              margin: { top: '10%' }
+              width: 60 * getScaleFactor(),
+              height: 25 * getScaleFactor(),
+              margin: { top: '10%' },
+              borderRadius: 5
             }}
             uiBackground={{
-              textureMode: 'stretch',
-              texture: { src: 'images/optionsui/next.png' }
+              color: Color4.fromHexString('#E2163A')
             }}
             onMouseDown={() => {
               if (this.selectedIndex !== null && this.onOption != null) {
@@ -152,7 +152,19 @@ export class OptionsUI {
                 this.optionsUiVisibility = false
               }
             }}
-          ></UiEntity>
+          >
+            <Label
+              uiTransform={{
+                alignContent: 'center',
+                positionType: 'relative'
+              }}
+              value={`<b>Vote</b>`}
+              fontSize={12 * getScaleFactor()}
+              font="sans-serif"
+              color={Color4.White()}
+              textAlign="middle-center"
+            />
+          </UiEntity>
         </UiEntity>
       </UiEntity>
     )
