@@ -56,8 +56,12 @@ CustomizationState.onChange(customizationEntity, (component) => {
       const texture = Material.Texture.Common({
         src: component?.textureSrc ?? ''
       })
-      Material.setBasicMaterial(entity, {
-        texture
+      Material.setPbrMaterial(entity, {
+        texture,
+        transparencyMode: MaterialTransparencyMode.MTM_ALPHA_BLEND,
+        specularIntensity: 0,
+        metallic: 0,
+        roughness: 1
       })
     }
   }
