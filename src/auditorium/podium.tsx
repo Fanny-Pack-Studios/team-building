@@ -27,10 +27,13 @@ export function setupPodium(gameController: GameController): void {
   function updatePodiumActions(): void {
     withPlayerInfo((player) => {
       if (gameController.hostsController.isHost(player.userId)) {
+        removeArrowFromPodium()
         configurePodiumForHosts()
       } else if (gameController.hostsController.noHostExists()) {
+        addArrowToPodium()
         configurePodiumForClaimingHost()
       } else {
+        removeArrowFromPodium()
         disablePodium()
       }
     })
@@ -43,10 +46,8 @@ export function setupPodium(gameController: GameController): void {
   }
 
   function configurePodiumForClaimingHost(): void {
-    addArrowToPodium()
     configurePodium('Claim Host', () => {
       gameController.hostsController.claimHost()
-      removeArrowFromPodium()
     })
   }
 
