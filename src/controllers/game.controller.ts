@@ -31,6 +31,7 @@ import { WorkInProgressUI } from '../uis/uiWorkInProgress'
 import { HostsController } from './hosts.controller'
 import { PlayerController } from './player.controller'
 import { UIController } from './ui.controller'
+import { setupVotingDoors } from '../auditorium/votingDoors'
 
 export class GameController {
   public uiController: UIController
@@ -112,6 +113,7 @@ export class GameController {
   }
 
   start(): void {
+    setupVotingDoors()
     setupCustomization()
     setupMessageBus(this)
     this.popupAtendeePanelAndResultbutton.setupAttendeePanelAndResultsButton()
