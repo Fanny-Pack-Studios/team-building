@@ -28,7 +28,6 @@ function factorScaled(theme: UiTheme): UiTheme {
   return {
     ...theme,
     get fontSize(): number {
-      console.log(theme.fontSize * getScaleFactor())
       return theme.fontSize * getScaleFactor()
     },
     get buttonFontSize(): number {
