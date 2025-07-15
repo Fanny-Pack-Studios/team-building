@@ -40,10 +40,12 @@ export class CloseActivityUI {
   }
 
   closeCurrentActivity(): void {
+    console.log('closing')
     withPlayerInfo((player) => {
       const activity = getCurrentActivity(this.gameController.activitiesEntity)
       if (this.canClose(player, activity)) {
         closeActivity(activity.type, activity.entity)
+        this.gameController.popupAtendeePanelAndResultbutton.remove()
       }
     })
   }
