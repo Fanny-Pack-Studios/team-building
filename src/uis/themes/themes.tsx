@@ -1,5 +1,5 @@
 import { Color3, Color4 } from '@dcl/sdk/math'
-import type { UiBackgroundProps, UiFontType, UiTransformProps } from '@dcl/sdk/react-ecs'
+import { type UiBackgroundProps, type UiFontType, type UiTransformProps } from '@dcl/sdk/react-ecs'
 import { getScaleFactor } from '../../canvas/Canvas'
 
 export const accentColor: Color4 = Color4.fromColor3(Color3.fromInts(225, 65, 75))
