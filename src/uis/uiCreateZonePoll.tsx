@@ -8,6 +8,7 @@ import { engine } from '@dcl/sdk/ecs'
 import { pushSyncedMessage } from '../messagebus/messagebus'
 import { ZonePollState } from '../zonePolls/pollEntity'
 import { syncEntity } from '@dcl/sdk/network'
+import { getPlayer } from '@dcl/sdk/src/players'
 
 export class ZonePollUI {
   public createZonePollUiVisibility: boolean = false
@@ -280,9 +281,12 @@ export class ZonePollUI {
 
     const question = this.questionTitle
     const options = this.answers.filter((answer) => answer.trim() !== '')
+    const player = getPlayer()
+    const pollId = player?.userId
 
     const dataEntity = engine.addEntity()
     ZonePollState.create(dataEntity, {
+      pollId,
       question,
       options,
       zoneCounts: Array(options.length).fill(0)

@@ -12,6 +12,7 @@ import { Color4, Quaternion, Vector3 } from '@dcl/sdk/math'
 import { type GameController } from '../controllers/game.controller'
 import { getPlayerPosition } from '../utils'
 import { ZonePollState } from './pollEntity'
+import { pushSyncedMessage } from '../messagebus/messagebus'
 
 export class OptionZone {
   entity: Entity
@@ -68,31 +69,30 @@ export class OptionZone {
     if (playerPos == null) return
 
     const inZone = this.isInside(playerPos)
-    const playerId = 'player'
+    const playerId = 'player' // TODO: we dont really need to keep track of the userID
 
-    const state = ZonePollState.getMutable(this.dataEntity)
+    const state = ZonePollState.get(this.dataEntity)
+    const currentCount = state.zoneCounts?.[this.optionIndex] ?? 0
+    this.updateText(currentCount)
 
     if (inZone && !this.playersInside.has(playerId)) {
       this.playersInside.add(playerId)
-      // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-      if (!state.zoneCounts || typeof state.zoneCounts[this.optionIndex] !== 'number') {
-        // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-        state.zoneCounts = state.zoneCounts || []
-        state.zoneCounts[this.optionIndex] = 0
-      }
-      ZonePollState.getMutable(this.dataEntity).zoneCounts[this.optionIndex]++
-      this.updateText(state.zoneCounts[this.optionIndex])
-      console.log(`Player entered option ${this.optionIndex}. Total:`, state.zoneCounts[this.optionIndex])
+
+      console.log('Player Enter the Zone')
+      pushSyncedMessage('zoneEnter', {
+        pollId: state.pollId,
+        optionIndex: this.optionIndex
+      })
     }
 
     if (!inZone && this.playersInside.has(playerId)) {
       this.playersInside.delete(playerId)
-      ZonePollState.getMutable(this.dataEntity).zoneCounts[this.optionIndex] = Math.max(
-        0,
-        state.zoneCounts[this.optionIndex] - 1
-      )
-      this.updateText(state.zoneCounts[this.optionIndex])
-      console.log(`Player left option ${this.optionIndex}. Total:`, state.zoneCounts[this.optionIndex])
+
+      console.log('Player left the Zone')
+      pushSyncedMessage('zoneExit', {
+        pollId: state.pollId,
+        optionIndex: this.optionIndex
+      })
     }
   }
 
