@@ -25,6 +25,10 @@ function Canvas(props: {
 
 export default Canvas
 
+export function scaledSize(size: number): number {
+  return size * getScaleFactor()
+}
+
 export function getScaleFactor(): number {
   if (!UiCanvasInformation.has(engine.RootEntity)) return 1
   const uiScaleFactor = (Math.min(getCanvas().width, getCanvas().height) / 1080) * 1.4

@@ -2,6 +2,7 @@ import ReactEcs, { type EntityPropTypes, Label, UiEntity, type UiTransformProps 
 import { type GameController } from '../controllers/game.controller'
 import { mainTheme } from './themes/themes'
 import { Row, Column } from './components/flexOrganizers'
+import { scaledSize } from '../canvas/Canvas'
 
 export class MainMenuUi {
   gameController: GameController
@@ -28,8 +29,8 @@ const MainMenu = (props: { gameController: GameController } & EntityPropTypes): 
   return (
     <UiEntity
       uiTransform={{
-        width: '50vw',
-        height: '75vh',
+        width: scaledSize(700),
+        height: scaledSize(600),
         positionType: 'absolute',
         position: { top: '12.5%', left: '25%' },
         justifyContent: 'space-around',
