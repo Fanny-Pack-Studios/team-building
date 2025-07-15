@@ -12,7 +12,7 @@ import { getPlayer } from '@dcl/sdk/src/players'
 import { ActivityType, setCurrentActivity } from '../activities/activitiesEntity'
 
 export class ZonePollUI {
-  public createZonePollUiVisibility: boolean = true
+  public createZonePollUiVisibility: boolean = false
   public switchOn: boolean = false
   public switchOnTexture: string = 'images/createpollui/switchOn.png'
   public switchOffTexture: string = 'images/createpollui/switchOff.png'
