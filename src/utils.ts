@@ -1,4 +1,4 @@
-import { type Entity, Transform, engine } from '@dcl/sdk/ecs'
+import { type BaseComponent, type DeepReadonly, type Entity, Schemas, Transform, engine } from '@dcl/sdk/ecs'
 import { type Vector3 } from '@dcl/sdk/math'
 import { getPlayer } from '@dcl/sdk/src/players'
 
@@ -33,7 +33,7 @@ export function generateId(prefix: string): string {
   return `${prefix}_${timestamp}_${random}`
 }
 
-type PlayerInfo = NonNullable<ReturnType<typeof getPlayer>>
+export type PlayerInfo = NonNullable<ReturnType<typeof getPlayer>>
 
 export async function waitForPlayerInfo(timeout: number = 10): Promise<PlayerInfo> {
   const playerInfo = getPlayer()
@@ -84,3 +84,25 @@ export function getComponentNames(entity: Entity): string[] {
     .filter((it) => it.has(entity))
     .map((it) => it.componentName)
 }
+
+export type ComponentState<ComponentSchema> = ComponentSchema extends BaseComponent<infer T> ? DeepReadonly<T> : never
+
+export const BounceComponent = engine.defineComponent('BounceComponent', {
+  amplitude: Schemas.Number,
+  speed: Schemas.Number,
+  offset: Schemas.Number
+})
+
+engine.addSystem((dt) => {
+  for (const [entity] of engine.getEntitiesWith(BounceComponent, Transform)) {
+    const bounce = BounceComponent.getMutable(entity)
+    const transform = Transform.getMutable(entity)
+
+    bounce.offset += dt
+
+    const baseY = 3
+    const newY = baseY + Math.abs(Math.sin(bounce.offset * bounce.speed)) * bounce.amplitude
+
+    transform.position.y = newY
+  }
+})

@@ -1,16 +1,15 @@
 import { engine, type Entity, Schemas } from '@dcl/sdk/ecs'
+import { syncEntity } from '@dcl/sdk/network'
 import { getPlayer } from '@dcl/sdk/src/players'
-import { generateSurveyId } from '../utils'
-import { type OptionsQuantity } from './rating'
+import { getCurrentActivity } from '../activities/activitiesEntity'
+import { type ComponentState, generateSurveyId } from '../utils'
 import { SurveyIcon } from './surveyIcon'
 
-export const surveyRegistry = new Map<string, Entity>()
-
 export const SurveyState = engine.defineComponent('surveyState', {
-  surveyId: Schemas.String,
+  id: Schemas.String,
+  creatorId: Schemas.String,
+  closed: Schemas.Boolean,
   question: Schemas.String,
-  optionsQty: Schemas.Number,
-  icon: Schemas.EnumString(SurveyIcon, SurveyIcon.STAR),
   anonymous: Schemas.Boolean,
   userIdsThatVoted: Schemas.Array(Schemas.String),
   votes: Schemas.Array(
@@ -19,24 +18,26 @@ export const SurveyState = engine.defineComponent('surveyState', {
       option: Schemas.Number
     })
   ),
-  creatorId: Schemas.String,
-  closed: Schemas.Boolean
+  optionsQty: Schemas.Number,
+  icon: Schemas.EnumString(SurveyIcon, SurveyIcon.STAR)
 })
+
+export type SurveyStateType = ComponentState<typeof SurveyState>
 
 export function createSurveyEntity(
   question: string,
   icon: SurveyIcon = SurveyIcon.STAR,
-  optionsQty: OptionsQuantity = 5,
+  optionsQty: number = 5,
   anonymous: boolean = false
-): Entity {
+): [string, Entity] {
   const entity = engine.addEntity()
-  const surveyId = generateSurveyId()
+  const id = generateSurveyId()
   const player = getPlayer()
 
   const creatorId = player?.userId
 
   SurveyState.create(entity, {
-    surveyId,
+    id,
     question,
     icon,
     anonymous,
@@ -47,7 +48,21 @@ export function createSurveyEntity(
     closed: false
   })
 
-  surveyRegistry.set(surveyId, entity)
+  syncEntity(entity, [SurveyState.componentId])
 
-  return entity
+  return [id, entity]
+}
+
+export function closeSurvey(surveyEntity: Entity): void {
+  SurveyState.getMutable(surveyEntity).closed = true
+}
+
+export function getSurveyState(activitiesEntity: Entity): SurveyStateType | null {
+  const currentActivity = getCurrentActivity(activitiesEntity)
+
+  if (currentActivity === undefined) {
+    return null
+  }
+
+  return SurveyState.getOrNull(currentActivity.entity)
 }

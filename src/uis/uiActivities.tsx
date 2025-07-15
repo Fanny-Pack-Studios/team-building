@@ -194,13 +194,16 @@ export class ChooseActivityUI {
       case 2:
         this.chooseActivityUiVisibility = false
         // this.gameController.createQAUI.createQAUiVisibility = true
+        this.gameController.workInProgressUI.isVisible = true
         break
       case 3:
         this.chooseActivityUiVisibility = false
         //  this.gameController.createQuizUI.createQuizUiVisibility = true
+        this.gameController.workInProgressUI.isVisible = true
         break
       case 4:
         this.chooseActivityUiVisibility = false
+        // this.gameController.workInProgressUI.isVisible = true
         this.gameController.createSurveyUI.isVisible = true
         break
       default:

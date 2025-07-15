@@ -26,12 +26,12 @@ function Canvas(props: {
 export default Canvas
 
 export function getScaleFactor(): number {
-  const uiScaleFactor =
-    (Math.min(getCanvas().width, getCanvas().height) / 1080) * 1.4;
-  return uiScaleFactor;
+  if (!UiCanvasInformation.has(engine.RootEntity)) return 1
+  const uiScaleFactor = (Math.min(getCanvas().width, getCanvas().height) / 1080) * 1.4
+  return uiScaleFactor
 }
 
-function getCanvas(): PBUiCanvasInformation {
-  const canvasInfo = UiCanvasInformation.get(engine.RootEntity);
-  return canvasInfo;
+export function getCanvas(): PBUiCanvasInformation {
+  const canvasInfo = UiCanvasInformation.get(engine.RootEntity)
+  return canvasInfo
 }
