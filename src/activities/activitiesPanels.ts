@@ -17,12 +17,14 @@ import { PollQuestion } from '../polls/pollQuestionUi'
 import { SurveyState } from '../surveys/surveyEntity'
 import { SyncEntityEnumId } from '../syncEntities'
 import { ActivityType, getCurrentActivity, listenToActivities } from './activitiesEntity'
+import * as utils from '@dcl-sdk/utils'
 
 export class PopupAttendeePanelAndResultsButton {
   public attendeePanelEntity = engine.getEntityOrNullByName('AttendeePanel')
   public showResultsButtonEntity = engine.getEntityOrNullByName('ShowResultsButton')
   public interactableMonitor: Entity | null = null
   public attendeePanelEntityA: Entity | null = null
+
   gameController: GameController
   constructor(gameController: GameController) {
     this.gameController = gameController
@@ -35,12 +37,19 @@ export class PopupAttendeePanelAndResultsButton {
   }
 
   create(): void {
-    for (const entity of [this.attendeePanelEntity, this.showResultsButtonEntity]) {
+    this.attendeePanelEntity = engine.getEntityOrNullByName('AttendeePanel')
+    this.showResultsButtonEntity = engine.getEntityOrNullByName('ShowResultsButton')
+    this.interactableMonitor = engine.getEntityOrNullByName('Interactable')
+
+    for (const entity of [this.attendeePanelEntity, this.showResultsButtonEntity, this.interactableMonitor]) {
       if (entity !== null) {
+        const isMonitor = entity === this.interactableMonitor
+        const endScale = isMonitor ? Vector3.create(2, 2, 2) : Vector3.One()
+
         Tween.createOrReplace(entity, {
           mode: Tween.Mode.Scale({
             start: Vector3.Zero(),
-            end: Vector3.One()
+            end: endScale
           }),
           duration: 500,
           easingFunction: EasingFunction.EF_EASEINBOUNCE
@@ -182,5 +191,27 @@ export class PopupAttendeePanelAndResultsButton {
     })
 
     this.gameController.pollResultsUI.openUI()
+  }
+
+  remove(): void {
+    for (const entity of [this.attendeePanelEntity, this.interactableMonitor]) {
+      if (entity !== null) {
+        this.animateOutAndRemove(entity)
+      }
+    }
+  }
+
+  animateOutAndRemove(entity: Entity, duration = 500): void {
+    Tween.createOrReplace(entity, {
+      mode: Tween.Mode.Scale({
+        start: Vector3.One(),
+        end: Vector3.Zero()
+      }),
+      duration,
+      easingFunction: EasingFunction.EF_EASEOUTBOUNCE
+    })
+    utils.timers.setTimeout(() => {
+      // engine.removeEntity(entity)
+    }, duration)
   }
 }

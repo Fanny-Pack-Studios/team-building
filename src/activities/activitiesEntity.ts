@@ -29,6 +29,7 @@ export function createActivitiesEntity(): Entity {
 
   ActivitiesState.create(entity)
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   syncEntity(entity, [ActivitiesState.componentId], SyncEntityEnumId.ACTIVITIES)
 
   return entity
