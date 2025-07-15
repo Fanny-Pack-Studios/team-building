@@ -4,11 +4,14 @@ import { closePoll, PollState } from '../polls/pollEntity'
 import { closeSurvey, SurveyState } from '../surveys/surveyEntity'
 import { SyncEntityEnumId } from '../syncEntities'
 import { type ComponentState } from '../utils'
+import { ZonePollState } from '../zonePolls/pollEntity'
+import { closeZonePoll } from '../zonePolls/zonPollSystem'
 
 export enum ActivityType {
   NONE,
   POLL,
-  SURVEY
+  SURVEY,
+  ZONEPOLL
 }
 
 export type BaseActivityStateType = {
@@ -29,6 +32,7 @@ export function createActivitiesEntity(): Entity {
 
   ActivitiesState.create(entity)
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   syncEntity(entity, [ActivitiesState.componentId], SyncEntityEnumId.ACTIVITIES)
 
   return entity
@@ -63,6 +67,8 @@ export function getCurrentActivity(activitiesEntity: Entity): ActivityResult | u
         return getActivityWithComponent(PollState, ActivityType.POLL)
       case ActivityType.SURVEY:
         return getActivityWithComponent(SurveyState, ActivityType.SURVEY)
+      case ActivityType.ZONEPOLL:
+        return getActivityWithComponent(ZonePollState, ActivityType.ZONEPOLL)
     }
   }
 }
@@ -94,6 +100,9 @@ export function closeActivity(type: ActivityType, entity: Entity): void {
     case ActivityType.SURVEY:
       closeSurvey(entity)
       break
+    case ActivityType.ZONEPOLL:
+      closeZonePoll(entity)
+      break
   }
 }
 
@@ -103,6 +112,8 @@ export function getActivityName(type: ActivityType): string {
       return 'Poll'
     case ActivityType.SURVEY:
       return 'Survey'
+    case ActivityType.ZONEPOLL:
+      return 'ZonePoll'
     default:
       return 'Activity'
   }

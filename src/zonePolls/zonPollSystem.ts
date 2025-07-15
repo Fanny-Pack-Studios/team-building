@@ -4,10 +4,12 @@ import { ZonePollState } from './pollEntity'
 import { type GameController } from '../controllers/game.controller'
 import { Color4, Vector3 } from '@dcl/sdk/math'
 import { OptionZone } from './optionZone'
+import { ActivityType, getCurrentActivity } from '../activities/activitiesEntity'
 
 export class ZonePollSystem {
   private readonly trackedEntities = new Set<Entity>()
   private readonly gameController: GameController
+  private lastClosed = false
 
   constructor(gameController: GameController) {
     this.gameController = gameController
@@ -15,6 +17,22 @@ export class ZonePollSystem {
 
   public start(): void {
     engine.addSystem(this.update)
+
+    engine.addSystem(() => {
+      const activity = getCurrentActivity(this.gameController.activitiesEntity)
+      if (activity?.type === ActivityType.ZONEPOLL) {
+        if (activity.state.closed && !this.lastClosed) {
+          this.lastClosed = true
+          this.gameController.zonePollQuestionUI.hide()
+          this.gameController.timerUI.hide()
+          this.clearZones()
+        } else if (!activity.state.closed) {
+          this.lastClosed = false
+        }
+      } else {
+        this.lastClosed = false
+      }
+    })
   }
 
   private readonly update = (): void => {
@@ -27,8 +45,25 @@ export class ZonePollSystem {
     }
   }
 
+  private clearZones(): void {
+    for (const key of ['zone1', 'zone2', 'zone3', 'zone4'] as const) {
+      const zone = this.gameController[key]
+      if (zone != null) {
+        zone.destroy()
+        this.gameController[key] = null
+      }
+    }
+
+    for (const system of this.gameController.zoneUpdateSystems) {
+      engine.removeSystem(system)
+    }
+
+    this.gameController.zoneUpdateSystems.clear()
+  }
+
   public reset(): void {
     this.trackedEntities.clear()
+    this.clearZones()
   }
 }
 
@@ -49,8 +84,8 @@ function createZonesForPoll(
   const zoneColors = [Color4.Red(), Color4.Green(), Color4.Yellow(), Color4.Blue()]
 
   const positions = [
-    Vector3.create(2, 0, 4),
-    Vector3.create(6, 0, 4),
+    Vector3.create(2.83, 0.4, 6.64),
+    Vector3.create(6, 0.4, 3.4),
     Vector3.create(10, 0, 4),
     Vector3.create(14, 0, 4)
   ]
@@ -105,4 +140,13 @@ function createZonesForPoll(
 
   engine.addSystem(pollSystem)
   gameController.timerUI.show(1)
+}
+
+export function closeZonePoll(zonePollEntity: Entity): void {
+  const mutable = ZonePollState.getMutable(zonePollEntity)
+  // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+  if (mutable) {
+    mutable.closed = true
+    console.log('here', mutable)
+  }
 }

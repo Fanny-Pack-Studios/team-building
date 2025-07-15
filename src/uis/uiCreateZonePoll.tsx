@@ -9,9 +9,10 @@ import { pushSyncedMessage } from '../messagebus/messagebus'
 import { ZonePollState } from '../zonePolls/pollEntity'
 import { syncEntity } from '@dcl/sdk/network'
 import { getPlayer } from '@dcl/sdk/src/players'
+import { ActivityType, setCurrentActivity } from '../activities/activitiesEntity'
 
 export class ZonePollUI {
-  public createZonePollUiVisibility: boolean = false
+  public createZonePollUiVisibility: boolean = true
   public switchOn: boolean = false
   public switchOnTexture: string = 'images/createpollui/switchOn.png'
   public switchOffTexture: string = 'images/createpollui/switchOff.png'
@@ -286,14 +287,21 @@ export class ZonePollUI {
 
     const dataEntity = engine.addEntity()
     ZonePollState.create(dataEntity, {
+      id: pollId,
       pollId,
       question,
       options,
-      zoneCounts: Array(options.length).fill(0)
+      zoneCounts: Array(options.length).fill(0),
+      creatorId: pollId,
+      closed: false
     })
 
     this.gameController.zonePollDataEntity = dataEntity
     syncEntity(dataEntity, [ZonePollState.componentId])
+    if (pollId !== undefined) {
+      setCurrentActivity(this.gameController.activitiesEntity, pollId, ActivityType.ZONEPOLL)
+    }
+    console.log('Created ZonePollState', ZonePollState.get(dataEntity))
   }
 
   renderAnswerInputs(): ReactEcs.JSX.Element[] {
