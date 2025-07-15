@@ -1,5 +1,6 @@
 import { Billboard, engine, GltfContainer, PlayerIdentityData, TextShape, Transform, type Entity } from '@dcl/sdk/ecs'
 import { Color4, Vector3 } from '@dcl/sdk/math'
+import { onLeaveScene } from '@dcl/sdk/players'
 import { type HostsController } from '../controllers/hosts.controller'
 import { withPlayerInfo } from '../utils'
 
@@ -19,6 +20,10 @@ export class HostIndicators {
     })
 
     this.updateIndicators()
+
+    onLeaveScene((userId) => {
+      this.deleteIndicatorIfExists(userId)
+    })
   }
 
   updateIndicatorPositions(): void {

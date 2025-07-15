@@ -1,10 +1,8 @@
-import { engine, type Entity } from '@dcl/sdk/ecs'
 import { withPlayerInfo } from '../utils'
 import { type GameController } from './game.controller'
 import { PlayerStateComponent } from './player.controller'
 
 export class HostsController {
-  public readonly hostEntity: Entity = engine.addEntity()
   gameController: GameController
   constructor(gameController: GameController) {
     this.gameController = gameController
