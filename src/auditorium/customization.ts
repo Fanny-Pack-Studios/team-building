@@ -66,18 +66,35 @@ CustomizationState.onChange(customizationEntity, (component) => {
     }
   }
 
+  const color = component?.accentColor ?? Color4.Black()
+
   const accentMaterialParams: PBMaterial_PbrMaterial = {
-    albedoColor: component?.accentColor ?? Color4.Black(),
+    albedoColor: color,
     // texture: Material.Texture.Common({
     //     src: "", TODO: Add texture
     // }),
     transparencyMode: MaterialTransparencyMode.MTM_ALPHA_BLEND
   }
 
+  const brightAccentMaterial: PBMaterial_PbrMaterial = {
+    albedoColor: Color4.fromInts(color.r * 255 * 2.5, color.g * 255 * 2.5, color.b * 255 * 2.5, color.a),
+    // texture: Material.Texture.Common({
+    //     src: "", TODO: Add texture
+    // }),
+    transparencyMode: MaterialTransparencyMode.MTM_OPAQUE
+  }
+
   for (const bannerName of ['Accent', 'BannerBackground', 'BannerBackground_2']) {
     const entity = engine.getEntityOrNullByName(bannerName)
     if (entity !== null) {
       Material.setPbrMaterial(entity, accentMaterialParams)
+    }
+  }
+
+  for (const bannerName of ['AccentColorStage', 'AccentColorStage_BelowPodium']) {
+    const entity = engine.getEntityOrNullByName(bannerName)
+    if (entity !== null) {
+      Material.setPbrMaterial(entity, brightAccentMaterial)
     }
   }
 })
