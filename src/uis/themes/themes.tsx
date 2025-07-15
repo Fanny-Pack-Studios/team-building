@@ -12,6 +12,7 @@ export type UiTheme = {
   disabledFontColor: Color4
   buttonFontSize: number
   fontSize: number
+  smallFontSize: number
   titleFontSize: number
   font: UiFontType
   primaryButtonTransform: UiTransformProps
@@ -35,6 +36,9 @@ function factorScaled(theme: UiTheme): UiTheme {
     },
     get titleFontSize(): number {
       return theme.titleFontSize * getScaleFactor()
+    },
+    get smallFontSize(): number {
+      return theme.smallFontSize * getScaleFactor()
     }
   }
 }
@@ -44,6 +48,7 @@ export const primaryTheme: UiTheme = factorScaled({
   disabledFontColor: Color4.multiply(Color4.White(), Color4.Gray()),
   buttonFontSize: 15,
   fontSize: 20,
+  smallFontSize: 14,
   titleFontSize: 30,
   font: 'sans-serif',
   primaryButtonTransform: {
@@ -95,6 +100,7 @@ export const mainTheme: UiTheme = factorScaled({
   buttonFontSize: 30,
   fontSize: 30,
   titleFontSize: 50,
+  smallFontSize: 15,
   font: 'sans-serif',
   primaryButtonTransform: {
     padding: '1%',

@@ -1,4 +1,5 @@
 import ReactEcs, { Label, type PositionUnit, UiEntity } from '@dcl/sdk/react-ecs'
+import { getScaleFactor } from '../canvas/Canvas'
 import { type GameController } from '../controllers/game.controller'
 import { getSurveyState, type SurveyStateType } from '../surveys/surveyEntity'
 import { ModalButton } from './components/buttons'
@@ -27,13 +28,13 @@ function SurveyResultOption(props: {
         value={`<b>${Math.round(percentage * 100)}%</b>`}
         uiTransform={{
           width: '100%',
-          height: '4vw',
+          height: 48 * getScaleFactor(),
           alignSelf: 'flex-start',
           justifyContent: 'center'
         }}
         textAlign="middle-center"
         textWrap="nowrap"
-        fontSize="1.1vw"
+        fontSize={12 * getScaleFactor()}
         color={color}
       ></Label>
       <UiEntity uiTransform={{ width: '100%', height: '100%', justifyContent: 'flex-end', flexDirection: 'column' }}>
@@ -48,8 +49,8 @@ function SurveyResultOption(props: {
 
       <Label
         value={option.toString()}
-        uiTransform={{ width: '100%', height: '3vw' }}
-        fontSize="1vw"
+        uiTransform={{ width: '100%', height: 36 * getScaleFactor() }}
+        fontSize={12 * getScaleFactor()}
         textAlign="middle-center"
       ></Label>
     </UiEntity>
@@ -57,7 +58,7 @@ function SurveyResultOption(props: {
 }
 
 export class SurveyResultsUI {
-  public isVisible: boolean = false
+  public isVisible: boolean = true
   constructor(private readonly gameController: GameController) {}
 
   createUi(): ReactEcs.JSX.Element | null {

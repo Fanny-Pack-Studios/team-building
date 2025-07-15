@@ -1,4 +1,5 @@
 import ReactEcs, { Label, UiEntity } from '@dcl/sdk/react-ecs'
+import { getScaleFactor } from '../canvas/Canvas'
 import { type SurveyIcon } from './surveyIcon'
 
 export type RatingNumber = number
@@ -13,10 +14,12 @@ function IconEntity(props: {
   const hOffset = highlighted ? 0.5 : 0
 
   return (
-    <UiEntity uiTransform={{ flexDirection: 'column', width: 'auto', height: '7vw', alignItems: 'center' }}>
-      <Label value={props.ratingValue.toString()} textAlign="middle-center" fontSize="1vw"></Label>
+    <UiEntity
+      uiTransform={{ flexDirection: 'column', width: 'auto', height: 100 * getScaleFactor(), alignItems: 'center' }}
+    >
+      <Label value={props.ratingValue.toString()} textAlign="middle-center" fontSize={12 * getScaleFactor()}></Label>
       <UiEntity
-        uiTransform={{ width: '4vw', height: '4vw' }}
+        uiTransform={{ width: 50 * getScaleFactor(), height: 50 * getScaleFactor() }}
         onMouseDown={() => {
           props.onSelected(props.ratingValue)
         }}
@@ -58,7 +61,7 @@ export function RatingSelector(props: {
         width: '100%',
         height: 'auto',
         justifyContent: 'space-between',
-        padding: '1vw 0'
+        padding: { top: 12 * getScaleFactor(), bottom: 12 * getScaleFactor() }
       }}
     >
       {elements}

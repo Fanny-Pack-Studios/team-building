@@ -1,6 +1,7 @@
 import { Color4 } from '@dcl/sdk/math'
 import ReactEcs, { type EntityPropTypes, Input, type UiInputProps, type UiLabelProps } from '@dcl/sdk/react-ecs'
 import { merge } from 'ts-deepmerge'
+import { primaryTheme } from '../themes/themes'
 import { VerticalLabeledControl } from './labeledControl'
 
 export function LabeledInput(props: {
@@ -15,7 +16,7 @@ export function LabeledInput(props: {
         height: 'auto'
       },
 
-      fontSize: '1.3vw',
+      fontSize: primaryTheme.fontSize,
       placeholderColor: Color4.Gray(),
       textAlign: 'middle-left',
       uiBackground: {
