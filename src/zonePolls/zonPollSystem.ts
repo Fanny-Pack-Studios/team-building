@@ -5,7 +5,7 @@ import { type GameController } from '../controllers/game.controller'
 import { Color4, Vector3 } from '@dcl/sdk/math'
 import { OptionZone } from './optionZone'
 import { ActivityType, getCurrentActivity } from '../activities/activitiesEntity'
-import { type VotingDoorNumber, openVotingDoors } from '../auditorium/votingDoors'
+import { type VotingDoorNumber, openVotingDoors, closeAllOpenedDoors } from '../auditorium/votingDoors'
 import * as utils from '@dcl-sdk/utils'
 export class ZonePollSystem {
   private readonly trackedEntities = new Set<Entity>()
@@ -23,10 +23,7 @@ export class ZonePollSystem {
       const activity = getCurrentActivity(this.gameController.activitiesEntity)
       if (activity?.type === ActivityType.ZONEPOLL) {
         if (activity.state.closed && !this.lastClosed) {
-          this.lastClosed = true
-          this.gameController.zonePollQuestionUI.hide()
-          this.gameController.timerUI.hide()
-          this.clearZones()
+          this.close()
         } else if (!activity.state.closed) {
           this.lastClosed = false
         }
@@ -65,6 +62,26 @@ export class ZonePollSystem {
   public reset(): void {
     this.trackedEntities.clear()
     this.clearZones()
+
+    if (this.gameController.zonePollDataEntity != null) {
+      engine.removeEntity(this.gameController.zonePollDataEntity)
+      this.gameController.zonePollDataEntity = null
+    }
+  }
+
+  public close(): void {
+    this.lastClosed = true
+    this.clearZones()
+    this.reset()
+    this.gameController.zonePollQuestionUI.hide()
+    this.gameController.timerUI.hide()
+    this.gameController.closePollUi.hide()
+    closeAllOpenedDoors()
+    const dataEntity = this.gameController.zonePollDataEntity
+    if (dataEntity !== null) {
+      engine.removeEntity(dataEntity)
+      this.gameController.zonePollDataEntity = null
+    }
   }
 }
 
@@ -122,12 +139,15 @@ function createZonesForPoll(
   gameController.zonePollQuestionUI.show(zonePoll.question, zonePoll.options)
 
   let elapsed = 0
+  // TODO : Should come from the UI's
+
   const duration = 60
 
   const pollSystem = (dt: number): void => {
     elapsed += dt
     if (elapsed >= duration) {
-      gameController.zonePollQuestionUI.hide()
+      closeZonePoll(entity)
+      engine.removeSystem(pollSystem)
 
       for (const key of zoneKeys) {
         const zone = gameController[key]
