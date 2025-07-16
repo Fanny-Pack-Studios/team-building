@@ -81,19 +81,29 @@ export class HostsToolbarUI {
     }
     return (
       <UiEntity
-        uiBackground={{ color: Color4.create(0, 0, 0, 0.7) }}
         uiTransform={{
           width: 'auto',
-          height: 'auto',
+          height: '100%',
           positionType: 'absolute',
-          position: { top: 77 * getScaleFactor(), left: 37 * getScaleFactor() },
-          borderRadius: 10 * getScaleFactor(),
+          position: { right: 8 * getScaleFactor(), top: 0 },
           flexDirection: 'column',
-          justifyContent: 'space-between'
+          alignItems: 'center',
+          justifyContent: 'center'
         }}
       >
-        <ToolbarButton icon="home" onClick={this.showMainMenu.bind(this)}></ToolbarButton>
-        <ToolbarButton icon="moderation" onClick={this.showModeratorPanel.bind(this)}></ToolbarButton>
+        <UiEntity
+          uiBackground={{ color: Color4.create(0, 0, 0, 0.7) }}
+          uiTransform={{
+            width: 'auto',
+            height: 'auto',
+            borderRadius: 10 * getScaleFactor(),
+            flexDirection: 'column',
+            justifyContent: 'space-between'
+          }}
+        >
+          <ToolbarButton icon="home" onClick={this.showMainMenu.bind(this)}></ToolbarButton>
+          <ToolbarButton icon="moderation" onClick={this.showModeratorPanel.bind(this)}></ToolbarButton>
+        </UiEntity>
       </UiEntity>
     )
   }
