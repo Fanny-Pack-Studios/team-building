@@ -24,7 +24,6 @@ export class UIController {
       // Black Screen UI MUST be always the last one
       <UiEntity>
         <Canvas>
-          {this.gameController.iconPanelUI.createPanelUi()}
           {this.gameController.activitiesUI.createChooseActivityUi()}
           {this.gameController.createPollUI.createUi()}
           {this.gameController.createOptionUI.createUi()}
@@ -42,6 +41,7 @@ export class UIController {
           {this.gameController.kickUI.createBlackScreen()}
           {this.gameController.surveyQuestionUI.createUi()}
           {this.gameController.surveyResultsUI.createUi()}
+          {this.gameController.hostsToolbar.createUi()}
           {ui.render()}
         </Canvas>
       </UiEntity>
