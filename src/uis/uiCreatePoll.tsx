@@ -6,6 +6,7 @@ import { getScaleFactor } from '../canvas/Canvas'
 import { type GameController } from '../controllers/game.controller'
 import { createPollEntity, pollRegistry } from '../polls/pollEntity'
 import { engine } from '@dcl/sdk/ecs'
+import { Switch } from './components/switch'
 
 export class CreatePollUI {
   public createPollUiVisibility: boolean = false
@@ -18,13 +19,14 @@ export class CreatePollUI {
   switchBgOffSrc = 'images/createpollui/switch_bg_off.png'
   switchThumbOnSrc = 'images/createpollui/switch_thum_on.png'
   switchThumbOffSrc = 'images/createpollui/switch_thum_off.png'
-
+  private isAnonymous: boolean = false
   public questionTitle: string = ''
   public answers: string[] = ['', '']
   public gameController: GameController
   public answerScrollIndex: number = 0
   public maxAnswers: number = 4
   public addAnswerButtonDisabled: Color4 | undefined = undefined
+
   constructor(gameController: GameController) {
     this.gameController = gameController
     engine.addSystem((dt) => {
@@ -272,67 +274,12 @@ export class CreatePollUI {
               this.toggleSwitcher()
             }}
           >
-            {/* BACKGROUND OFF */}
-            <UiEntity
-              uiTransform={{
-                width: '100%',
-                height: '100%',
-                positionType: 'absolute'
+            <Switch
+              initialValue={this.isAnonymous}
+              onChange={(val) => {
+                this.isAnonymous = val
               }}
-              uiBackground={{
-                textureMode: 'stretch',
-                texture: { src: this.switchBgOffSrc },
-                color: Color4.create(1, 1, 1, 1 - this.switchThumbPosition)
-              }}
-            />
-
-            {/* BACKGROUND ON */}
-            <UiEntity
-              uiTransform={{
-                width: '100%',
-                height: '100%',
-                positionType: 'absolute'
-              }}
-              uiBackground={{
-                textureMode: 'stretch',
-                texture: { src: this.switchBgOnSrc },
-                color: Color4.create(1, 1, 1, this.switchThumbPosition)
-              }}
-            />
-
-            {/* THUMB OFF */}
-            <UiEntity
-              uiTransform={{
-                width: 32 * getScaleFactor(),
-                height: 30 * getScaleFactor(),
-                positionType: 'absolute',
-                position: {
-                  left: `${4 + 40 * this.switchThumbPosition}%`
-                }
-              }}
-              uiBackground={{
-                textureMode: 'stretch',
-                texture: { src: this.switchThumbOffSrc },
-                color: Color4.create(1, 1, 1, 1 - this.switchThumbPosition)
-              }}
-            />
-
-            {/* THUMB ON */}
-            <UiEntity
-              uiTransform={{
-                width: 32 * getScaleFactor(),
-                height: 30 * getScaleFactor(),
-                positionType: 'absolute',
-                position: {
-                  left: `${4 + 40 * this.switchThumbPosition}%`
-                }
-              }}
-              uiBackground={{
-                textureMode: 'stretch',
-                texture: { src: this.switchThumbOnSrc },
-                color: Color4.create(1, 1, 1, this.switchThumbPosition)
-              }}
-            />
+            ></Switch>
           </UiEntity>
 
           {/* Bottom buttons */}
