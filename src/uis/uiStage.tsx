@@ -16,7 +16,7 @@ export class StageUI {
   constructor(gameController: GameController) {
     this.gameController = gameController
 
-    this.gameController.playerController.onChange((newHosts) => {
+    this.gameController.playerController.onHostChange((newHosts) => {
       console.log('Hosts changed: ', newHosts)
       this.checkPlayerAccess(newHosts)
     })

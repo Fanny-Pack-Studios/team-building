@@ -18,7 +18,7 @@ export function setupPodium(gameController: GameController): void {
   const podium = podiumOrNull
   const arrow = engine.addEntity()
 
-  gameController.playerController.onChange(() => {
+  gameController.playerController.onHostChange(() => {
     updatePodiumActions()
   })
 

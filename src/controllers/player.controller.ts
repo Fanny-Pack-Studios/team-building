@@ -20,7 +20,6 @@ export const PlayerStateComponent = engine.defineComponent('PlayerStateComponent
 export class PlayerController {
   public players = new Map<string, Player>()
   public playerState: Entity = engine.addEntity()
-  public readonly hostEntity: Entity = engine.addEntity()
   gameController: GameController
 
   constructor(gameController: GameController) {
@@ -145,7 +144,7 @@ export class PlayerController {
     return this.getHosts().length === 0
   }
 
-  onChange(cb: (newHosts: string[] | undefined) => void): void {
+  onHostChange(cb: (newHosts: string[] | undefined) => void): void {
     PlayerStateComponent.onChange(this.playerState, (newState) => {
       cb(newState?.hostList)
     })

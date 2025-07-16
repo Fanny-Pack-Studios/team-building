@@ -11,7 +11,7 @@ export class HostIndicators {
   >()
 
   constructor(private readonly playerController: PlayerController) {
-    playerController.onChange((_newHosts) => {
+    playerController.onHostChange((_newHosts) => {
       this.updateIndicators()
     })
 

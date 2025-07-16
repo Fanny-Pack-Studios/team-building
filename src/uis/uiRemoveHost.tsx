@@ -10,7 +10,7 @@ export class RemoveHostModal {
   private readonly gameController: GameController
   constructor(gameController: GameController) {
     this.gameController = gameController
-    this.gameController.playerController.onChange((newHosts) => {
+    this.gameController.playerController.onHostChange((newHosts) => {
       this.updateHosts(newHosts ?? [])
     })
     this.updateHosts(this.gameController.playerController.getHosts())
