@@ -31,14 +31,14 @@ export class RemoveHostModal {
 
   removeSelectedHost(): void {
     if (this.selectedHostIndex !== -1) {
-      this.gameController.playerController.removeHost(this.hosts[this.selectedHostIndex])
+      this.gameController.playerController.setHost(this.hosts[this.selectedHostIndex], false)
     }
   }
 
   removeHostByUserId(userId: string): void {
     const index = this.hosts.indexOf(userId)
     if (index !== -1) {
-      this.gameController.playerController.removeHost(this.hosts[index])
+      this.gameController.playerController.setHost(this.hosts[index], false)
     } else {
       console.log(`User ${userId} not found in hosts list.`)
     }

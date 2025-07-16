@@ -158,12 +158,4 @@ export class PlayerController {
       }
     })
   }
-
-  removeHost(host: string): void {
-    const mutableHosts = PlayerStateComponent.getMutable(this.playerState).hostList
-    const index = mutableHosts.indexOf(host)
-    if (index !== -1) {
-      mutableHosts.splice(index, 1)
-    }
-  }
 }
