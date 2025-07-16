@@ -42,6 +42,7 @@ export class UIController {
           {this.gameController.kickUI.createBlackScreen()}
           {this.gameController.surveyQuestionUI.createUi()}
           {this.gameController.surveyResultsUI.createUi()}
+          {this.gameController.zonePollResultUI.createUi()}
           {ui.render()}
         </Canvas>
       </UiEntity>

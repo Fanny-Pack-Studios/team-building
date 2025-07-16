@@ -33,6 +33,7 @@ import { HostsController } from './hosts.controller'
 import { PlayerController } from './player.controller'
 import { UIController } from './ui.controller'
 import { setupVotingDoors } from '../auditorium/votingDoors'
+import { ZonePollResultsUI } from '../uis/uiZonePollResults'
 
 export class GameController {
   public uiController: UIController
@@ -70,6 +71,7 @@ export class GameController {
   public zone3: OptionZone | null
   public zone4: OptionZone | null
   public zoneUpdateSystems = new Set<(dt: number) => void>()
+  public zonePollResultUI: ZonePollResultsUI
 
   public customizationUI: CustomizationUI
   public workInProgressUI: WorkInProgressUI
@@ -100,6 +102,7 @@ export class GameController {
     this.createZonePollUI = new ZonePollUI(this)
     this.zonePollQuestionUI = new ZonePollQuestionUI(this)
     this.zonePollSystem = new ZonePollSystem(this)
+    this.zonePollResultUI = new ZonePollResultsUI(this)
 
     this.newModerationPanel = new ModerationPanel(this)
 

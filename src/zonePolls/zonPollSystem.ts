@@ -7,6 +7,7 @@ import { OptionZone } from './optionZone'
 import { ActivityType, getCurrentActivity } from '../activities/activitiesEntity'
 import { type VotingDoorNumber, openVotingDoors, closeAllOpenedDoors } from '../auditorium/votingDoors'
 import * as utils from '@dcl-sdk/utils'
+import { pushSyncedMessage } from '../messagebus/messagebus'
 export class ZonePollSystem {
   private readonly trackedEntities = new Set<Entity>()
   private readonly gameController: GameController
@@ -72,16 +73,34 @@ export class ZonePollSystem {
   public close(): void {
     this.lastClosed = true
     this.clearZones()
-    this.reset()
     this.gameController.zonePollQuestionUI.hide()
     this.gameController.timerUI.hide()
     this.gameController.closePollUi.hide()
     closeAllOpenedDoors()
     const dataEntity = this.gameController.zonePollDataEntity
+
     if (dataEntity !== null) {
+      const pollState = ZonePollState.get(dataEntity)
+      const counts = pollState.zoneCounts
+      const maxVotes = Math.max(...counts)
+      const winnerIndexes = counts.map((count, i) => ({ count, i })).filter((entry) => entry.count === maxVotes)
+
+      if (maxVotes === 0 || winnerIndexes.length > 1) {
+        pushSyncedMessage('showZonePollResults', {
+          question: pollState.question,
+          winnerOption: "It's a tie!"
+        })
+      } else {
+        const winnerOption = pollState.options[winnerIndexes[0].i]
+        pushSyncedMessage('showZonePollResults', {
+          question: pollState.question,
+          winnerOption
+        })
+      }
       engine.removeEntity(dataEntity)
       this.gameController.zonePollDataEntity = null
     }
+    this.reset()
   }
 }
 
@@ -168,10 +187,15 @@ function createZonesForPoll(
 }
 
 export function closeZonePoll(zonePollEntity: Entity): void {
+  if (!ZonePollState.has(zonePollEntity)) {
+    console.log(`ZonePollState not found for entity ${zonePollEntity}`)
+    return
+  }
+
   const mutable = ZonePollState.getMutable(zonePollEntity)
   // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
   if (mutable) {
     mutable.closed = true
-    console.log('here', mutable)
+    console.log('Poll closed:', mutable)
   }
 }

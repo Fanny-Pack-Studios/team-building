@@ -2,7 +2,6 @@ import { engine, type MapComponentDefinition, Schemas } from '@dcl/ecs'
 import { syncEntity } from '@dcl/sdk/network'
 import { SyncEntityEnumId } from '../syncEntities'
 import { type GameController } from '../controllers/game.controller'
-import { ZonePollState } from '../zonePolls/pollEntity'
 
 let lastMessageConsumed = Date.now()
 export const messageBusEntity = engine.addEntity()
@@ -13,13 +12,9 @@ const messageContentAlternatives = {
   createZonePollUi: Schemas.Map({
     dataEntityId: Schemas.Int
   }),
-  zoneEnter: Schemas.Map({
-    pollId: Schemas.String,
-    optionIndex: Schemas.Int
-  }),
-  zoneExit: Schemas.Map({
-    pollId: Schemas.String,
-    optionIndex: Schemas.Int
+  showZonePollResults: Schemas.Map({
+    question: Schemas.String,
+    winnerOption: Schemas.String
   })
 }
 
@@ -31,43 +26,15 @@ function handleMessage(message: Message, gameController: GameController): void {
     case 'createZonePollUi': {
       break
     }
-    case 'zoneEnter': {
-      console.log('mesageBus EnterZone')
-      const { pollId, optionIndex } = message.content.value
-      const entities = engine.getEntitiesWith(ZonePollState)
-
-      for (const [entity] of entities) {
-        const pollState = ZonePollState.getMutable(entity)
-        if (pollState.pollId === pollId) {
-          pollState.zoneCounts[optionIndex] = (pollState.zoneCounts[optionIndex] ?? 0) + 1
-          console.log('here', pollState.zoneCounts[optionIndex])
-          break
-        }
-      }
-      break
-    }
-    case 'zoneExit': {
-      const { pollId, optionIndex } = message.content.value
-      updateZoneCount(gameController, pollId, optionIndex, -1)
+    case 'showZonePollResults': {
+      const { question, winnerOption } = message.content.value
+      console.log(question, winnerOption)
+      gameController.zonePollResultUI.show(question, winnerOption)
       break
     }
   }
 }
 
-function updateZoneCount(gameController: GameController, pollId: string, optionIndex: number, delta: number): void {
-  const entities = engine.getEntitiesWith(ZonePollState)
-  for (const [entity] of entities) {
-    const pollState = ZonePollState.getMutable(entity)
-    if (pollState.pollId === pollId) {
-      pollState.zoneCounts[optionIndex] = (pollState.zoneCounts[optionIndex] ?? 0) + delta
-
-      if (pollState.zoneCounts[optionIndex] < 0) {
-        pollState.zoneCounts[optionIndex] = 0
-      }
-      break
-    }
-  }
-}
 // section ends here
 
 export const MessageBusComponent = engine.defineComponent('MessageBus', {
