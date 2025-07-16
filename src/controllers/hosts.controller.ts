@@ -50,4 +50,14 @@ export class HostsController {
       mutableHosts.splice(index, 1)
     }
   }
+
+  doIfHost(ifHost: () => void, ifNotHost: () => void = () => {}): void {
+    withPlayerInfo((player) => {
+      if (this.isHost(player.userId)) {
+        ifHost()
+      } else {
+        ifNotHost()
+      }
+    })
+  }
 }

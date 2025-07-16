@@ -1,3 +1,4 @@
+import * as utils from '@dcl-sdk/utils'
 import {
   EasingFunction,
   engine,
@@ -16,8 +17,8 @@ import { PollState } from '../polls/pollEntity'
 import { PollQuestion } from '../polls/pollQuestionUi'
 import { SurveyState } from '../surveys/surveyEntity'
 import { SyncEntityEnumId } from '../syncEntities'
+import { withPlayerInfo } from '../utils'
 import { ActivityType, getCurrentActivity, listenToActivities } from './activitiesEntity'
-import * as utils from '@dcl-sdk/utils'
 
 export class PopupAttendeePanelAndResultsButton {
   public attendeePanelEntity = engine.getEntityOrNullByName('AttendeePanel')
@@ -36,26 +37,32 @@ export class PopupAttendeePanelAndResultsButton {
     })
   }
 
+  popupEntity(entity: Entity | null, endScale: Vector3 = Vector3.One()): void {
+    if (entity !== null) {
+      Tween.createOrReplace(entity, {
+        mode: Tween.Mode.Scale({
+          start: Vector3.Zero(),
+          end: Vector3.One()
+        }),
+        duration: 500,
+        easingFunction: EasingFunction.EF_EASEINBOUNCE
+      })
+    }
+  }
+
   create(): void {
     this.attendeePanelEntity = engine.getEntityOrNullByName('AttendeePanel')
     this.showResultsButtonEntity = engine.getEntityOrNullByName('ShowResultsButton')
     this.interactableMonitor = engine.getEntityOrNullByName('Interactable')
 
-    for (const entity of [this.attendeePanelEntity, this.showResultsButtonEntity, this.interactableMonitor]) {
-      if (entity !== null) {
-        const isMonitor = entity === this.interactableMonitor
-        const endScale = isMonitor ? Vector3.create(2, 2, 2) : Vector3.One()
+    this.popupEntity(this.attendeePanelEntity)
+    this.popupEntity(this.interactableMonitor, Vector3.create(2, 2, 2))
 
-        Tween.createOrReplace(entity, {
-          mode: Tween.Mode.Scale({
-            start: Vector3.Zero(),
-            end: endScale
-          }),
-          duration: 500,
-          easingFunction: EasingFunction.EF_EASEINBOUNCE
-        })
+    withPlayerInfo((player) => {
+      if (this.gameController.hostsController.isHost(player.userId)) {
+        this.popupEntity(this.showResultsButtonEntity)
       }
-    }
+    })
   }
 
   setupAttendeePanelAndResultsButton(): void {
@@ -129,7 +136,9 @@ export class PopupAttendeePanelAndResultsButton {
           opts: { button: InputAction.IA_POINTER, hoverText: 'Show Results' }
         },
         () => {
-          pushSyncedMessage('showCurrentActivityResults', {})
+          this.gameController.hostsController.doIfHost(() => {
+            pushSyncedMessage('showCurrentActivityResults', {})
+          })
         }
       )
     }
@@ -137,10 +146,6 @@ export class PopupAttendeePanelAndResultsButton {
     if (showResultsButtonEntity !== null && Array.from(engine.getEntitiesWith(PlayerIdentityData)).length < 2) {
       // if first player
       Transform.getMutable(showResultsButtonEntity).scale = Vector3.Zero()
-    }
-
-    if (showResultsButtonEntity !== null) {
-      syncEntity(showResultsButtonEntity, [Transform.componentId], SyncEntityEnumId.SHOW_RESULTS_BUTTON)
     }
   }
 
