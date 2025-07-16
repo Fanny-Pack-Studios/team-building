@@ -17,7 +17,7 @@ export class OptionZone {
   entity: Entity
   textEntity: Entity
   center: Vector3
-  size: Vector3 = Vector3.create(4, 0.1, 4)
+  size: Vector3 = Vector3.create(3, 0.1, 3)
   playersInside = new Set<string>()
   gameController: GameController
   optionIndex: number
@@ -38,7 +38,7 @@ export class OptionZone {
     this.entity = engine.addEntity()
     Transform.create(this.entity, {
       position: this.center,
-      scale: this.size,
+      scale: Vector3.create(4, 0.1, 4),
       rotation: Quaternion.fromEulerDegrees(0, 0, 0)
     })
     MeshRenderer.setCylinder(this.entity)
