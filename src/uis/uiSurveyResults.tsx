@@ -1,11 +1,12 @@
 import ReactEcs, { Label, type PositionUnit, UiEntity } from '@dcl/sdk/react-ecs'
-import { getScaleFactor } from '../canvas/Canvas'
 import { type GameController } from '../controllers/game.controller'
 import { getSurveyState, type SurveyStateType } from '../surveys/surveyEntity'
 import { ModalButton } from './components/buttons'
 import { ModalTitle } from './components/modalTitle'
 import { ModalWindow } from './components/modalWindow'
+import { getScaleFactor } from '../canvas/Canvas'
 import { SurveyResultColors } from './themes/themes'
+import { engine } from '@dcl/sdk/ecs'
 
 function SurveyResultOption(props: {
   optionsQty: number
@@ -59,23 +60,60 @@ function SurveyResultOption(props: {
 
 export class SurveyResultsUI {
   public isVisible: boolean = true
-  constructor(private readonly gameController: GameController) {}
+  private readonly animatedPercentages = new Map<number, number>() // porcentaje animado para cada opción
+  private readonly lastPercentages = new Map<number, number>() // porcentaje real actual para comparar
+
+  constructor(private readonly gameController: GameController) {
+    engine.addSystem((dt) => {
+      this.update(dt)
+    })
+  }
+
+  // update llamado cada frame, dt en segundos
+  update(dt: number): void {
+    if (!this.isVisible) return
+
+    const state = getSurveyState(this.gameController.activitiesEntity)
+    if (state == null) return
+
+    const { percentages } = this.calculatePercentages(state)
+
+    const animationSpeed = 1.2 // porcentaje por segundo (puedes ajustar)
+
+    // Actualizamos el animatedPercentages para cada opción
+    for (let i = 1; i <= state.optionsQty; i++) {
+      const target = percentages.get(i)?.percentage ?? 0
+      const current = this.animatedPercentages.get(i) ?? 0
+
+      if (current < target) {
+        // incrementamos suavemente, sin pasar el target
+        const newVal = Math.min(current + animationSpeed * dt, target)
+        this.animatedPercentages.set(i, newVal)
+      } else if (current > target) {
+        // si el valor objetivo bajó, animamos hacia abajo también
+        const newVal = Math.max(current - animationSpeed * dt, target)
+        this.animatedPercentages.set(i, newVal)
+      }
+    }
+  }
 
   createUi(): ReactEcs.JSX.Element | null {
     if (!this.isVisible) return null
     const state = getSurveyState(this.gameController.activitiesEntity)
     if (state === null) return null
 
-    const optionsItems = Array<ReactEcs.JSX.Element>(state.optionsQty)
-    const { percentages, maxPercentage } = this.calculatePercentages(state)
+    const { maxPercentage } = this.calculatePercentages(state)
+
+    const optionsItems = []
     for (let i = 0; i < state.optionsQty; i++) {
-      optionsItems[i] = (
+      const animatedPercentage = this.animatedPercentages.get(i + 1) ?? 0
+      optionsItems.push(
         <SurveyResultOption
           option={i + 1}
           optionsQty={state.optionsQty}
-          percentage={percentages.get(i + 1)?.percentage ?? 0}
+          percentage={animatedPercentage}
           maxPercentage={maxPercentage}
-        ></SurveyResultOption>
+        />
       )
     }
 
