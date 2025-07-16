@@ -5,14 +5,15 @@ import ReactEcs, {
   type UiTransformProps
 } from '@dcl/sdk/react-ecs'
 import { merge } from 'ts-deepmerge'
+import { getScaleFactor } from '../../canvas/Canvas'
 
 function CloseButton(props: { onClosePressed: () => void }): ReactEcs.JSX.Element {
   return (
     <UiEntity
       uiTransform={{
         positionType: 'absolute',
-        width: '2vw',
-        height: '2vw',
+        width: 25 * getScaleFactor(),
+        height: 25 * getScaleFactor(),
         position: { top: '3%', right: '4.5%' }
       }}
       uiBackground={{
@@ -36,8 +37,13 @@ export function ModalWindow(
       uiTransform: {
         flexDirection: 'column',
         width: '30%',
-        height: '65%',
-        padding: '2.5vw 4vw'
+        height: '70%',
+        padding: {
+          top: 40 * getScaleFactor(),
+          bottom: 40 * getScaleFactor(),
+          left: 50 * getScaleFactor(),
+          right: 50 * getScaleFactor()
+        }
       } satisfies UiTransformProps,
       uiBackground: {
         texture: {

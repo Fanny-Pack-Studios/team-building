@@ -4,7 +4,9 @@ import { getSurveyState, type SurveyStateType } from '../surveys/surveyEntity'
 import { ModalButton } from './components/buttons'
 import { ModalTitle } from './components/modalTitle'
 import { ModalWindow } from './components/modalWindow'
+import { getScaleFactor } from '../canvas/Canvas'
 import { SurveyResultColors } from './themes/themes'
+import { engine } from '@dcl/sdk/ecs'
 
 function SurveyResultOption(props: {
   optionsQty: number
@@ -27,13 +29,13 @@ function SurveyResultOption(props: {
         value={`<b>${Math.round(percentage * 100)}%</b>`}
         uiTransform={{
           width: '100%',
-          height: '4vw',
+          height: 48 * getScaleFactor(),
           alignSelf: 'flex-start',
           justifyContent: 'center'
         }}
         textAlign="middle-center"
         textWrap="nowrap"
-        fontSize="1.1vw"
+        fontSize={12 * getScaleFactor()}
         color={color}
       ></Label>
       <UiEntity uiTransform={{ width: '100%', height: '100%', justifyContent: 'flex-end', flexDirection: 'column' }}>
@@ -48,8 +50,8 @@ function SurveyResultOption(props: {
 
       <Label
         value={option.toString()}
-        uiTransform={{ width: '100%', height: '3vw' }}
-        fontSize="1vw"
+        uiTransform={{ width: '100%', height: 36 * getScaleFactor() }}
+        fontSize={12 * getScaleFactor()}
         textAlign="middle-center"
       ></Label>
     </UiEntity>
@@ -57,24 +59,57 @@ function SurveyResultOption(props: {
 }
 
 export class SurveyResultsUI {
-  public isVisible: boolean = false
-  constructor(private readonly gameController: GameController) {}
+  public isVisible: boolean = true
+  private readonly animatedPercentages = new Map<number, number>()
+  private readonly lastPercentages = new Map<number, number>()
+
+  constructor(private readonly gameController: GameController) {
+    engine.addSystem((dt) => {
+      this.update(dt)
+    })
+  }
+
+  update(dt: number): void {
+    if (!this.isVisible) return
+
+    const state = getSurveyState(this.gameController.activitiesEntity)
+    if (state == null) return
+
+    const { percentages } = this.calculatePercentages(state)
+
+    const animationSpeed = 1.2
+
+    for (let i = 1; i <= state.optionsQty; i++) {
+      const target = percentages.get(i)?.percentage ?? 0
+      const current = this.animatedPercentages.get(i) ?? 0
+
+      if (current < target) {
+        const newVal = Math.min(current + animationSpeed * dt, target)
+        this.animatedPercentages.set(i, newVal)
+      } else if (current > target) {
+        const newVal = Math.max(current - animationSpeed * dt, target)
+        this.animatedPercentages.set(i, newVal)
+      }
+    }
+  }
 
   createUi(): ReactEcs.JSX.Element | null {
     if (!this.isVisible) return null
     const state = getSurveyState(this.gameController.activitiesEntity)
     if (state === null) return null
 
-    const optionsItems = Array<ReactEcs.JSX.Element>(state.optionsQty)
-    const { percentages, maxPercentage } = this.calculatePercentages(state)
+    const { maxPercentage } = this.calculatePercentages(state)
+
+    const optionsItems = []
     for (let i = 0; i < state.optionsQty; i++) {
-      optionsItems[i] = (
+      const animatedPercentage = this.animatedPercentages.get(i + 1) ?? 0
+      optionsItems.push(
         <SurveyResultOption
           option={i + 1}
           optionsQty={state.optionsQty}
-          percentage={percentages.get(i + 1)?.percentage ?? 0}
+          percentage={animatedPercentage}
           maxPercentage={maxPercentage}
-        ></SurveyResultOption>
+        />
       )
     }
 

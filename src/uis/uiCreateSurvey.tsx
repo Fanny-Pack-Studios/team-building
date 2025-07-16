@@ -1,5 +1,6 @@
 import ReactEcs, { Label, UiEntity } from '@dcl/sdk/react-ecs'
 import { ActivityType, setCurrentActivity } from '../activities/activitiesEntity'
+import { getScaleFactor } from '../canvas/Canvas'
 import { type GameController } from '../controllers/game.controller'
 import { RatingSelector } from '../surveys/rating'
 import { createSurveyEntity } from '../surveys/surveyEntity'
@@ -32,8 +33,8 @@ export class CreateSurveyUI {
       >
         <ModalTitle value="<b>Create Your Survey</b>" />
         <Label
-          uiTransform={{ width: '100%', height: '4vh', margin: { bottom: '3vh' } }}
-          fontSize="1.2vw"
+          uiTransform={{ width: '100%', height: 20 * getScaleFactor(), margin: { bottom: 25 * getScaleFactor() } }}
+          fontSize={primaryTheme.smallFontSize}
           textAlign="middle-center"
           value="Add a question, pick options and icons"
         />
@@ -48,7 +49,7 @@ export class CreateSurveyUI {
         />
 
         <VerticalLabeledControl
-          containerProps={{ uiTransform: { margin: { top: '2.5vw' } } }}
+          containerProps={{ uiTransform: { margin: { top: 25 * getScaleFactor() } } }}
           labelProps={{ value: '<b>Options:</b>' }}
         >
           <UiEntity
@@ -72,7 +73,7 @@ export class CreateSurveyUI {
           </UiEntity>
           <RatingSelector icon={SurveyIcon.STAR} initialRating={1} qty={this.optionsQty}></RatingSelector>
           <HorizontalLabeledControl
-            labelProps={{ value: 'Anonymous', fontSize: '1.2vw', color: primaryTheme.fontColor }}
+            labelProps={{ value: 'Anonymous', fontSize: primaryTheme.smallFontSize, color: primaryTheme.fontColor }}
             uiTransform={{ justifyContent: 'space-between' }}
           >
             <Switch

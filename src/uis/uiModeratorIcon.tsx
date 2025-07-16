@@ -8,7 +8,7 @@ export class ModeratorIconUI {
   public gameController: GameController
   constructor(gameController: GameController) {
     this.gameController = gameController
-    this.gameController.hostsController.onChange(() => {
+    this.gameController.playerController.onHostChange(() => {
       this.updatePanel()
     })
 
@@ -17,7 +17,7 @@ export class ModeratorIconUI {
 
   updatePanel(): void {
     withPlayerInfo((player) => {
-      this.isHost = this.gameController.hostsController.isHost(player.userId)
+      this.isHost = this.gameController.playerController.isHost(player.userId)
       this.panelUiVisibility = this.isHost
     })
   }

@@ -29,7 +29,6 @@ import { ModerationPanel } from '../uis/uiModerationPanel'
 import { ModeratorIconUI } from '../uis/uiModeratorIcon'
 import { SurveyResultsUI } from '../uis/uiSurveyResults'
 import { WorkInProgressUI } from '../uis/uiWorkInProgress'
-import { HostsController } from './hosts.controller'
 import { PlayerController } from './player.controller'
 import { UIController } from './ui.controller'
 import { setupVotingDoors } from '../auditorium/votingDoors'
@@ -37,7 +36,6 @@ import { ZonePollResultsUI } from '../uis/uiZonePollResults'
 
 export class GameController {
   public uiController: UIController
-  public hostsController: HostsController
   public popupAtendeePanelAndResultbutton: PopupAttendeePanelAndResultsButton
   public playerController: PlayerController
   public jail: Jail
@@ -80,7 +78,6 @@ export class GameController {
 
   constructor() {
     this.playerController = new PlayerController(this)
-    this.hostsController = new HostsController(this)
     this.activitiesEntity = createActivitiesEntity()
     this.uiController = new UIController(this)
     this.popupAtendeePanelAndResultbutton = new PopupAttendeePanelAndResultsButton(this)
@@ -97,7 +94,7 @@ export class GameController {
     this.timerUI = new TimerUI(this)
     this.closePollUi = new CloseActivityUI(this)
     this.removeHostUI = new RemoveHostModal(this)
-    this.hostIndicators = new HostIndicators(this.hostsController)
+    this.hostIndicators = new HostIndicators(this.playerController)
     this.choosePollUI = new ChoosePollUI(this)
     this.createZonePollUI = new ZonePollUI(this)
     this.zonePollQuestionUI = new ZonePollQuestionUI(this)
@@ -111,7 +108,7 @@ export class GameController {
     this.zone3 = null
     this.zone4 = null
     this.removeHostUI = new RemoveHostModal(this)
-    this.hostIndicators = new HostIndicators(this.hostsController)
+    this.hostIndicators = new HostIndicators(this.playerController)
     this.customizationUI = new CustomizationUI()
     this.mainMenuUI = new MainMenuUi(this)
     this.workInProgressUI = new WorkInProgressUI(this)

@@ -5,6 +5,7 @@ import { type GameController } from './game.controller'
 import { engine, type Entity, Schemas } from '@dcl/sdk/ecs'
 import { syncEntity } from '@dcl/sdk/network'
 import { SyncEntityEnumId } from '../syncEntities'
+import { withPlayerInfo } from '../utils'
 
 export type Player = {
   name: string
@@ -38,6 +39,8 @@ export class PlayerController {
     })
   }
 
+  // players
+
   private addPlayer(userId: string, name: string): void {
     if (this.players.has(userId)) return
 
@@ -66,16 +69,11 @@ export class PlayerController {
     return Array.from(this.players.values())
   }
 
-  // === Ban/Host list operations ===
+  // === Ban list operations ===
 
   isPlayerBanned(userId: string): boolean {
     const state = PlayerStateComponent.get(this.playerState)
     return state.banList.includes(userId)
-  }
-
-  isPlayerHost(userId: string): boolean {
-    const state = PlayerStateComponent.get(this.playerState)
-    return state.hostList.includes(userId)
   }
 
   setBan(userId: string, banned: boolean): void {
@@ -85,14 +83,6 @@ export class PlayerController {
       this.removeFromBanList(userId)
     }
     this.gameController.kickUI.updateKickStatus()
-  }
-
-  setHost(userId: string, isHost: boolean): void {
-    if (isHost) {
-      this.addToHostList(userId)
-    } else {
-      this.removeFromHostList(userId)
-    }
   }
 
   private addToBanList(userId: string): void {
@@ -111,6 +101,21 @@ export class PlayerController {
     console.log(`Removed from ban list: ${userId}`)
   }
 
+  // === Host list operations ===
+
+  isPlayerHost(userId: string): boolean {
+    const state = PlayerStateComponent.get(this.playerState)
+    return state.hostList.includes(userId)
+  }
+
+  setHost(userId: string, isHost: boolean): void {
+    if (isHost) {
+      this.addToHostList(userId)
+    } else {
+      this.removeFromHostList(userId)
+    }
+  }
+
   private addToHostList(userId: string): void {
     const component = PlayerStateComponent.getMutableOrNull(this.playerState)
     if (component === null) return
@@ -125,5 +130,41 @@ export class PlayerController {
     if (component === null) return
     component.hostList = component.hostList.filter((id) => id !== userId)
     console.log(`Removed from host list: ${userId}`)
+  }
+
+  isHost(userId: string, hosts: string[] = this.getHosts()): boolean {
+    return hosts.some((host) => userId.toLowerCase() === host.toLowerCase())
+  }
+
+  getHosts(): string[] {
+    return PlayerStateComponent.get(this.playerState).hostList
+  }
+
+  noHostExists(): boolean {
+    return this.getHosts().length === 0
+  }
+
+  onHostChange(cb: (newHosts: string[] | undefined) => void): void {
+    PlayerStateComponent.onChange(this.playerState, (newState) => {
+      cb(newState?.hostList)
+    })
+  }
+
+  claimHost(): void {
+    withPlayerInfo((player) => {
+      if (this.noHostExists()) {
+        this.setHost(player.userId, true)
+      }
+    })
+  }
+
+  doIfHost(ifHost: () => void, ifNotHost: () => void = () => {}): void {
+    withPlayerInfo((player) => {
+      if (this.isHost(player.userId)) {
+        ifHost()
+      } else {
+        ifNotHost()
+      }
+    })
   }
 }

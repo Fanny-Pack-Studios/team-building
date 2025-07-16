@@ -5,21 +5,33 @@ import { ActivityType, setCurrentActivity } from '../activities/activitiesEntity
 import { getScaleFactor } from '../canvas/Canvas'
 import { type GameController } from '../controllers/game.controller'
 import { createPollEntity, pollRegistry } from '../polls/pollEntity'
+import { engine } from '@dcl/sdk/ecs'
+import { Switch } from './components/switch'
 
 export class CreatePollUI {
   public createPollUiVisibility: boolean = false
+  public switchThumbPosition: number = 0 // de 0 (off) a 1 (on)
+  public switchAnimating: boolean = false
+  public switchAnimationTarget: number = 0
+  public switchAnimationSpeed: number = 3 // más alto = más rápido
   public switchOn: boolean = false
-  public switchOnTexture: string = 'images/createpollui/switchOn.png'
-  public switchOffTexture: string = 'images/createpollui/switchOff.png'
-  public switchTexture: string = this.switchOffTexture
+  switchBgOnSrc = 'images/createpollui/switch_bg_on.png'
+  switchBgOffSrc = 'images/createpollui/switch_bg_off.png'
+  switchThumbOnSrc = 'images/createpollui/switch_thum_on.png'
+  switchThumbOffSrc = 'images/createpollui/switch_thum_off.png'
+  private isAnonymous: boolean = false
   public questionTitle: string = ''
   public answers: string[] = ['', '']
   public gameController: GameController
   public answerScrollIndex: number = 0
   public maxAnswers: number = 4
   public addAnswerButtonDisabled: Color4 | undefined = undefined
+
   constructor(gameController: GameController) {
     this.gameController = gameController
+    engine.addSystem((dt) => {
+      this.update(dt)
+    })
   }
 
   openUI(): void {
@@ -249,22 +261,26 @@ export class CreatePollUI {
 
           <UiEntity
             uiTransform={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'center',
+              width: 66 * getScaleFactor(),
+              height: 34 * getScaleFactor(),
               positionType: 'absolute',
-              width: 76 * getScaleFactor(),
-              height: 46 * getScaleFactor(),
-              position: { bottom: '15%', right: '14%' }
-            }}
-            uiBackground={{
-              textureMode: 'stretch',
-              texture: { src: this.switchTexture }
+              position: { bottom: '18%', right: '14%' },
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
+              overflow: 'hidden' // importante para el clip si se quiere
             }}
             onMouseDown={() => {
               this.toggleSwitcher()
             }}
-          />
+          >
+            <Switch
+              initialValue={this.isAnonymous}
+              onChange={(val) => {
+                this.isAnonymous = val
+              }}
+            ></Switch>
+          </UiEntity>
 
           {/* Bottom buttons */}
           <UiEntity
@@ -323,8 +339,11 @@ export class CreatePollUI {
   }
 
   toggleSwitcher(): void {
+    if (this.switchAnimating) return // Evita doble click en medio de la animación
+
     this.switchOn = !this.switchOn
-    this.switchTexture = this.switchOn ? this.switchOnTexture : this.switchOffTexture
+    this.switchAnimationTarget = this.switchOn ? 1 : 0
+    this.switchAnimating = true
   }
 
   create(): void {
@@ -458,5 +477,19 @@ export class CreatePollUI {
 
   canScrollRight(): boolean {
     return this.answers.length > 2 && this.answerScrollIndex < Math.floor((this.answers.length - 1) / 2)
+  }
+
+  update(dt: number): void {
+    if (this.switchAnimating) {
+      const diff = this.switchAnimationTarget - this.switchThumbPosition
+      const step = this.switchAnimationSpeed * dt
+
+      if (Math.abs(diff) <= step) {
+        this.switchThumbPosition = this.switchAnimationTarget
+        this.switchAnimating = false
+      } else {
+        this.switchThumbPosition += Math.sign(diff) * step
+      }
+    }
   }
 }

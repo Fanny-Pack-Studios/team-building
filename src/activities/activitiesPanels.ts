@@ -1,3 +1,4 @@
+import * as utils from '@dcl-sdk/utils'
 import {
   EasingFunction,
   engine,
@@ -16,6 +17,7 @@ import { PollState } from '../polls/pollEntity'
 import { PollQuestion } from '../polls/pollQuestionUi'
 import { SurveyState } from '../surveys/surveyEntity'
 import { SyncEntityEnumId } from '../syncEntities'
+import { withPlayerInfo } from '../utils'
 import { ActivityType, getCurrentActivity, listenToActivities } from './activitiesEntity'
 
 export class PopupAttendeePanelAndResultsButton {
@@ -23,6 +25,7 @@ export class PopupAttendeePanelAndResultsButton {
   public showResultsButtonEntity = engine.getEntityOrNullByName('ShowResultsButton')
   public interactableMonitor: Entity | null = null
   public attendeePanelEntityA: Entity | null = null
+
   gameController: GameController
   constructor(gameController: GameController) {
     this.gameController = gameController
@@ -35,19 +38,32 @@ export class PopupAttendeePanelAndResultsButton {
     })
   }
 
-  create(): void {
-    for (const entity of [this.attendeePanelEntity, this.showResultsButtonEntity]) {
-      if (entity !== null) {
-        Tween.createOrReplace(entity, {
-          mode: Tween.Mode.Scale({
-            start: Vector3.Zero(),
-            end: Vector3.One()
-          }),
-          duration: 500,
-          easingFunction: EasingFunction.EF_EASEINBOUNCE
-        })
-      }
+  popupEntity(entity: Entity | null, endScale: Vector3 = Vector3.One()): void {
+    if (entity !== null) {
+      Tween.createOrReplace(entity, {
+        mode: Tween.Mode.Scale({
+          start: Vector3.Zero(),
+          end: Vector3.One()
+        }),
+        duration: 500,
+        easingFunction: EasingFunction.EF_EASEINBOUNCE
+      })
     }
+  }
+
+  create(): void {
+    this.attendeePanelEntity = engine.getEntityOrNullByName('AttendeePanel')
+    this.showResultsButtonEntity = engine.getEntityOrNullByName('ShowResultsButton')
+    this.interactableMonitor = engine.getEntityOrNullByName('Interactable')
+
+    this.popupEntity(this.attendeePanelEntity)
+    this.popupEntity(this.interactableMonitor, Vector3.create(2, 2, 2))
+
+    withPlayerInfo((player) => {
+      if (this.gameController.playerController.isHost(player.userId)) {
+        this.popupEntity(this.showResultsButtonEntity)
+      }
+    })
   }
 
   setupAttendeePanelAndResultsButton(): void {
@@ -121,7 +137,9 @@ export class PopupAttendeePanelAndResultsButton {
           opts: { button: InputAction.IA_POINTER, hoverText: 'Show Results' }
         },
         () => {
-          pushSyncedMessage('showCurrentActivityResults', {})
+          this.gameController.playerController.doIfHost(() => {
+            pushSyncedMessage('showCurrentActivityResults', {})
+          })
         }
       )
     }
@@ -129,10 +147,6 @@ export class PopupAttendeePanelAndResultsButton {
     if (showResultsButtonEntity !== null && Array.from(engine.getEntitiesWith(PlayerIdentityData)).length < 2) {
       // if first player
       Transform.getMutable(showResultsButtonEntity).scale = Vector3.Zero()
-    }
-
-    if (showResultsButtonEntity !== null) {
-      syncEntity(showResultsButtonEntity, [Transform.componentId], SyncEntityEnumId.SHOW_RESULTS_BUTTON)
     }
   }
 
@@ -183,5 +197,27 @@ export class PopupAttendeePanelAndResultsButton {
     })
 
     this.gameController.pollResultsUI.openUI()
+  }
+
+  remove(): void {
+    for (const entity of [this.attendeePanelEntity, this.interactableMonitor]) {
+      if (entity !== null) {
+        this.animateOutAndRemove(entity)
+      }
+    }
+  }
+
+  animateOutAndRemove(entity: Entity, duration = 500): void {
+    Tween.createOrReplace(entity, {
+      mode: Tween.Mode.Scale({
+        start: Vector3.One(),
+        end: Vector3.Zero()
+      }),
+      duration,
+      easingFunction: EasingFunction.EF_EASEOUTBOUNCE
+    })
+    utils.timers.setTimeout(() => {
+      // engine.removeEntity(entity)
+    }, duration)
   }
 }

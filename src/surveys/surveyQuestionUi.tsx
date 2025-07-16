@@ -1,5 +1,6 @@
 import ReactEcs, { Label, UiEntity } from '@dcl/sdk/react-ecs'
 import { getCurrentActivity } from '../activities/activitiesEntity'
+import { getScaleFactor } from '../canvas/Canvas'
 import { type GameController } from '../controllers/game.controller'
 import { ModalButton } from '../uis/components/buttons'
 import { ModalTitle } from '../uis/components/modalTitle'
@@ -7,6 +8,7 @@ import { ModalWindow } from '../uis/components/modalWindow'
 import { withPlayerInfo } from '../utils'
 import { RatingSelector, type RatingNumber } from './rating'
 import { getSurveyState, SurveyState } from './surveyEntity'
+import { primaryTheme } from '../uis/themes/themes'
 
 export class SurveyQuestionUI {
   public isVisible: boolean = false
@@ -54,8 +56,12 @@ export class SurveyQuestionUI {
         >
           <ModalTitle value={surveyState.question} uiTransform={{ height: 'auto' }} />
           <Label
-            uiTransform={{ width: '100%', height: '4vh', margin: { bottom: '2vw', top: '1vw' } }}
-            fontSize="1.2vw"
+            uiTransform={{
+              width: '100%',
+              height: 35 * getScaleFactor(),
+              margin: { bottom: 25 * getScaleFactor(), top: 12 * getScaleFactor() }
+            }}
+            fontSize={primaryTheme.smallFontSize}
             textAlign="middle-center"
             value={`Rate from 1 to ${surveyState.optionsQty}`}
           />
