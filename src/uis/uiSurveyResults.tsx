@@ -60,8 +60,8 @@ function SurveyResultOption(props: {
 
 export class SurveyResultsUI {
   public isVisible: boolean = true
-  private readonly animatedPercentages = new Map<number, number>() // porcentaje animado para cada opción
-  private readonly lastPercentages = new Map<number, number>() // porcentaje real actual para comparar
+  private readonly animatedPercentages = new Map<number, number>()
+  private readonly lastPercentages = new Map<number, number>()
 
   constructor(private readonly gameController: GameController) {
     engine.addSystem((dt) => {
@@ -69,7 +69,6 @@ export class SurveyResultsUI {
     })
   }
 
-  // update llamado cada frame, dt en segundos
   update(dt: number): void {
     if (!this.isVisible) return
 
@@ -78,19 +77,16 @@ export class SurveyResultsUI {
 
     const { percentages } = this.calculatePercentages(state)
 
-    const animationSpeed = 1.2 // porcentaje por segundo (puedes ajustar)
+    const animationSpeed = 1.2
 
-    // Actualizamos el animatedPercentages para cada opción
     for (let i = 1; i <= state.optionsQty; i++) {
       const target = percentages.get(i)?.percentage ?? 0
       const current = this.animatedPercentages.get(i) ?? 0
 
       if (current < target) {
-        // incrementamos suavemente, sin pasar el target
         const newVal = Math.min(current + animationSpeed * dt, target)
         this.animatedPercentages.set(i, newVal)
       } else if (current > target) {
-        // si el valor objetivo bajó, animamos hacia abajo también
         const newVal = Math.max(current - animationSpeed * dt, target)
         this.animatedPercentages.set(i, newVal)
       }
