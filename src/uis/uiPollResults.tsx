@@ -3,6 +3,7 @@ import { Color4 } from '@dcl/sdk/math'
 
 import { getScaleFactor } from '../canvas/Canvas'
 import { type GameController } from '../controllers/game.controller'
+import { engine } from '@dcl/sdk/ecs'
 
 export class ResultsUI {
   public resultsUiVisibility: boolean = false
@@ -11,8 +12,14 @@ export class ResultsUI {
   private isAnonymous: boolean = true
   private votes: Array<{ option: string; userId?: string }> = []
   public gameController: GameController
+  private animatedPercentages: number[] = []
+  private isAnimating: boolean = false
+
   constructor(gameController: GameController) {
     this.gameController = gameController
+    engine.addSystem((dt) => {
+      this.update(dt)
+    })
   }
 
   setData(data: {
@@ -31,6 +38,8 @@ export class ResultsUI {
 
   openUI(): void {
     this.resultsUiVisibility = true
+    this.animatedPercentages = this.results.map(() => 0)
+    this.isAnimating = true
   }
 
   closeUI(): void {
@@ -128,7 +137,8 @@ export class ResultsUI {
               >
                 <UiEntity
                   uiTransform={{
-                    width: `${result.percentage}%`,
+                    width: `${this.animatedPercentages[index] ?? 0}%`,
+
                     height: '100%',
                     positionType: 'relative',
                     borderRadius: 5
@@ -194,5 +204,34 @@ export class ResultsUI {
         </UiEntity>
       </UiEntity>
     )
+  }
+
+  update(dt: number): void {
+    if (!this.isAnimating) return
+
+    let allDone = true
+
+    const speed = 100
+
+    for (let i = 0; i < this.results.length; i++) {
+      const target = this.results[i].percentage
+      let current = this.animatedPercentages[i]
+
+      const diff = target - current
+      const step = speed * dt
+
+      if (Math.abs(diff) <= step) {
+        current = target
+      } else {
+        current += Math.sign(diff) * step
+        allDone = false
+      }
+
+      this.animatedPercentages[i] = current
+    }
+
+    if (allDone) {
+      this.isAnimating = false
+    }
   }
 }
