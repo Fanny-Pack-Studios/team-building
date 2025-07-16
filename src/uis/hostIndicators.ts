@@ -1,8 +1,8 @@
 import { Billboard, engine, GltfContainer, PlayerIdentityData, TextShape, Transform, type Entity } from '@dcl/sdk/ecs'
 import { Color4, Vector3 } from '@dcl/sdk/math'
 import { onLeaveScene } from '@dcl/sdk/players'
-import { type HostsController } from '../controllers/hosts.controller'
 import { withPlayerInfo } from '../utils'
+import { type PlayerController } from '../controllers/player.controller'
 
 export class HostIndicators {
   private readonly indicatorEntities = new Map<
@@ -10,8 +10,8 @@ export class HostIndicators {
     { hostEntity: Entity; indicatorEntity: Entity; isLocal: boolean }
   >()
 
-  constructor(private readonly hostsController: HostsController) {
-    hostsController.onChange((_newHosts) => {
+  constructor(private readonly playerController: PlayerController) {
+    playerController.onHostChange((_newHosts) => {
       this.updateIndicators()
     })
 
@@ -42,7 +42,7 @@ export class HostIndicators {
     const missingPlayers = new Set(Object.keys(this.indicatorEntities))
     for (const [entity, data] of engine.getEntitiesWith(PlayerIdentityData)) {
       missingPlayers.delete(data.address)
-      if (this.hostsController.isHost(data.address)) {
+      if (this.playerController.isHost(data.address)) {
         this.createIndicatorIfNotExists(entity, data.address)
       } else {
         this.deleteIndicatorIfExists(data.address)

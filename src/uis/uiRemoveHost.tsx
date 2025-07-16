@@ -10,10 +10,10 @@ export class RemoveHostModal {
   private readonly gameController: GameController
   constructor(gameController: GameController) {
     this.gameController = gameController
-    this.gameController.hostsController.onChange((newHosts) => {
+    this.gameController.playerController.onHostChange((newHosts) => {
       this.updateHosts(newHosts ?? [])
     })
-    this.updateHosts(this.gameController.hostsController.getHosts())
+    this.updateHosts(this.gameController.playerController.getHosts())
   }
 
   updateHosts(someHosts: string[]): void {
@@ -23,7 +23,7 @@ export class RemoveHostModal {
     }
 
     withPlayerInfo((player) => {
-      if (!this.gameController.hostsController.isHost(player.userId)) {
+      if (!this.gameController.playerController.isHost(player.userId)) {
         this.removeHostVisibility = false
       }
     })
@@ -31,14 +31,14 @@ export class RemoveHostModal {
 
   removeSelectedHost(): void {
     if (this.selectedHostIndex !== -1) {
-      this.gameController.hostsController.removeHost(this.hosts[this.selectedHostIndex])
+      this.gameController.playerController.setHost(this.hosts[this.selectedHostIndex], false)
     }
   }
 
   removeHostByUserId(userId: string): void {
     const index = this.hosts.indexOf(userId)
     if (index !== -1) {
-      this.gameController.hostsController.removeHost(this.hosts[index])
+      this.gameController.playerController.setHost(this.hosts[index], false)
     } else {
       console.log(`User ${userId} not found in hosts list.`)
     }

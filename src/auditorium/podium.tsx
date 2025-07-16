@@ -18,7 +18,7 @@ export function setupPodium(gameController: GameController): void {
   const podium = podiumOrNull
   const arrow = engine.addEntity()
 
-  gameController.hostsController.onChange(() => {
+  gameController.playerController.onHostChange(() => {
     updatePodiumActions()
   })
 
@@ -26,10 +26,10 @@ export function setupPodium(gameController: GameController): void {
 
   function updatePodiumActions(): void {
     withPlayerInfo((player) => {
-      if (gameController.hostsController.isHost(player.userId)) {
+      if (gameController.playerController.isHost(player.userId)) {
         removeArrowFromPodium()
         configurePodiumForHosts()
-      } else if (gameController.hostsController.noHostExists()) {
+      } else if (gameController.playerController.noHostExists()) {
         addArrowToPodium()
         configurePodiumForClaimingHost()
       } else {
@@ -47,7 +47,7 @@ export function setupPodium(gameController: GameController): void {
 
   function configurePodiumForClaimingHost(): void {
     configurePodium('Claim Host', () => {
-      gameController.hostsController.claimHost()
+      gameController.playerController.claimHost()
     })
   }
 

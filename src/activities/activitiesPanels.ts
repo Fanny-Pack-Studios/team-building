@@ -59,7 +59,7 @@ export class PopupAttendeePanelAndResultsButton {
     this.popupEntity(this.interactableMonitor, Vector3.create(2, 2, 2))
 
     withPlayerInfo((player) => {
-      if (this.gameController.hostsController.isHost(player.userId)) {
+      if (this.gameController.playerController.isHost(player.userId)) {
         this.popupEntity(this.showResultsButtonEntity)
       }
     })
@@ -136,7 +136,7 @@ export class PopupAttendeePanelAndResultsButton {
           opts: { button: InputAction.IA_POINTER, hoverText: 'Show Results' }
         },
         () => {
-          this.gameController.hostsController.doIfHost(() => {
+          this.gameController.playerController.doIfHost(() => {
             pushSyncedMessage('showCurrentActivityResults', {})
           })
         }

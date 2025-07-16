@@ -16,17 +16,17 @@ export class StageUI {
   constructor(gameController: GameController) {
     this.gameController = gameController
 
-    this.gameController.hostsController.onChange((newHosts) => {
+    this.gameController.playerController.onHostChange((newHosts) => {
       console.log('Hosts changed: ', newHosts)
       this.checkPlayerAccess(newHosts)
     })
 
-    this.checkPlayerAccess(this.gameController.hostsController.getHosts())
+    this.checkPlayerAccess(this.gameController.playerController.getHosts())
   }
 
   checkPlayerAccess(hosts: string[] | undefined): void {
     withPlayerInfo((player) => {
-      const isHost = this.gameController.hostsController.isHost(player.userId, hosts)
+      const isHost = this.gameController.playerController.isHost(player.userId, hosts)
       const noHosts = hosts == null || hosts.length === 0
 
       if (noHosts || isHost) {
@@ -61,6 +61,6 @@ export class StageUI {
 
   addAsHost(userID: string): void {
     if (userID === undefined) return
-    this.gameController.hostsController.addHost(userID)
+    this.gameController.playerController.setHost(userID, true)
   }
 }
