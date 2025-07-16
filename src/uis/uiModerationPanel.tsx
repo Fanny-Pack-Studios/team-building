@@ -64,7 +64,7 @@ export class ModerationPanel {
   removeHost(player: Player): void {
     console.log(`Removing host from ${player.name}`)
     this.gameController.playerController.setHost(player.wallet, false)
-    this.gameController.hostsController.removeHost(player.wallet)
+    this.gameController.playerController.removeHost(player.wallet)
   }
 
   createPlayerCard(player: Player): ReactEcs.JSX.Element {
