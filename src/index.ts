@@ -5,4 +5,5 @@ export function main(): void {
   const gameController = new GameController()
   gameController.start()
   // setupZonePollSystem()
+  // openVotingDoors([1, 2, 3, 4])
 }

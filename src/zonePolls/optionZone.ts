@@ -12,7 +12,6 @@ import { Color4, Quaternion, Vector3 } from '@dcl/sdk/math'
 import { type GameController } from '../controllers/game.controller'
 import { getPlayerPosition } from '../utils'
 import { ZonePollState } from './pollEntity'
-import { pushSyncedMessage } from '../messagebus/messagebus'
 
 export class OptionZone {
   entity: Entity
@@ -77,22 +76,15 @@ export class OptionZone {
 
     if (inZone && !this.playersInside.has(playerId)) {
       this.playersInside.add(playerId)
-
       console.log('Player Enter the Zone')
-      pushSyncedMessage('zoneEnter', {
-        pollId: state.pollId,
-        optionIndex: this.optionIndex
-      })
+      this.updateZoneCount(state.pollId, this.optionIndex, +1)
     }
 
     if (!inZone && this.playersInside.has(playerId)) {
       this.playersInside.delete(playerId)
 
       console.log('Player left the Zone')
-      pushSyncedMessage('zoneExit', {
-        pollId: state.pollId,
-        optionIndex: this.optionIndex
-      })
+      this.updateZoneCount(state.pollId, this.optionIndex, -1)
     }
   }
 
@@ -109,5 +101,20 @@ export class OptionZone {
   destroy(): void {
     engine.removeEntity(this.entity)
     engine.removeEntity(this.textEntity)
+  }
+
+  updateZoneCount(pollId: string, optionIndex: number, delta: number): void {
+    const entities = engine.getEntitiesWith(ZonePollState)
+    for (const [entity] of entities) {
+      const pollState = ZonePollState.getMutable(entity)
+      if (pollState.pollId === pollId) {
+        pollState.zoneCounts[optionIndex] = (pollState.zoneCounts[optionIndex] ?? 0) + delta
+
+        if (pollState.zoneCounts[optionIndex] < 0) {
+          pollState.zoneCounts[optionIndex] = 0
+        }
+        break
+      }
+    }
   }
 }

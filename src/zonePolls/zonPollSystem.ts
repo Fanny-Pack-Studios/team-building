@@ -5,7 +5,8 @@ import { type GameController } from '../controllers/game.controller'
 import { Color4, Vector3 } from '@dcl/sdk/math'
 import { OptionZone } from './optionZone'
 import { ActivityType, getCurrentActivity } from '../activities/activitiesEntity'
-
+import { type VotingDoorNumber, openVotingDoors } from '../auditorium/votingDoors'
+import * as utils from '@dcl-sdk/utils'
 export class ZonePollSystem {
   private readonly trackedEntities = new Set<Entity>()
   private readonly gameController: GameController
@@ -84,10 +85,10 @@ function createZonesForPoll(
   const zoneColors = [Color4.Red(), Color4.Green(), Color4.Yellow(), Color4.Blue()]
 
   const positions = [
-    Vector3.create(2.83, 0.4, 6.64),
-    Vector3.create(6, 0.4, 3.4),
-    Vector3.create(10, 0, 4),
-    Vector3.create(14, 0, 4)
+    Vector3.create(13.1, 0.2, 6.64),
+    Vector3.create(10.54, 0.2, 3.21),
+    Vector3.create(2.83, 0.14, 6.64),
+    Vector3.create(6, 0.18, 3.4)
   ]
 
   const zoneKeys = ['zone1', 'zone2', 'zone3', 'zone4'] as const
@@ -112,6 +113,10 @@ function createZonesForPoll(
 
     engine.addSystem(updateSystem)
     gameController.zoneUpdateSystems.add(updateSystem)
+    const doorsToOpen = zonePoll.options.map((_, index) => (index + 1) as VotingDoorNumber)
+    utils.timers.setTimeout(() => {
+      openVotingDoors(doorsToOpen)
+    }, 800)
   })
 
   gameController.zonePollQuestionUI.show(zonePoll.question, zonePoll.options)
