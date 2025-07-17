@@ -20,17 +20,17 @@ import { type OptionZone } from '../zonePolls/optionZone'
 
 import { type Entity } from '@dcl/sdk/ecs'
 import { createActivitiesEntity } from '../activities/activitiesEntity'
+import { setupVotingDoors } from '../auditorium/votingDoors'
 import { Jail } from '../jail/jail'
 import { SurveyQuestionUI } from '../surveys/surveyQuestionUi'
 import { MainMenuUi } from '../uis/ui.mainMenu'
 import { CreateSurveyUI } from '../uis/uiCreateSurvey'
+import { HostsToolbarUI } from '../uis/uiHostToolbar'
 import { ModerationPanel } from '../uis/uiModerationPanel'
-import { ModeratorIconUI } from '../uis/uiModeratorIcon'
 import { SurveyResultsUI } from '../uis/uiSurveyResults'
 import { WorkInProgressUI } from '../uis/uiWorkInProgress'
 import { PlayerController } from './player.controller'
 import { UIController } from './ui.controller'
-import { setupVotingDoors } from '../auditorium/votingDoors'
 
 export class GameController {
   public uiController: UIController
@@ -43,7 +43,6 @@ export class GameController {
 
   public mainMenuUI: MainMenuUi
   public stageUI: StageUI
-  public iconPanelUI: ModeratorIconUI
   public kickUI: KickUI
   public activitiesUI: ChooseActivityUI
   public createPollUI: CreatePollUI
@@ -59,6 +58,7 @@ export class GameController {
   public createZonePollUI: ZonePollUI
   public zonePollQuestionUI: ZonePollQuestionUI
   public newModerationPanel: ModerationPanel
+  public hostsToolbar: HostsToolbarUI
 
   // Zones
   public zone1: OptionZone | null
@@ -77,7 +77,7 @@ export class GameController {
     this.uiController = new UIController(this)
     this.popupAtendeePanelAndResultbutton = new PopupAttendeePanelAndResultsButton(this)
     this.stageUI = new StageUI(this)
-    this.iconPanelUI = new ModeratorIconUI(this)
+    this.hostsToolbar = new HostsToolbarUI(this)
     this.kickUI = new KickUI(this)
     this.activitiesUI = new ChooseActivityUI(this)
     this.createPollUI = new CreatePollUI(this)
