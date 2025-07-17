@@ -70,10 +70,11 @@ export class GameController {
   public zone4: OptionZone | null
   public zoneUpdateSystems = new Set<(dt: number) => void>()
   public zonePollResultUI: ZonePollResultsUI
+  public zonePollElapsed?: (dt: number) => void
 
   public customizationUI: CustomizationUI
   public workInProgressUI: WorkInProgressUI
-  zonePollDataEntity: Entity | null = null
+  public zonePollDataEntity: Entity | null = null
   public surveyQuestionUI: SurveyQuestionUI
 
   constructor() {

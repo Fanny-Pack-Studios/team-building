@@ -10,6 +10,7 @@ import { ZonePollState } from '../zonePolls/pollEntity'
 import { syncEntity } from '@dcl/sdk/network'
 import { getPlayer } from '@dcl/sdk/src/players'
 import { ActivityType, setCurrentActivity } from '../activities/activitiesEntity'
+import { generateId } from '../utils'
 
 export class ZonePollUI {
   public createZonePollUiVisibility: boolean = false
@@ -283,23 +284,24 @@ export class ZonePollUI {
     const question = this.questionTitle
     const options = this.answers.filter((answer) => answer.trim() !== '')
     const player = getPlayer()
-    const pollId = player?.userId
+    const creatorId = player?.userId
 
     const dataEntity = engine.addEntity()
+    const idPoll = generateId('ZonePoll')
     ZonePollState.create(dataEntity, {
-      id: pollId,
-      pollId,
+      id: idPoll,
+      pollId: idPoll,
       question,
       options,
       zoneCounts: Array(options.length).fill(0),
-      creatorId: pollId,
+      creatorId,
       closed: false
     })
 
     this.gameController.zonePollDataEntity = dataEntity
     syncEntity(dataEntity, [ZonePollState.componentId])
-    if (pollId !== undefined) {
-      setCurrentActivity(this.gameController.activitiesEntity, pollId, ActivityType.ZONEPOLL)
+    if (creatorId !== undefined) {
+      setCurrentActivity(this.gameController.activitiesEntity, idPoll, ActivityType.ZONEPOLL)
     }
     console.log('Created ZonePollState', ZonePollState.get(dataEntity))
   }

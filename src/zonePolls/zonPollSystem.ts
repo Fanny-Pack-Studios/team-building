@@ -64,6 +64,10 @@ export class ZonePollSystem {
     this.trackedEntities.clear()
     this.clearZones()
 
+    if (this.gameController.zonePollElapsed != null) {
+      engine.removeSystem(this.gameController.zonePollElapsed)
+      this.gameController.zonePollElapsed = undefined
+    }
     if (this.gameController.zonePollDataEntity != null) {
       engine.removeEntity(this.gameController.zonePollDataEntity)
       this.gameController.zonePollDataEntity = null
@@ -160,7 +164,7 @@ function createZonesForPoll(
   let elapsed = 0
   // TODO : Should come from the UI's
 
-  const duration = 60
+  const duration = 30
 
   const pollSystem = (dt: number): void => {
     elapsed += dt
@@ -181,9 +185,9 @@ function createZonesForPoll(
       engine.removeSystem(pollSystem)
     }
   }
-
+  gameController.zonePollElapsed = pollSystem
   engine.addSystem(pollSystem)
-  gameController.timerUI.show(1)
+  gameController.timerUI.show(0.5)
 }
 
 export function closeZonePoll(zonePollEntity: Entity): void {
@@ -193,6 +197,7 @@ export function closeZonePoll(zonePollEntity: Entity): void {
   }
 
   const mutable = ZonePollState.getMutable(zonePollEntity)
+  console.log(mutable.id)
   // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
   if (mutable) {
     mutable.closed = true

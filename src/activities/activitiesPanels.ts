@@ -31,8 +31,7 @@ export class PopupAttendeePanelAndResultsButton {
     this.gameController = gameController
 
     listenToActivities(this.gameController.activitiesEntity, (activity) => {
-      if (activity !== undefined && activity.type !== 3) {
-        console.log(activity, 'he aqui el asunto')
+      if (activity !== undefined && activity.type !== ActivityType.ZONEPOLL) {
         this.create()
       }
     })

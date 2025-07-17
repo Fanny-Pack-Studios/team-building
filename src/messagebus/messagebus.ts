@@ -23,9 +23,6 @@ function handleMessage(message: Message, gameController: GameController): void {
     case 'showCurrentActivityResults':
       gameController.popupAtendeePanelAndResultbutton.showResultsFromCurrentActivity()
       break
-    case 'createZonePollUi': {
-      break
-    }
     case 'showZonePollResults': {
       const { question, winnerOption } = message.content.value
       console.log(question, winnerOption)
