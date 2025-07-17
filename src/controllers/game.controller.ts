@@ -19,7 +19,6 @@ import { ZonePollQuestionUI } from '../uis/uiZonePollQuestion'
 import { type OptionZone } from '../zonePolls/optionZone'
 
 import { createActivitiesEntity } from '../activities/activitiesEntity'
-import { setupVotingDoors } from '../auditorium/votingDoors'
 import { Jail } from '../jail/jail'
 import { SurveyQuestionUI } from '../surveys/surveyQuestionUi'
 import { MainMenuUi } from '../uis/ui.mainMenu'
