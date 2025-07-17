@@ -1,12 +1,12 @@
+import { engine } from '@dcl/sdk/ecs'
 import ReactEcs, { Label, type PositionUnit, UiEntity } from '@dcl/sdk/react-ecs'
+import { getScaleFactor } from '../canvas/Canvas'
 import { type GameController } from '../controllers/game.controller'
 import { getSurveyState, type SurveyStateType } from '../surveys/surveyEntity'
 import { ModalButton } from './components/buttons'
 import { ModalTitle } from './components/modalTitle'
 import { ModalWindow } from './components/modalWindow'
-import { getScaleFactor } from '../canvas/Canvas'
 import { SurveyResultColors } from './themes/themes'
-import { engine } from '@dcl/sdk/ecs'
 
 function SurveyResultOption(props: {
   optionsQty: number
@@ -59,7 +59,7 @@ function SurveyResultOption(props: {
 }
 
 export class SurveyResultsUI {
-  public isVisible: boolean = true
+  public isVisible: boolean = false
   private readonly animatedPercentages = new Map<number, number>()
   private readonly lastPercentages = new Map<number, number>()
 
