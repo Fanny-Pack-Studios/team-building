@@ -186,8 +186,8 @@ export class ChoosePollUI {
         break
       case 2:
         this.choosePollUiVisibility = false
-        // this.gameController.createZonePollUI.createZonePollUiVisibility = true
-        this.gameController.workInProgressUI.isVisible = true
+        this.gameController.createZonePollUI.createZonePollUiVisibility = true
+        // this.gameController.workInProgressUI.isVisible = true
         break
       case 3:
         this.choosePollUiVisibility = false

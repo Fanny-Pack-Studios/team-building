@@ -2,7 +2,7 @@ import { Animator, engine, type Entity, Schemas } from '@dcl/sdk/ecs'
 
 const votingDoorsEntity = engine.addEntity()
 
-type VotingDoorNumber = 1 | 2 | 3 | 4
+export type VotingDoorNumber = 1 | 2 | 3 | 4
 
 const allDoorNumbers: VotingDoorNumber[] = [1, 2, 3, 4]
 

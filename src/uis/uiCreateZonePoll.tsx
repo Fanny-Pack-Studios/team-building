@@ -1,12 +1,16 @@
 import ReactEcs, { Input, Label, UiEntity } from '@dcl/sdk/react-ecs'
 
 import { getScaleFactor } from '../canvas/Canvas'
-import { Color4, Vector3 } from '@dcl/sdk/math'
+import { Color4 } from '@dcl/sdk/math'
 import { type GameController } from '../controllers/game.controller'
 
-import { OptionZone } from '../zonePolls/optionZone'
 import { engine } from '@dcl/sdk/ecs'
 import { pushSyncedMessage } from '../messagebus/messagebus'
+import { ZonePollState } from '../zonePolls/pollEntity'
+import { syncEntity } from '@dcl/sdk/network'
+import { getPlayer } from '@dcl/sdk/src/players'
+import { ActivityType, setCurrentActivity } from '../activities/activitiesEntity'
+import { generateId } from '../utils'
 
 export class ZonePollUI {
   public createZonePollUiVisibility: boolean = false
@@ -264,8 +268,8 @@ export class ZonePollUI {
                 texture: { src: 'images/createpollui/createButton.png' }
               }}
               onMouseDown={() => {
-                // this.create()
-                pushSyncedMessage('showZonePollUi', {})
+                this.create()
+                pushSyncedMessage('createZonePollUi', {})
               }}
             ></UiEntity>
           </UiEntity>
@@ -275,65 +279,31 @@ export class ZonePollUI {
   }
 
   create(): void {
-    console.log('CREATE ZONES')
-    this.gameController.createZonePollUI.createZonePollUiVisibility = false
-    this.gameController.zonePollQuestionUI.show(this.questionTitle)
-    const positions = [
-      Vector3.create(2, 0, 4),
-      Vector3.create(6, 0, 4),
-      Vector3.create(10, 0, 4),
-      Vector3.create(14, 0, 4)
-    ]
+    this.createZonePollUiVisibility = false
 
-    const zones = ['zone1', 'zone2', 'zone3', 'zone4'] as const
+    const question = this.questionTitle
+    const options = this.answers.filter((answer) => answer.trim() !== '')
+    const player = getPlayer()
+    const creatorId = player?.userId
 
-    const filteredAnswers = this.answers.filter((answer) => answer.trim() !== '')
-
-    filteredAnswers.forEach((answer, index) => {
-      if (index >= positions.length) {
-        console.log('Too many options, skipping:', answer)
-        return
-      }
-
-      const position = positions[index]
-      const color = Color4.create(0.2 + index * 0.3, 0.6, 1.0, 1)
-
-      const zone = new OptionZone(position, color, answer, this.gameController)
-
-      const zoneKey = zones[index]
-      this.gameController[zoneKey] = zone
-      const updateSystem = (dt: number): void => {
-        zone.update(dt)
-      }
-      engine.addSystem(updateSystem)
-      this.gameController.zoneUpdateSystems.add(updateSystem)
+    const dataEntity = engine.addEntity()
+    const idPoll = generateId('ZonePoll')
+    ZonePollState.create(dataEntity, {
+      id: idPoll,
+      pollId: idPoll,
+      question,
+      options,
+      zoneCounts: Array(options.length).fill(0),
+      creatorId,
+      closed: false
     })
-    this.gameController.timerUI.show(1)
-    let elapsed = 0
-    const duration = 60
 
-    const system = (dt: number): void => {
-      elapsed += dt
-      if (elapsed >= duration) {
-        this.gameController.zonePollQuestionUI.hide()
-
-        const zoneKeys = ['zone1', 'zone2', 'zone3', 'zone4'] as const
-        for (const key of zoneKeys) {
-          const zone = this.gameController[key]
-          if (zone != null) {
-            console.log('Destroy Zones')
-            zone.destroy()
-          }
-        }
-        for (const system of this.gameController.zoneUpdateSystems) {
-          engine.removeSystem(system)
-        }
-        this.gameController.zoneUpdateSystems.clear()
-        engine.removeSystem(system)
-      }
+    this.gameController.zonePollDataEntity = dataEntity
+    syncEntity(dataEntity, [ZonePollState.componentId])
+    if (creatorId !== undefined) {
+      setCurrentActivity(this.gameController.activitiesEntity, idPoll, ActivityType.ZONEPOLL)
     }
-
-    engine.addSystem(system)
+    console.log('Created ZonePollState', ZonePollState.get(dataEntity))
   }
 
   renderAnswerInputs(): ReactEcs.JSX.Element[] {

@@ -18,19 +18,21 @@ import { TimerUI } from '../uis/uiTimer'
 import { ZonePollQuestionUI } from '../uis/uiZonePollQuestion'
 import { type OptionZone } from '../zonePolls/optionZone'
 
-import { type Entity } from '@dcl/sdk/ecs'
 import { createActivitiesEntity } from '../activities/activitiesEntity'
-import { setupVotingDoors } from '../auditorium/votingDoors'
 import { Jail } from '../jail/jail'
 import { SurveyQuestionUI } from '../surveys/surveyQuestionUi'
 import { MainMenuUi } from '../uis/ui.mainMenu'
 import { CreateSurveyUI } from '../uis/uiCreateSurvey'
+import { type Entity } from '@dcl/sdk/ecs'
+import { ZonePollSystem } from '../zonePolls/zonPollSystem'
 import { HostsToolbarUI } from '../uis/uiHostToolbar'
 import { ModerationPanel } from '../uis/uiModerationPanel'
 import { SurveyResultsUI } from '../uis/uiSurveyResults'
 import { WorkInProgressUI } from '../uis/uiWorkInProgress'
 import { PlayerController } from './player.controller'
 import { UIController } from './ui.controller'
+import { setupVotingDoors } from '../auditorium/votingDoors'
+import { ZonePollResultsUI } from '../uis/uiZonePollResults'
 
 export class GameController {
   public uiController: UIController
@@ -57,6 +59,7 @@ export class GameController {
   public choosePollUI: ChoosePollUI
   public createZonePollUI: ZonePollUI
   public zonePollQuestionUI: ZonePollQuestionUI
+  public zonePollSystem: ZonePollSystem
   public newModerationPanel: ModerationPanel
   public hostsToolbar: HostsToolbarUI
 
@@ -66,9 +69,12 @@ export class GameController {
   public zone3: OptionZone | null
   public zone4: OptionZone | null
   public zoneUpdateSystems = new Set<(dt: number) => void>()
+  public zonePollResultUI: ZonePollResultsUI
+  public zonePollElapsed?: (dt: number) => void
 
   public customizationUI: CustomizationUI
   public workInProgressUI: WorkInProgressUI
+  public zonePollDataEntity: Entity | null = null
   public surveyQuestionUI: SurveyQuestionUI
 
   constructor() {
@@ -93,6 +99,8 @@ export class GameController {
     this.choosePollUI = new ChoosePollUI(this)
     this.createZonePollUI = new ZonePollUI(this)
     this.zonePollQuestionUI = new ZonePollQuestionUI(this)
+    this.zonePollSystem = new ZonePollSystem(this)
+    this.zonePollResultUI = new ZonePollResultsUI(this)
 
     this.newModerationPanel = new ModerationPanel(this)
 
@@ -113,6 +121,7 @@ export class GameController {
     setupVotingDoors()
     setupCustomization()
     setupMessageBus(this)
+    this.zonePollSystem.start()
     this.popupAtendeePanelAndResultbutton.setupAttendeePanelAndResultsButton()
     setupPodium(this)
   }

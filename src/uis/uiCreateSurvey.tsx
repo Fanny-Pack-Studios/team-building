@@ -101,6 +101,7 @@ export class CreateSurveyUI {
 
   createSurvey(): void {
     const [surveyId] = createSurveyEntity(this.questionTitle, SurveyIcon.STAR, this.optionsQty, this.isAnonymous)
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     setCurrentActivity(this.gameController.activitiesEntity, surveyId, ActivityType.SURVEY)
     this.isVisible = false
   }
