@@ -6,7 +6,7 @@ import { scaledSize } from '../canvas/Canvas'
 
 export class MainMenuUi {
   gameController: GameController
-  public isVisible: boolean = false
+  public isVisible: boolean = true
 
   constructor(gameController: GameController) {
     this.gameController = gameController
@@ -122,7 +122,7 @@ const MainMenu = (props: { gameController: GameController } & EntityPropTypes): 
               uiBackground={theme.primaryButtonBackground}
               onMouseDown={() => {
                 props.gameController.mainMenuUI.isVisible = false
-                props.gameController.workInProgressUI.isVisible = true
+                props.gameController.newModerationPanel.panelVisible = true
               }}
             >
               <UiEntity
