@@ -321,10 +321,16 @@ const ColorButton = (
   )
 }
 
+type LoadingStatus = {
+  status: 'loading' | 'loaded' | 'error'
+  message: string
+}
+
 export const ImageUrlInput = (
   props: EntityPropTypes & { onApply?: (imageUrl: string) => void }
 ): ReactEcs.JSX.Element => {
   const [imageUrl, setImageUrl] = ReactEcs.useState('')
+  const [loadingStatus, setLoadingStatus] = ReactEcs.useState<LoadingStatus>({ status: 'loaded', message: '' })
   const { uiTransform, ...rest } = props
 
   ReactEcs.useEffect(() => {
@@ -336,45 +342,72 @@ export const ImageUrlInput = (
   }, [])
 
   return (
-    <Row
+    <Column
       uiTransform={{
         ...uiTransform
       }}
       {...rest}
     >
+      <Row>
+        <Label
+          value="Logo"
+          color={theme.fontColor}
+          fontSize={theme.fontSize}
+          uiTransform={{ width: 100 * getScaleFactor() }}
+        />
+        <Input
+          uiTransform={{ width: '85%' }}
+          onChange={(value) => {
+            setImageUrl(value)
+          }}
+          value={imageUrl}
+          fontSize={theme.fontSize / 1.15}
+          placeholder={'Paste image url here'}
+          color={theme.fontColor}
+          placeholderColor={Color4.White()}
+          uiBackground={theme.inputBackgroundColor}
+        />
+        <Button
+          value="Apply"
+          uiTransform={{
+            width: '30%',
+            borderRadius: { topRight: 20 * getScaleFactor(), bottomRight: 20 * getScaleFactor() },
+            height: 'auto',
+            padding: { left: '1%' }
+          }}
+          fontSize={theme.buttonFontSize}
+          uiBackground={theme.primaryButtonBackground}
+          onMouseDown={() => {
+            setLoadingStatus({ status: 'loading', message: 'Loading...' })
+            assertImageUrl(imageUrl)
+              .then(() => {
+                setLoadingStatus({ status: 'loaded', message: '' })
+              })
+              .catch((error) => {
+                setLoadingStatus({ status: 'error', message: `${error}` })
+              })
+            if (props.onApply !== undefined) props.onApply(imageUrl)
+          }}
+        ></Button>
+      </Row>
       <Label
-        value="Logo"
-        color={theme.fontColor}
-        fontSize={theme.fontSize}
-        uiTransform={{ width: 100 * getScaleFactor() }}
-      />
-      <Input
-        uiTransform={{ width: '85%' }}
-        onChange={(value) => {
-          setImageUrl(value)
-        }}
-        value={imageUrl}
-        fontSize={theme.fontSize / 1.15}
-        placeholder={'Paste image url here'}
-        color={theme.fontColor}
-        placeholderColor={Color4.White()}
-        uiBackground={theme.inputBackgroundColor}
-      ></Input>
-      <Button
-        value="Apply"
+        value={loadingStatus.message ?? ''}
+        color={
+          {
+            error: Color4.Red(),
+            loading: Color4.Gray(),
+            loaded: Color4.White()
+          }[loadingStatus.status]
+        }
+        fontSize={theme.fontSize / 2.0}
+        textAlign="top-left"
         uiTransform={{
-          width: '30%',
-          borderRadius: { topRight: 20 * getScaleFactor(), bottomRight: 20 * getScaleFactor() },
-          height: 'auto',
-          padding: { left: '1%' }
+          position: { left: 70 * getScaleFactor() },
+          width: '70%',
+          height: (theme.fontSize / 2.0) * getScaleFactor()
         }}
-        fontSize={theme.buttonFontSize}
-        uiBackground={theme.primaryButtonBackground}
-        onMouseDown={() => {
-          if (props.onApply !== undefined) props.onApply(imageUrl)
-        }}
-      ></Button>
-    </Row>
+      />
+    </Column>
   )
 }
 
@@ -395,4 +428,21 @@ function toggleCustomizationCamera(on: boolean): void {
   MainCamera.createOrReplace(engine.CameraEntity, {
     virtualCameraEntity: on ? auditoriumCamera : undefined
   })
+}
+
+async function assertImageUrl(url: string): Promise<void> {
+  if (url.endsWith('.gif')) {
+    throw new Error('GIFs are not supported.')
+  }
+
+  const response = await fetch(url)
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch url.')
+  }
+
+  const contentType = response.headers.get('Content-Type') ?? ''
+  if (!contentType.startsWith('image/')) {
+    throw new Error('URL is not a supported image.')
+  }
 }
