@@ -18,4 +18,8 @@ export enum EntityNames {
   voting_door02_gltf = "voting_door02.gltf",
   voting_door03_gltf = "voting_door03.gltf",
   voting_door04_gltf = "voting_door04.gltf",
+  voting_zone01_gltf = "voting_zone01.gltf",
+  voting_zone02_gltf = "voting_zone02.gltf",
+  voting_zone03_gltf = "voting_zone03.gltf",
+  voting_zone04_gltf = "voting_zone04.gltf",
 } 

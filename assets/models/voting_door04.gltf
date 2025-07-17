@@ -15,23 +15,18 @@
 	"nodes":[
 		{
 			"mesh":0,
-			"name":"voting_door04",
-			"scale":[
-				7.452916145324707,
-				7.452916145324707,
-				7.452916145324707
-			],
-			"translation":[
-				4.9254937171936035,
-				0.2851708233356476,
-				-1.3225877285003662
-			]
+			"name":"votingdoor04"
 		},
 		{
 			"children":[
 				0
 			],
-			"name":"door04_parent"
+			"name":"doorparent04",
+			"translation":[
+				-4.925494194030762,
+				0.3305022418498993,
+				-1.3225879669189453
+			]
 		}
 	],
 	"animations":[
@@ -45,12 +40,31 @@
 					}
 				}
 			],
-			"name":"voting_door04_open",
+			"name":"door04_close",
 			"samplers":[
 				{
 					"input":4,
 					"interpolation":"LINEAR",
 					"output":5
+				}
+			]
+		},
+		{
+			"channels":[
+				{
+					"sampler":0,
+					"target":{
+						"node":0,
+						"path":"translation"
+					}
+				}
+			],
+			"name":"door04_open",
+			"samplers":[
+				{
+					"input":6,
+					"interpolation":"LINEAR",
+					"output":7
 				}
 			]
 		}
@@ -74,7 +88,7 @@
 	],
 	"meshes":[
 		{
-			"name":"Circle.008",
+			"name":"Circle.009",
 			"primitives":[
 				{
 					"attributes":{
@@ -123,39 +137,57 @@
 		{
 			"bufferView":0,
 			"componentType":5126,
-			"count":17,
+			"count":81,
 			"max":[
-				0.21801674365997314,
-				1.75307812710912e-09,
-				0.2180165946483612
+				1.6248592138290405,
+				1.3065541537571335e-08,
+				1.6248594522476196
 			],
 			"min":[
-				-0.2180163860321045,
-				-1.09567022121837e-10,
-				-0.21801654994487762
+				-1.6248589754104614,
+				-0.12758296728134155,
+				-1.6248589754104614
 			],
 			"type":"VEC3"
 		},
 		{
 			"bufferView":1,
 			"componentType":5126,
-			"count":17,
+			"count":81,
 			"type":"VEC3"
 		},
 		{
 			"bufferView":2,
 			"componentType":5126,
-			"count":17,
+			"count":81,
 			"type":"VEC2"
 		},
 		{
 			"bufferView":3,
 			"componentType":5123,
-			"count":48,
+			"count":144,
 			"type":"SCALAR"
 		},
 		{
 			"bufferView":4,
+			"componentType":5126,
+			"count":61,
+			"max":[
+				2.5
+			],
+			"min":[
+				0
+			],
+			"type":"SCALAR"
+		},
+		{
+			"bufferView":5,
+			"componentType":5126,
+			"count":61,
+			"type":"VEC3"
+		},
+		{
+			"bufferView":6,
 			"componentType":5126,
 			"count":31,
 			"max":[
@@ -167,7 +199,7 @@
 			"type":"SCALAR"
 		},
 		{
-			"bufferView":5,
+			"bufferView":7,
 			"componentType":5126,
 			"count":31,
 			"type":"VEC3"
@@ -176,37 +208,47 @@
 	"bufferViews":[
 		{
 			"buffer":0,
-			"byteLength":204,
+			"byteLength":972,
 			"byteOffset":0,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":204,
-			"byteOffset":204,
+			"byteLength":972,
+			"byteOffset":972,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":136,
-			"byteOffset":408,
+			"byteLength":648,
+			"byteOffset":1944,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":96,
-			"byteOffset":544,
+			"byteLength":288,
+			"byteOffset":2592,
 			"target":34963
 		},
 		{
 			"buffer":0,
+			"byteLength":244,
+			"byteOffset":2880
+		},
+		{
+			"buffer":0,
+			"byteLength":732,
+			"byteOffset":3124
+		},
+		{
+			"buffer":0,
 			"byteLength":124,
-			"byteOffset":640
+			"byteOffset":3856
 		},
 		{
 			"buffer":0,
 			"byteLength":372,
-			"byteOffset":764
+			"byteOffset":3980
 		}
 	],
 	"samplers":[
@@ -217,7 +259,7 @@
 	],
 	"buffers":[
 		{
-			"byteLength":1136,
+			"byteLength":4352,
 			"uri":"voting_door04.bin"
 		}
 	]

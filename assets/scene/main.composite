@@ -115,12 +115,12 @@
           "json": {
             "position": {
               "x": 8,
-              "y": 3.799999952316284,
-              "z": 13.300000190734863
+              "y": 3.700000047683716,
+              "z": 13.550000190734863
             },
             "scale": {
-              "x": 5.5,
-              "y": 3,
+              "x": 5,
+              "y": 2.700000047683716,
               "z": 1
             },
             "rotation": {
@@ -258,6 +258,48 @@
             "parent": 0
           }
         },
+        "521": {
+          "json": {
+            "position": {
+              "x": 8,
+              "y": 0,
+              "z": 8
+            },
+            "scale": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "parent": 0
+          }
+        },
+        "522": {
+          "json": {
+            "position": {
+              "x": 8,
+              "y": 0,
+              "z": 8
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "scale": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
+            "parent": 0
+          }
+        },
         "523": {
           "json": {
             "position": {
@@ -338,6 +380,48 @@
               "y": 0,
               "z": 0,
               "w": 1
+            },
+            "parent": 0
+          }
+        },
+        "527": {
+          "json": {
+            "position": {
+              "x": 8,
+              "y": 0,
+              "z": 8
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "scale": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
+            "parent": 0
+          }
+        },
+        "528": {
+          "json": {
+            "position": {
+              "x": 8,
+              "y": 0,
+              "z": 8
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "scale": {
+              "x": 1,
+              "y": 1,
+              "z": 1
             },
             "parent": 0
           }
@@ -448,11 +532,19 @@
           "json": {
             "states": [
               {
-                "clip": "voting_door03_open",
-                "playing": true,
+                "clip": "door03_close",
+                "playing": false,
                 "weight": 1,
                 "speed": 1,
-                "loop": true,
+                "loop": false,
+                "shouldReset": false
+              },
+              {
+                "clip": "door03_open",
+                "playing": false,
+                "weight": 1,
+                "speed": 1,
+                "loop": false,
                 "shouldReset": false
               }
             ]
@@ -462,11 +554,19 @@
           "json": {
             "states": [
               {
-                "clip": "voting_door04_open",
+                "clip": "door04_close",
                 "playing": false,
                 "weight": 1,
                 "speed": 1,
-                "loop": true,
+                "loop": false,
+                "shouldReset": false
+              },
+              {
+                "clip": "door04_open",
+                "playing": false,
+                "weight": 1,
+                "speed": 1,
+                "loop": false,
                 "shouldReset": false
               }
             ]
@@ -481,11 +581,63 @@
           "json": {
             "states": [
               {
-                "clip": "voting_door01_open",
+                "clip": "door01_close",
                 "playing": false,
                 "weight": 1,
                 "speed": 1,
-                "loop": true,
+                "loop": false,
+                "shouldReset": false
+              },
+              {
+                "clip": "door01_open",
+                "playing": false,
+                "weight": 1,
+                "speed": 1,
+                "loop": false,
+                "shouldReset": false
+              }
+            ]
+          }
+        },
+        "521": {
+          "json": {
+            "states": [
+              {
+                "clip": "votingzone01_open",
+                "playing": false,
+                "weight": 1,
+                "speed": 1,
+                "loop": false,
+                "shouldReset": false
+              },
+              {
+                "clip": "votingzone01_close",
+                "playing": false,
+                "weight": 1,
+                "speed": 1,
+                "loop": false,
+                "shouldReset": false
+              }
+            ]
+          }
+        },
+        "522": {
+          "json": {
+            "states": [
+              {
+                "clip": "votingzone02_close",
+                "playing": false,
+                "weight": 1,
+                "speed": 1,
+                "loop": false,
+                "shouldReset": false
+              },
+              {
+                "clip": "votingzone02_open",
+                "playing": false,
+                "weight": 1,
+                "speed": 1,
+                "loop": false,
                 "shouldReset": false
               }
             ]
@@ -511,15 +663,67 @@
             "states": []
           }
         },
+        "527": {
+          "json": {
+            "states": [
+              {
+                "clip": "votingzone03_close",
+                "playing": false,
+                "weight": 1,
+                "speed": 1,
+                "loop": false,
+                "shouldReset": false
+              },
+              {
+                "clip": "votingzone03_open",
+                "playing": false,
+                "weight": 1,
+                "speed": 1,
+                "loop": false,
+                "shouldReset": false
+              }
+            ]
+          }
+        },
+        "528": {
+          "json": {
+            "states": [
+              {
+                "clip": "votingzone04_close",
+                "playing": false,
+                "weight": 1,
+                "speed": 1,
+                "loop": false,
+                "shouldReset": false
+              },
+              {
+                "clip": "votingzone04_open",
+                "playing": false,
+                "weight": 1,
+                "speed": 1,
+                "loop": false,
+                "shouldReset": false
+              }
+            ]
+          }
+        },
         "531": {
           "json": {
             "states": [
               {
-                "clip": "voting_door02_open",
+                "clip": "door02_close",
                 "playing": false,
                 "weight": 1,
                 "speed": 1,
-                "loop": true,
+                "loop": false,
+                "shouldReset": false
+              },
+              {
+                "clip": "door02_open",
+                "playing": false,
+                "weight": 1,
+                "speed": 1,
+                "loop": false,
                 "shouldReset": false
               }
             ]
@@ -585,6 +789,20 @@
             "invisibleMeshesCollisionMask": 3
           }
         },
+        "521": {
+          "json": {
+            "src": "assets/models/voting_zone01.gltf",
+            "visibleMeshesCollisionMask": 0,
+            "invisibleMeshesCollisionMask": 3
+          }
+        },
+        "522": {
+          "json": {
+            "src": "assets/models/voting_zone02.gltf",
+            "visibleMeshesCollisionMask": 0,
+            "invisibleMeshesCollisionMask": 3
+          }
+        },
         "524": {
           "json": {
             "src": "assets/asset-packs/display_monitor/Display_Monitor.glb",
@@ -597,6 +815,20 @@
             "src": "assets/asset-packs/ring_-_green_light/Ring_Green_Light.glb",
             "visibleMeshesCollisionMask": 1,
             "invisibleMeshesCollisionMask": 2
+          }
+        },
+        "527": {
+          "json": {
+            "src": "assets/models/voting_zone03.gltf",
+            "visibleMeshesCollisionMask": 0,
+            "invisibleMeshesCollisionMask": 3
+          }
+        },
+        "528": {
+          "json": {
+            "src": "assets/models/voting_zone04.gltf",
+            "visibleMeshesCollisionMask": 0,
+            "invisibleMeshesCollisionMask": 3
           }
         },
         "531": {
@@ -745,6 +977,16 @@
             "value": "voting_door01.gltf"
           }
         },
+        "521": {
+          "json": {
+            "value": "voting_zone01.gltf"
+          }
+        },
+        "522": {
+          "json": {
+            "value": "voting_zone02.gltf"
+          }
+        },
         "523": {
           "json": {
             "value": "StageWall"
@@ -763,6 +1005,16 @@
         "526": {
           "json": {
             "value": "AttendeePanel"
+          }
+        },
+        "527": {
+          "json": {
+            "value": "voting_zone03.gltf"
+          }
+        },
+        "528": {
+          "json": {
+            "value": "voting_zone04.gltf"
           }
         },
         "531": {
@@ -852,7 +1104,7 @@
         "serializationType": "map"
       },
       "data": {
-        "0": {
+        "520": {
           "json": {
             "gizmo": 3
           }
@@ -1145,22 +1397,19 @@
             "thumbnail": "images/scene-thumbnail.png",
             "categories": [],
             "author": "SDK",
-            "email": "",
             "tags": [],
             "layout": {
+              "base": {
+                "x": 0,
+                "y": 0
+              },
               "parcels": [
                 {
                   "x": 0,
                   "y": 0
                 }
-              ],
-              "base": {
-                "x": 0,
-                "y": 0
-              }
+              ]
             },
-            "silenceVoiceChat": false,
-            "disablePortableExperiences": false,
             "spawnPoints": [
               {
                 "name": "spawn1",
@@ -1255,7 +1504,11 @@
                   531,
                   513,
                   517,
-                  518
+                  518,
+                  521,
+                  522,
+                  527,
+                  528
                 ]
               },
               {
@@ -1321,6 +1574,22 @@
               },
               {
                 "entity": 518,
+                "children": []
+              },
+              {
+                "entity": 521,
+                "children": []
+              },
+              {
+                "entity": 522,
+                "children": []
+              },
+              {
+                "entity": 527,
+                "children": []
+              },
+              {
+                "entity": 528,
                 "children": []
               }
             ]
@@ -1916,7 +2185,10 @@
         "520": {
           "json": {}
         },
-        "523": {
+        "521": {
+          "json": {}
+        },
+        "522": {
           "json": {}
         },
         "524": {
@@ -1926,6 +2198,12 @@
           "json": {}
         },
         "526": {
+          "json": {}
+        },
+        "527": {
+          "json": {}
+        },
+        "528": {
           "json": {}
         },
         "531": {
