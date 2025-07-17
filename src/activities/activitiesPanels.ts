@@ -111,6 +111,7 @@ export class PopupAttendeePanelAndResultsButton {
   }
 
   runSurveyAsAtendee(surveyEntity: Entity): void {
+    this.gameController.uiController.closeAllUis()
     this.gameController.surveyQuestionUI.isVisible = true
   }
 
@@ -164,6 +165,7 @@ export class PopupAttendeePanelAndResultsButton {
   }
 
   showSurveyResults(entity: Entity): void {
+    this.gameController.uiController.closeAllUis()
     this.gameController.surveyResultsUI.isVisible = true
   }
 
