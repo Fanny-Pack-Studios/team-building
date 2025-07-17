@@ -118,7 +118,6 @@ export class SurveyQuestionUI {
         this.lastVotedOption = { rating: this.currentRating, surveyId: mutableSurvey.id }
       }
     })
-
     this.isVisible = false
   }
 }

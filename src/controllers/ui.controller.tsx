@@ -65,5 +65,7 @@ export class UIController {
     this.gameController.workInProgressUI.isVisible = false
     this.gameController.newModerationPanel.panelVisible = false
     this.gameController.kickUI.blackScreenVisibility = false
+    this.gameController.surveyQuestionUI.isVisible = false
+    this.gameController.surveyResultsUI.isVisible = false
   }
 }
