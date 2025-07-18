@@ -408,7 +408,6 @@ export class CreatePollUI {
           fontSize={17 * sf}
           placeholder={`Option ${index + 1}`}
           placeholderColor={Color4.Gray()}
-          value={this.answers[index]}
           uiTransform={{
             width: inputWidth,
             height: '72%',
