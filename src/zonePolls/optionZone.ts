@@ -3,6 +3,7 @@ import {
   Material,
   MeshCollider,
   MeshRenderer,
+  PlayerIdentityData,
   TextShape,
   Transform,
   engine,
@@ -10,8 +11,6 @@ import {
 } from '@dcl/sdk/ecs'
 import { Color4, Quaternion, Vector3 } from '@dcl/sdk/math'
 import { type GameController } from '../controllers/game.controller'
-import { getPlayerPosition } from '../utils'
-import { ZonePollState } from './pollEntity'
 
 export class OptionZone {
   entity: Entity
@@ -64,36 +63,27 @@ export class OptionZone {
     Billboard.create(this.textEntity)
   }
 
-  update(dt: number): void {
-    const playerPos = getPlayerPosition()
-    if (playerPos == null) return
+  updateZoneOption(): void {
+    this.playersInside.clear()
 
-    const inZone = this.isInside(playerPos)
-    const playerId = 'player' // TODO: we dont really need to keep track of the userID
+    Array.from(engine.getEntitiesWith(PlayerIdentityData, Transform))
+      .filter(([_entity, _data, transform]) => this.containsPosition(transform.position))
+      .map(([_entity, data]) => data.address)
+      .forEach((address) => this.playersInside.add(address))
 
-    const state = ZonePollState.get(this.dataEntity)
-    const currentCount = state.zoneCounts?.[this.optionIndex] ?? 0
-    this.updateText(currentCount)
+    this.updateText(this.playersCount())
+  }
 
-    if (inZone && !this.playersInside.has(playerId)) {
-      this.playersInside.add(playerId)
-      console.log('Player Enter the Zone')
-      this.updateZoneCount(state.pollId, this.optionIndex, +1)
-    }
-
-    if (!inZone && this.playersInside.has(playerId)) {
-      this.playersInside.delete(playerId)
-
-      console.log('Player left the Zone')
-      this.updateZoneCount(state.pollId, this.optionIndex, -1)
-    }
+  playersCount(): number {
+    return this.playersInside.size
   }
 
   updateText(count: number): void {
-    TextShape.getMutable(this.textEntity).text = `${count}`
+    const textShape = TextShape.getMutableOrNull(this.textEntity)
+    if (textShape !== null) textShape.text = `${count}`
   }
 
-  isInside(pos: Vector3): boolean {
+  containsPosition(pos: Vector3): boolean {
     const halfX = this.size.x / 2
     const halfZ = this.size.z / 2
     return Math.abs(pos.x - this.center.x) < halfX && Math.abs(pos.z - this.center.z) < halfZ
@@ -102,20 +92,5 @@ export class OptionZone {
   destroy(): void {
     engine.removeEntity(this.entity)
     engine.removeEntity(this.textEntity)
-  }
-
-  updateZoneCount(pollId: string, optionIndex: number, delta: number): void {
-    const entities = engine.getEntitiesWith(ZonePollState)
-    for (const [entity] of entities) {
-      const pollState = ZonePollState.getMutable(entity)
-      if (pollState.pollId === pollId) {
-        pollState.zoneCounts[optionIndex] = (pollState.zoneCounts[optionIndex] ?? 0) + delta
-
-        if (pollState.zoneCounts[optionIndex] < 0) {
-          pollState.zoneCounts[optionIndex] = 0
-        }
-        break
-      }
-    }
   }
 }

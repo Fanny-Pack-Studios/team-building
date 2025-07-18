@@ -5,7 +5,7 @@ import { closeSurvey, SurveyState } from '../surveys/surveyEntity'
 import { SyncEntityEnumId } from '../syncEntities'
 import { type ComponentState } from '../utils'
 import { ZonePollState } from '../zonePolls/pollEntity'
-import { closeZonePoll } from '../zonePolls/zonPollSystem'
+import { closeZonePoll } from '../zonePolls/zonePollSystem'
 
 export enum ActivityType {
   NONE,
