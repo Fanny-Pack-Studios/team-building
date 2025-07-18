@@ -96,7 +96,7 @@ export class OptionsUI {
               <UiEntity
                 key={index}
                 uiTransform={{
-                  flexDirection: 'row',
+                  flexDirection: 'column',
                   alignItems: 'center',
                   justifyContent: 'center',
                   positionType: 'relative',
@@ -133,10 +133,11 @@ export class OptionsUI {
 
           <UiEntity
             uiTransform={{
-              flexDirection: 'row',
+              flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
-              positionType: 'relative',
+              positionType: 'absolute',
+              position: { bottom: '10%' },
               width: 60 * getScaleFactor(),
               height: 25 * getScaleFactor(),
               margin: { top: '10%' },
