@@ -353,7 +353,7 @@ export const ImageUrlInput = (
         onChange={(value) => {
           setImageUrl(value)
         }}
-        value={imageUrl}
+        // value={imageUrl}
         fontSize={theme.fontSize / 1.15}
         placeholder={'Paste image url here'}
         color={theme.fontColor}

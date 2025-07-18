@@ -63,7 +63,7 @@ export class UIController {
     this.gameController.customizationUI.isVisible = false
     this.gameController.mainMenuUI.isVisible = false
     this.gameController.workInProgressUI.isVisible = false
-    this.gameController.newModerationPanel.panelVisible = false
+    this.gameController.newModerationPanel.closeUi()
     this.gameController.kickUI.blackScreenVisibility = false
   }
 }
