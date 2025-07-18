@@ -85,7 +85,7 @@ export function AuditoriumCustomizationElement(props: {
           }}
         ></Button>
         <Button
-          value="Finish"
+          value="Save"
           uiTransform={{
             ...theme.primaryButtonTransform,
             alignSelf: 'flex-start'
