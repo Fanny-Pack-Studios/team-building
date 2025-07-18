@@ -279,8 +279,7 @@ export class ModerationPanel {
           />
 
           <Input
-            placeholder={this.searchText === '' ? 'Search players...' : ''}
-            value={this.searchText}
+            placeholder={'Search players...'}
             onChange={this.handleSearchInput}
             fontSize={16 * getScaleFactor()}
             uiTransform={{
