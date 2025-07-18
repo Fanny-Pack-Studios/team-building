@@ -66,6 +66,12 @@ export class ModerationPanel {
     this.gameController.playerController.setHost(player.wallet, false)
   }
 
+  closeUi(): void {
+    this.panelVisible = false
+    this.searchText = '' // ← resetea la búsqueda
+    this.currentPage = 0
+  }
+
   createPlayerCard(player: Player): ReactEcs.JSX.Element {
     const isBanned = this.gameController.playerController.isPlayerBanned(player.wallet)
     const isHost = this.gameController.playerController.isPlayerHost(player.wallet)
@@ -254,7 +260,7 @@ export class ModerationPanel {
             color: Color4.fromInts(40, 40, 40, 200)
           }}
         >
-          {/* Exit button arriba derecha */}
+          {/* Exit button */}
           <UiEntity
             uiTransform={{
               width: 17 * getScaleFactor(),
@@ -267,7 +273,7 @@ export class ModerationPanel {
               texture: { src: 'images/moderatormenu/exit_white.png' }
             }}
             onMouseDown={() => {
-              this.panelVisible = false
+              this.closeUi()
             }}
           />
 
