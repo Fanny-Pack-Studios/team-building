@@ -298,7 +298,6 @@ export class ZonePollUI {
       closed: false
     })
 
-    this.gameController.zonePollDataEntity = dataEntity
     syncEntity(dataEntity, [ZonePollState.componentId])
     if (creatorId !== undefined) {
       setCurrentActivity(this.gameController.activitiesEntity, idPoll, ActivityType.ZONEPOLL)
